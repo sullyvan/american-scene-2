@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The American Scene 2.0 — A Federal Art Project for the Algorithmic Age</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Oswald:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+  :root {
+    --wpa-red: #C0392B;
+    --wpa-blue: #1A3A5C;
+    --wpa-gold: #D4A017;
+    --wpa-cream: #F5EDD6;
+    --wpa-tan: #C8A96E;
+    --wpa-dark: #1C1C1C;
+    --wpa-green: #2E5E3E;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--wpa-dark); color: var(--wpa-cream); font-family: 'Special Elite', cursive; min-height: 100vh; }
+
+  /* ─── HEADER ─── */
+  .header { background: var(--wpa-blue); border-bottom: 6px solid var(--wpa-gold); padding: 18px 28px 14px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .header-left { flex: 1; }
+  .header-eyebrow { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 4px; color: var(--wpa-gold); text-transform: uppercase; margin-bottom: 4px; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 4.5vw, 56px); line-height: 0.9; color: var(--wpa-cream); letter-spacing: 2px; }
+  .header-title span { color: var(--wpa-gold); }
+  .header-sub { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--wpa-tan); text-transform: uppercase; margin-top: 5px; }
+  .header-badges { display: flex; gap: 8px; }
+  .header-badge { background: var(--wpa-red); border: 2px solid var(--wpa-cream); padding: 7px 12px; text-align: center; min-width: 100px; }
+  .header-badge.blue { background: var(--wpa-blue); border: 2px solid var(--wpa-gold); }
+  .badge-top { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-cream); opacity: 0.8; }
+  .badge-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: white; line-height: 1; }
+  .badge-bot { font-family: 'Special Elite', cursive; font-size: 7px; color: var(--wpa-cream); opacity: 0.7; margin-top: 1px; }
+
+  /* ─── BAND ─── */
+  .band { background: var(--wpa-red); padding: 5px 28px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--wpa-cream); display: flex; justify-content: space-between; align-items: center; }
+
+  /* ─── LAYOUT ─── */
+  .main { display: grid; grid-template-columns: 340px 1fr; gap: 0; }
+
+  /* ─── LEFT PANEL ─── */
+  .generator { background: var(--wpa-cream); color: var(--wpa-dark); border-right: 4px solid var(--wpa-gold); display: flex; flex-direction: column; overflow-y: auto; height: calc(100vh - 118px); }
+  .gen-section { padding: 16px 18px; border-bottom: 2px solid rgba(26,58,92,0.12); }
+  .gen-heading { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--wpa-blue); border-bottom: 2px solid var(--wpa-red); padding-bottom: 5px; margin-bottom: 12px; }
+  .gen-label { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-blue); margin-bottom: 4px; }
+  .gen-input { width: 100%; padding: 8px 10px; font-family: 'Special Elite', cursive; font-size: 12px; background: white; border: 2px solid var(--wpa-blue); color: var(--wpa-dark); outline: none; resize: vertical; }
+  .gen-input:focus { border-color: var(--wpa-red); box-shadow: 2px 2px 0 var(--wpa-red); }
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .theme-btn { padding: 6px 4px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: var(--wpa-blue); color: var(--wpa-cream); border: none; cursor: pointer; transition: background 0.12s; }
+  .theme-btn:hover, .theme-btn.active { background: var(--wpa-red); }
+  .style-row { display: flex; gap: 4px; flex-wrap: wrap; }
+  .style-chip { padding: 3px 8px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; background: white; border: 2px solid var(--wpa-blue); color: var(--wpa-blue); cursor: pointer; transition: all 0.12s; }
+  .style-chip.active, .style-chip:hover { background: var(--wpa-blue); color: white; }
+
+  /* ─── AGENT TABS ─── */
+  .agent-tabs { display: flex; margin-bottom: 10px; }
+  .agent-tab { flex: 1; padding: 7px 3px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: #ddd; color: #666; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.12s; }
+  .agent-tab.active { background: var(--wpa-blue); color: var(--wpa-cream); border-bottom: 2px solid var(--wpa-gold); }
+
+  /* ─── ARTIST LIST ─── */
+  .artist-scroll { max-height: 200px; overflow-y: auto; border: 2px solid var(--wpa-blue); background: white; }
+  .artist-row { display: flex; align-items: center; gap: 8px; padding: 6px 9px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.1s; }
+  .artist-row:hover { background: #f0ebe0; }
+  .artist-row.selected { background: #e8f0f8; border-left: 3px solid var(--wpa-blue); }
+  .artist-swatch { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 11px; color: white; flex-shrink: 0; }
+  .artist-info { flex: 1; min-width: 0; }
+  .artist-name { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700; color: var(--wpa-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .artist-meta { font-family: 'Special Elite', cursive; font-size: 8px; color: #888; }
+  .artist-works { font-family: 'Bebas Neue', sans-serif; font-size: 12px; color: var(--wpa-red); flex-shrink: 0; }
+  .artist-none { padding: 7px 9px; font-family: 'Special Elite', cursive; font-size: 10px; color: #999; font-style: italic; display: flex; align-items: center; gap: 7px; cursor: pointer; background: #f9f6ef; border-bottom: 1px solid #eee; }
+  .artist-none.selected { background: #e8f0f8; border-left: 3px solid var(--wpa-blue); }
+
+  /* ─── SELECTED AGENT CARD ─── */
+  .selected-agent { background: var(--wpa-blue); color: var(--wpa-cream); padding: 10px 12px; display: none; margin-top: 8px; }
+  .selected-agent.visible { display: block; }
+  .agent-card-name { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1px; color: var(--wpa-gold); }
+  .agent-card-desc { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-tan); line-height: 1.4; margin-top: 3px; font-style: italic; }
+  .agent-mode-badge { display: inline-block; margin-top: 5px; padding: 1px 7px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; background: var(--wpa-red); color: white; }
+
+  /* ─── GENERATE BUTTON ─── */
+  .generate-btn { width: 100%; padding: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; background: var(--wpa-red); color: white; border: none; cursor: pointer; transition: all 0.2s; }
+  .generate-btn:hover { background: #a93226; transform: translateY(-1px); }
+  .generate-btn:disabled { background: #999; cursor: not-allowed; transform: none; }
+  .prompt-preview { background: #f0ebe0; border-left: 3px solid var(--wpa-gold); padding: 7px 9px; font-family: 'Special Elite', cursive; font-size: 9px; color: #555; line-height: 1.4; display: none; margin-top: 8px; }
+  .prompt-preview.visible { display: block; }
+
+  /* ─── RIGHT PANEL ─── */
+  .network { padding: 20px 24px; background: #111; overflow-y: auto; height: calc(100vh - 118px); }
+  .network-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+  .network-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--wpa-gold); }
+  .network-stats { display: flex; gap: 16px; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--wpa-red); line-height: 1; }
+  .stat-label { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: #888; }
+
+  /* ─── FEATURED ─── */
+  .featured { background: var(--wpa-blue); border: 3px solid var(--wpa-gold); margin-bottom: 16px; display: grid; grid-template-columns: 1fr 220px; min-height: 280px; overflow: hidden; }
+  .featured-content { padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between; }
+  .featured-eyebrow { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--wpa-gold); }
+  .featured-art-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(20px, 3vw, 40px); line-height: 0.95; color: var(--wpa-cream); margin: 8px 0 5px; }
+  .featured-art-sub { font-family: 'IM Fell English', serif; font-size: 11px; color: var(--wpa-tan); font-style: italic; line-height: 1.5; max-width: 360px; }
+  .featured-meta { display: flex; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+  .meta-item { border-top: 2px solid var(--wpa-gold); padding-top: 4px; }
+  .meta-key { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); }
+  .meta-val { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-cream); }
+  .featured-image-container { position: relative; background: var(--wpa-dark); overflow: hidden; min-height: 240px; }
+  .featured-image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(20%) contrast(1.1); transition: opacity 0.5s; }
+  .img-overlay { position: absolute; inset: 0; background: linear-gradient(to right, var(--wpa-blue) 0%, transparent 30%); pointer-events: none; }
+  .img-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0d1f35; color: var(--wpa-cream); font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; gap: 8px; transition: opacity 0.4s; }
+  .spinner { width: 28px; height: 28px; border: 3px solid rgba(212,160,23,0.3); border-top: 3px solid var(--wpa-gold); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .img-loading.hidden { opacity: 0; pointer-events: none; }
+
+  /* ─── BRIDGING SCORE PANEL ─── */
+  .bridging-panel {
+    background: #0d1a2b;
+    border: 2px solid var(--wpa-gold);
+    margin-bottom: 14px;
+    padding: 16px 20px;
+    display: none;
+  }
+  .bridging-panel.visible { display: block; }
+  .bridging-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .bridging-title { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--wpa-gold); }
+  .bridging-score-big { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; color: var(--wpa-cream); }
+  .bridging-score-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #888; }
+  .bridging-bar-track { height: 8px; background: #1a2a3a; border-radius: 0; margin-bottom: 14px; overflow: hidden; }
+  .bridging-bar-fill { height: 100%; background: linear-gradient(to right, var(--wpa-red), var(--wpa-gold), #2ecc71); transition: width 1s ease; }
+  .bridging-clusters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .cluster-item { display: flex; align-items: center; gap: 7px; padding: 5px 8px; background: #111; border: 1px solid; transition: all 0.3s; }
+  .cluster-item.resonant { border-color: var(--wpa-gold); background: #1a2a0a; }
+  .cluster-item.silent { border-color: #2a2a2a; opacity: 0.5; }
+  .cluster-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .cluster-item.resonant .cluster-dot { background: #2ecc71; box-shadow: 0 0 5px #2ecc71; }
+  .cluster-item.silent .cluster-dot { background: #444; }
+  .cluster-name { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--wpa-cream); flex: 1; }
+  .cluster-agents { font-family: 'Special Elite', cursive; font-size: 8px; color: #888; }
+  .cluster-item.resonant .cluster-agents { color: var(--wpa-tan); }
+
+  /* ─── JUDGE PANEL ─── */
+  .judge-panel { background: #1a1a1a; border: 2px solid var(--wpa-gold); margin-bottom: 14px; padding: 16px 20px; display: none; }
+  .judge-panel.visible { display: block; }
+  .judge-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .judge-swatch { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: white; flex-shrink: 0; border: 2px solid var(--wpa-gold); }
+  .judge-byline { flex: 1; }
+  .judge-artist-name { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1px; color: var(--wpa-gold); }
+  .judge-artist-meta { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #888; }
+  .judge-verdict { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 2px 7px; border: 1px solid; flex-shrink: 0; }
+  .judge-verdict.approve { color: #2ecc71; border-color: #2ecc71; }
+  .judge-verdict.reject { color: var(--wpa-red); border-color: var(--wpa-red); }
+  .judge-verdict.ambivalent { color: var(--wpa-gold); border-color: var(--wpa-gold); }
+  .judge-quote { font-family: 'IM Fell English', serif; font-size: 13px; font-style: italic; color: var(--wpa-cream); line-height: 1.6; padding-left: 12px; border-left: 3px solid var(--wpa-gold); }
+  .judge-actions { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .judge-action-btn { padding: 5px 10px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: transparent; border: 1px solid #555; color: #999; cursor: pointer; transition: all 0.12s; }
+  .judge-action-btn:hover { border-color: var(--wpa-gold); color: var(--wpa-gold); }
+
+  /* ─── NODE GRID ─── */
+  .nodes-label { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--wpa-gold); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .nodes-label::after { content: ''; flex: 1; height: 1px; background: rgba(212,160,23,0.3); }
+  .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 7px; }
+  .node-card { background: #1a1a1a; border: 1px solid #333; overflow: hidden; cursor: pointer; transition: all 0.18s; position: relative; }
+  .node-card:hover { border-color: var(--wpa-gold); transform: translateY(-2px); }
+  .node-card.active { border: 2px solid var(--wpa-gold); }
+  .node-img-wrap { height: 90px; background: #0d1a25; overflow: hidden; position: relative; }
+  .node-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: sepia(30%) contrast(1.1); display: block; transition: opacity 0.5s; }
+  .node-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d1f35 0%, #1a3a5c 100%); }
+  .node-info { padding: 6px 8px; }
+  .node-location { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); margin-bottom: 1px; }
+  .node-theme { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-cream); opacity: 0.8; }
+  .node-agent { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 1px; color: var(--wpa-red); text-transform: uppercase; margin-top: 1px; }
+  .node-bridge-badge { position: absolute; bottom: 4px; right: 4px; background: rgba(26,58,92,0.9); border: 1px solid var(--wpa-gold); padding: 1px 5px; font-family: 'Bebas Neue', sans-serif; font-size: 11px; color: var(--wpa-gold); display: none; }
+  .node-status { position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: #2ecc71; box-shadow: 0 0 4px #2ecc71; }
+  .node-status.generating { background: var(--wpa-gold); box-shadow: 0 0 4px var(--wpa-gold); animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ─── ABOUT ─── */
+  .about-strip { margin-top: 20px; background: var(--wpa-blue); border: 2px solid rgba(212,160,23,0.3); padding: 16px 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .about-col h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 5px; }
+  .about-col p { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-tan); line-height: 1.6; }
+
+  /* ─── FOOTER ─── */
+  .footer { background: var(--wpa-dark); border-top: 3px solid var(--wpa-blue); padding: 10px 28px; display: flex; justify-content: space-between; align-items: center; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; flex-wrap: wrap; gap: 5px; }
+
+  /* ─── TOAST ─── */
+  .toast { position: fixed; bottom: 18px; right: 18px; background: var(--wpa-blue); border: 2px solid var(--wpa-gold); color: var(--wpa-cream); padding: 9px 14px; font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; z-index: 100; max-width: 240px; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ─── SCROLLBAR ─── */
+  .artist-scroll::-webkit-scrollbar, .generator::-webkit-scrollbar, .network::-webkit-scrollbar { width: 4px; }
+  .artist-scroll::-webkit-scrollbar-track, .generator::-webkit-scrollbar-track { background: #f0ebe0; }
+  .artist-scroll::-webkit-scrollbar-thumb, .generator::-webkit-scrollbar-thumb { background: var(--wpa-blue); }
+  .network::-webkit-scrollbar-track { background: #1a1a1a; }
+  .network::-webkit-scrollbar-thumb { background: var(--wpa-blue); }
+
+  @media (max-width: 820px) {
+    .main { grid-template-columns: 1fr; }
+    .generator { height: auto; max-height: none; border-right: none; border-bottom: 4px solid var(--wpa-gold); }
+    .network { height: auto; }
+    .featured { grid-template-columns: 1fr; }
+    .featured-image-container { min-height: 180px; }
+    .about-strip, .bridging-clusters { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-eyebrow">U.S. Federal Art Project — Algorithmic Division · LACMA Collection</div>
+    <div class="header-title">The American <span>Scene 2.0</span></div>
+    <div class="header-sub">A New Deal for the Networked Public · Bridging-Based Distribution</div>
+  </div>
+  <div class="header-badges">
+    <div class="header-badge">
+      <div class="badge-top">Active Nodes</div>
+      <div class="badge-num" id="nodeCount">0</div>
+      <div class="badge-bot">community displays</div>
+    </div>
+    <div class="header-badge blue">
+      <div class="badge-top">Avg Bridge</div>
+      <div class="badge-num" id="avgBridge">—</div>
+      <div class="badge-bot">score /100</div>
+    </div>
+  </div>
+</header>
+<div class="band">
+  <span>Est. 2026 · Los Angeles County · Proof of Concept · Artists + Curators as Agents</span>
+  <span id="clock"></span>
+</div>
+
+<div class="main">
+
+  <!-- ═══ LEFT: GENERATOR ═══ -->
+  <aside class="generator">
+
+    <!-- 1: THEME -->
+    <div class="gen-section">
+      <div class="gen-heading">1 — Civic Theme</div>
+      <div style="margin-bottom:9px;">
+        <textarea class="gen-input" id="themeInput" rows="2" placeholder="e.g. public transit workers, community gardens, water rights..."></textarea>
+      </div>
+      <div class="theme-grid">
+        <button class="theme-btn" onclick="setTheme('Public Transit Workers')">Transit Workers</button>
+        <button class="theme-btn" onclick="setTheme('Community Gardens')">City Gardens</button>
+        <button class="theme-btn" onclick="setTheme('Public Library')">Public Library</button>
+        <button class="theme-btn" onclick="setTheme('Clean Water Access')">Water Rights</button>
+        <button class="theme-btn" onclick="setTheme('Immigrant Labor')">Immigrant Labor</button>
+        <button class="theme-btn" onclick="setTheme('Public Housing')">Public Housing</button>
+        <button class="theme-btn" onclick="setTheme('Night Shift Nurses')">Night Nurses</button>
+        <button class="theme-btn" onclick="setTheme('Farmers Market')">Local Harvest</button>
+      </div>
+    </div>
+
+    <!-- 2: STYLE -->
+    <div class="gen-section">
+      <div class="gen-heading">2 — Print Style</div>
+      <div class="style-row" id="styleRow">
+        <button class="style-chip active" data-style="WPA mural">WPA Mural</button>
+        <button class="style-chip" data-style="lithograph poster">Lithograph</button>
+        <button class="style-chip" data-style="silkscreen">Silkscreen</button>
+        <button class="style-chip" data-style="woodcut print">Woodcut</button>
+        <button class="style-chip" data-style="documentary photograph">Photo</button>
+      </div>
+    </div>
+
+    <!-- 3: ARTIST AGENT -->
+    <div class="gen-section">
+      <div class="gen-heading">3 — Artist Agent</div>
+      <div class="agent-tabs">
+        <button class="agent-tab active" id="tabCreator" onclick="setAgentMode('creator')">Creator</button>
+        <button class="agent-tab" id="tabJudge" onclick="setAgentMode('judge')">Judge</button>
+        <button class="agent-tab" id="tabNone" onclick="setAgentMode('none')">None</button>
+      </div>
+      <p id="agentModeDesc" style="font-family:'Special Elite',cursive;font-size:9px;color:#888;font-style:italic;margin-bottom:8px;">Creator: generates art in the chosen artist's style</p>
+      <div class="artist-scroll" id="artistScroll">
+        <div class="artist-none selected" id="noneRow" onclick="selectArtist(null)">
+          <span style="font-size:14px;">—</span>
+          <span>No artist / Pure WPA</span>
+        </div>
+      </div>
+      <div class="selected-agent" id="selectedAgentCard"></div>
+      <div class="prompt-preview" id="promptPreview"></div>
+    </div>
+
+    <!-- 4: GENERATE -->
+    <div class="gen-section" style="border-bottom:none;">
+      <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Broadcast</button>
+      <p style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:8px;line-height:1.4;font-style:italic;">
+        Bridging score is computed live by matching the work's content against 8 art-tradition clusters represented by LACMA collection artists and curators.
+      </p>
+    </div>
+
+  </aside>
+
+  <!-- ═══ RIGHT: NETWORK ═══ -->
+  <main class="network">
+
+    <div class="network-header">
+      <div class="network-title">Public Display Network</div>
+      <div class="network-stats">
+        <div class="stat"><div class="stat-num" id="genCount">0</div><div class="stat-label">Generated</div></div>
+        <div class="stat"><div class="stat-num" id="broadcastCount">0</div><div class="stat-label">Broadcast</div></div>
+        <div class="stat"><div class="stat-num" id="viewCount">0</div><div class="stat-label">Views</div></div>
+      </div>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="featured" id="featuredCard">
+      <div class="featured-content">
+        <div>
+          <div class="featured-eyebrow">Now Broadcasting</div>
+          <div class="featured-art-title" id="featuredTitle">Awaiting First Transmission</div>
+          <div class="featured-art-sub" id="featuredSub">Select an artist agent, enter a civic theme, and generate. The bridging score will show how broadly the work resonates across the LACMA agent network.</div>
+        </div>
+        <div class="featured-meta">
+          <div class="meta-item"><div class="meta-key">Artist Agent</div><div class="meta-val" id="featuredArtist">—</div></div>
+          <div class="meta-item"><div class="meta-key">Node</div><div class="meta-val" id="featuredLocation">—</div></div>
+          <div class="meta-item"><div class="meta-key">Time</div><div class="meta-val" id="featuredTime">—</div></div>
+          <div class="meta-item"><div class="meta-key">Bridge Score</div><div class="meta-val" id="featuredBridgeScore">—</div></div>
+        </div>
+      </div>
+      <div class="featured-image-container">
+        <div class="img-loading" id="featuredLoading">
+          <div class="spinner"></div><span>Rendering</span>
+        </div>
+        <img id="featuredImg" src="" alt="" style="opacity:0;" />
+        <div class="img-overlay"></div>
+      </div>
+    </div>
+
+    <!-- BRIDGING SCORE PANEL -->
+    <div class="bridging-panel" id="bridgingPanel">
+      <div class="bridging-header">
+        <div>
+          <div class="bridging-title">Bridging Score Analysis</div>
+          <div style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:2px;">Resonance across LACMA art-tradition clusters</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="bridging-score-big" id="bridgeScoreBig">—</div>
+          <div class="bridging-score-label">/ 100</div>
+        </div>
+      </div>
+      <div class="bridging-bar-track">
+        <div class="bridging-bar-fill" id="bridgeBar" style="width:0%"></div>
+      </div>
+      <div class="bridging-clusters" id="bridgeClusters"></div>
+      <div id="bridgeSummary" style="font-family:'IM Fell English',serif;font-size:11px;font-style:italic;color:var(--wpa-tan);margin-top:12px;line-height:1.5;padding-top:10px;border-top:1px solid #333;"></div>
+    </div>
+
+    <!-- JUDGE PANEL -->
+    <div class="judge-panel" id="judgePanel">
+      <div class="judge-header">
+        <div class="judge-swatch" id="judgeSwatch"></div>
+        <div class="judge-byline">
+          <div class="judge-artist-name" id="judgeArtistName"></div>
+          <div class="judge-artist-meta" id="judgeArtistMeta"></div>
+        </div>
+        <div class="judge-verdict" id="judgeVerdict"></div>
+      </div>
+      <div class="judge-quote" id="judgeQuote"></div>
+      <div class="judge-actions">
+        <button class="judge-action-btn" onclick="getNewJudgment()">↺ Next Voice</button>
+        <button class="judge-action-btn" onclick="rotateJudge()">⇄ New Judge</button>
+        <button class="judge-action-btn" onclick="dismissJudge()">✕ Dismiss</button>
+      </div>
+    </div>
+
+    <!-- NODE GRID -->
+    <div class="nodes-label">Community Display Nodes</div>
+    <div class="node-grid" id="nodeGrid"></div>
+
+    <div class="about-strip">
+      <div class="about-col">
+        <h3>The Bridging Model</h3>
+        <p>Unlike engagement algorithms that optimize within communities, bridging-based ranking rewards content that resonates across different groups. A work that appeals only to German Expressionists scores low. One that speaks to photographers, muralists, and printmakers alike scores high.</p>
+      </div>
+      <div class="about-col">
+        <h3>The Agent Network</h3>
+        <p>20 LACMA collection artists and 14 LACMA curators serve as resonance agents — each with a keyword profile drawn from their expertise, their department, and their known critical sensibility. The bridging score is their collective response.</p>
+      </div>
+      <div class="about-col">
+        <h3>The Scale Argument</h3>
+        <p>At 50,000 nodes, a high bridging score means the work reaches across zip codes, languages, and art traditions simultaneously. That is what a Federal Art Project does. That is what an engagement algorithm cannot do by design.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <span>The American Scene 2.0 · Michael Sullivan · 2026</span>
+  <span>Artist data: LACMA permanent collection · Curator data: LACMA staff · Images: Pollinations.ai</span>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BRIDGING CLUSTERS — 8 art-tradition groupings
+// Each cluster resonates when its keywords appear in the work
+// ═══════════════════════════════════════════════════════════════
+const CLUSTERS = [
+  {
+    id: 'social_realism',
+    name: 'Social Realism',
+    color: '#C0392B',
+    keywords: ['worker','labor','workers','transit','union','strike','immigrant','poor','housing','wages','factory','toil','struggle','civic','community','public','service','nurse','nurses','teacher','farmers','harvest'],
+    agents: ['Rivera','Grosz','Daumier','Dix','W. E. Smith','Naima J. Keith','Rachel Kaplan']
+  },
+  {
+    id: 'photography',
+    name: 'Photography',
+    color: '#2C3E50',
+    keywords: ['photograph','photo','documentary','light','shadow','portrait','street','candid','film','exposure','darkroom','image','lens','camera','moment','documentary','capture'],
+    agents: ['Ansel Adams','Cartier-Bresson','Mapplethorpe','Weston','W. E. Smith','Rebecca Morse']
+  },
+  {
+    id: 'expressionism',
+    name: 'Expressionism',
+    color: '#6C3483',
+    keywords: ['dark','darkness','anger','fear','protest','political','grotesque','anxiety','urban','crowd','satire','war','violence','power','resist','shadow','horror','suffering','desperate'],
+    agents: ['Kirchner','Beckmann','Goya','Kandinsky','Timothy Benson','Ludwig Meidner']
+  },
+  {
+    id: 'conceptual',
+    name: 'Conceptual / Contemporary',
+    color: '#1A5276',
+    keywords: ['system','network','data','digital','concept','text','language','process','idea','sign','code','algorithm','information','media','print','type','word','letter','screen'],
+    agents: ['Ruscha','Rauschenberg','Eve Schillo','Dhyandra','Carol Eliel']
+  },
+  {
+    id: 'asian_art',
+    name: 'Asian Art',
+    color: '#1E8BC3',
+    keywords: ['nature','mountain','wave','river','garden','season','rain','snow','flower','tree','landscape','travel','journey','sky','earth','water','leaf','branch','fish','crane','pine'],
+    agents: ['Hokusai','Hiroshige','Kawase Hasui','Stephen M.']
+  },
+  {
+    id: 'decorative',
+    name: 'Decorative Arts & Design',
+    color: '#117A65',
+    keywords: ['pattern','craft','material','textile','design','object','color','form','shape','fabric','weave','print','surface','ornament','structure','style','fashion','garment','dress'],
+    agents: ['Hammersley','Bobbye Tigerman','Staci Steinberger','Michaela Hansen']
+  },
+  {
+    id: 'latin_american',
+    name: 'Latin American Art',
+    color: '#935116',
+    keywords: ['mural','community','indigenous','migration','border','earth','mestizo','revolution','folklore','mexico','latin','south','america','color','market','harvest','farmer','land','village','family'],
+    agents: ['Rivera','Tamayo','Rachel Kaplan','Erin Branham']
+  },
+  {
+    id: 'american_scene',
+    name: 'American Scene',
+    color: '#1C4E2A',
+    keywords: ['american','america','wpa','new deal','federal','regional','civic','public','heartland','town','city','people','ordinary','everyday','work','landscape','democracy','freedom','nation','community','neighborhood'],
+    agents: ['Ansel Adams','Weston','Leah Lehmbeck','Shannon Vittoria','Erin Sullivan Maynes']
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// LACMA COLLECTION ARTISTS — with resonance keyword profiles
+// ═══════════════════════════════════════════════════════════════
+const ARTISTS = [
+  {
+    id: 'rivera', name: 'Diego Rivera', years: '1886–1957', nation: 'Mexican · Muralist', works: 205, color: '#8B1A1A',
+    clusters: ['social_realism','latin_american','american_scene'],
+    keywords: ['mural','worker','labor','community','mexico','harvest','factory','market','people','revolution','folk'],
+    styleDesc: 'Diego Rivera monumental mural style, bold flat forms, working-class heroes, socialist realism, earth tones, heroic scale, Mexican muralism, public mural',
+    judgments: [
+      { verdict: 'approve', text: 'This is the people made visible. Art that does not serve the laborer serves only the collector. I have fought this battle on every wall I have touched — here, at last, the wall belongs to the street.' },
+      { verdict: 'approve', text: 'The machine age has given us new tools, and new tools demand new art. I used fresco; you use algorithms. The question is always the same: whose face appears on the wall?' },
+      { verdict: 'ambivalent', text: 'You have the composition but not yet the anger. A mural without fury is decoration. Show me the sweat, the rent notice, the foreman\'s clock. Then we will have something.' }
+    ]
+  },
+  {
+    id: 'grosz', name: 'George Grosz', years: '1893–1959', nation: 'German · Expressionist', works: 189, color: '#2C3E50',
+    clusters: ['social_realism','expressionism'],
+    keywords: ['satire','political','urban','war','corruption','worker','bourgeois','city','protest','dark','critique'],
+    styleDesc: 'George Grosz satirical expressionist style, dark social satire, angular distorted figures, biting political commentary, Weimar-era grotesque, ink and watercolor',
+    judgments: [
+      { verdict: 'reject', text: 'Civic pride? I drew civic pride — in Berlin, 1919, as the profiteers counted their dead. This image is too polite. The truth of public life is never this composed.' },
+      { verdict: 'ambivalent', text: 'I will say this much: you have captured a kind of dignity. Whether it deserves one is another question. Dignity is what power grants to those it has already broken.' },
+      { verdict: 'approve', text: 'For once something does not flatter the powerful. I am surprised. I spent my entire career in exile for doing less.' }
+    ]
+  },
+  {
+    id: 'daumier', name: 'Honoré Daumier', years: '1808–1879', nation: 'French · Caricaturist', works: 586, color: '#5D4037',
+    clusters: ['social_realism','american_scene'],
+    keywords: ['lithograph','caricature','satire','lawyer','judge','worker','people','theater','crowd','political','press','public'],
+    styleDesc: 'Honoré Daumier lithograph caricature style, expressive linework, social satire, 19th century French, bold contrast, theatrical gesture, working class subjects',
+    judgments: [
+      { verdict: 'approve', text: 'The face of the common person — finally. I spent forty years drawing these faces in lampblack and they threw me in prison for it. Now a machine does it and calls it public art. Progress of a kind.' },
+      { verdict: 'ambivalent', text: 'The pose is noble but the nose is wrong. Nobility is in the nose, in the jaw, in the hands that have actually worked. Study the hands.' },
+      { verdict: 'approve', text: 'This is what the illustrated press was always for, before it sold itself to the bankers. Welcome back to the tradition.' }
+    ]
+  },
+  {
+    id: 'goya', name: 'Francisco Goya', years: '1746–1828', nation: 'Spanish · Romantic', works: 92, color: '#4A235A',
+    clusters: ['expressionism','social_realism'],
+    keywords: ['dark','nightmare','war','power','church','inquisition','fear','death','monster','sleep','reason','chaos','violence','crowd','black'],
+    styleDesc: 'Francisco Goya dark romantic style, dramatic chiaroscuro, haunting atmosphere, social and political commentary, Spanish romanticism, Los Caprichos etching aesthetic, dark palette',
+    judgments: [
+      { verdict: 'ambivalent', text: 'I have seen what civic life actually is — the firing squad, the asylum, the Inquisition\'s waiting room. This image is gentler than truth. Perhaps that is what a public wall requires. I no longer know.' },
+      { verdict: 'reject', text: 'The sleep of reason produces monsters. What does the sleep of the algorithm produce? I am genuinely asking.' },
+      { verdict: 'approve', text: 'It contains darkness. Good. Any image that does not acknowledge darkness is lying to the people who will look at it.' }
+    ]
+  },
+  {
+    id: 'dix', name: 'Otto Dix', years: '1891–1969', nation: 'German · New Objectivity', works: 86, color: '#1A5276',
+    clusters: ['social_realism','expressionism'],
+    keywords: ['war','veteran','worker','street','poverty','prostitute','city','weimar','grit','injury','disability','labor','dark','realist'],
+    styleDesc: 'Otto Dix Neue Sachlichkeit style, hyper-realist social commentary, unflinching detail, Weimar Republic aesthetic, war and labor subjects, sharp graphic contrast',
+    judgments: [
+      { verdict: 'approve', text: 'New Objectivity: see the thing as it actually is. This comes close. The detail does not flinch. I respect that in a machine more than in most painters.' },
+      { verdict: 'reject', text: 'I was a war painter. I know what a body looks like after labor has been taken too far. This is still too decorative. The civic is never decorative — it is always a kind of wound.' },
+      { verdict: 'ambivalent', text: 'Strong composition. The question I always asked was whether the subject would recognize themselves in it. That is the only test that matters.' }
+    ]
+  },
+  {
+    id: 'kirchner', name: 'Ernst Ludwig Kirchner', years: '1880–1938', nation: 'German · Expressionist', works: 112, color: '#784212',
+    clusters: ['expressionism','conceptual'],
+    keywords: ['city','street','crowd','urban','berlin','anxiety','modern','jagged','color','expressionist','figure','alienation'],
+    styleDesc: 'Ernst Ludwig Kirchner German Expressionist style, jagged angular forms, vivid acid colors, urban alienation, Die Brücke movement, raw emotional intensity, bold outline',
+    judgments: [
+      { verdict: 'ambivalent', text: 'The city is always already burning. I tried to show that — the street, the crowd, the loneliness inside the throng. This image has the right unease. It does not yet have the scream underneath it.' },
+      { verdict: 'approve', text: 'Expressionism was never about beauty. It was about what beauty costs. This understands that.' }
+    ]
+  },
+  {
+    id: 'beckmann', name: 'Max Beckmann', years: '1884–1950', nation: 'German · Expressionist', works: 104, color: '#1C2833',
+    clusters: ['expressionism','conceptual'],
+    keywords: ['triptych','crowd','symbol','myth','existential','dark','carnival','circus','figure','political','allegory','war','exile'],
+    styleDesc: 'Max Beckmann expressionist triptych style, dark symbolism, black outlines, dense crowded figures, existential weight, carnival and circus motifs, political allegory',
+    judgments: [
+      { verdict: 'approve', text: 'We are all figures in a triptych we did not choose. What matters is whether the figure stands upright. This one does.' },
+      { verdict: 'reject', text: 'Too much light. The honest image of public life requires shadow — not for drama, but because that is where the people actually live.' }
+    ]
+  },
+  {
+    id: 'picasso', name: 'Pablo Picasso', years: '1881–1973', nation: 'Spanish · Cubist', works: 91, color: '#1E8BC3',
+    clusters: ['conceptual','expressionism','latin_american'],
+    keywords: ['cubism','fractured','perspective','guernica','war','political','form','geometric','modern','abstract','multiple','face','figure'],
+    styleDesc: 'Pablo Picasso analytical cubist style, fractured multiple perspectives, bold geometric forms, political content, monochromatic with color accents, Guernica compositional drama',
+    judgments: [
+      { verdict: 'ambivalent', text: 'A single perspective is a kind of lie agreed upon by convention. The truth of a civic space is that ten people look at the same wall and see ten different things. Have you shown that?' },
+      { verdict: 'approve', text: 'I painted Guernica because there was no other way to say it. Sometimes a wall is the only medium large enough for the truth. This is that kind of work.' },
+      { verdict: 'reject', text: 'I have broken every face I ever painted because faces lie. Has your algorithm broken anything? If not, it has not yet told the truth.' }
+    ]
+  },
+  {
+    id: 'kandinsky', name: 'Wassily Kandinsky', years: '1866–1944', nation: 'Russian · Abstract', works: 97, color: '#2874A6',
+    clusters: ['conceptual','expressionism','decorative'],
+    keywords: ['abstract','color','form','spirit','music','vibration','composition','bauhaus','geometric','pure','emotion','inner','soul'],
+    styleDesc: 'Wassily Kandinsky abstract expressionist style, pure color fields, geometric forms floating in composition, spiritual color theory, Bauhaus aesthetic, musical structure, non-representational',
+    judgments: [
+      { verdict: 'approve', text: 'Color is the keyboard. The eye is the hammer. The soul is the piano with its many strings. This composition strikes the right chord — civic emotion rendered not as illustration but as vibration.' },
+      { verdict: 'ambivalent', text: 'I spent my life insisting that abstraction reaches deeper than representation. This image represents. That is not a failure — but I wonder what it would become if freed from its subject.' }
+    ]
+  },
+  {
+    id: 'adams', name: 'Ansel Adams', years: '1902–1984', nation: 'American · Photographer', works: 142, color: '#2E4053',
+    clusters: ['photography','american_scene','asian_art'],
+    keywords: ['landscape','nature','mountain','wilderness','national','park','america','sky','light','shadow','tonal','black','white','photograph','zone','wilderness','forest','granite','yosemite'],
+    styleDesc: 'Ansel Adams large format photography style, Zone System tonal range, majestic American landscape, crisp detail, dramatic skies, monumental scale, black and white, wilderness',
+    judgments: [
+      { verdict: 'approve', text: 'I believed that the camera could reveal what the eye sees imperfectly. The photograph as witness. This image bears witness. That is not a small thing.' },
+      { verdict: 'ambivalent', text: 'I worked in wilderness because wilderness does not lie. A civic subject has already been shaped by the interests of those who built it. The photograph must be careful of what it inherits.' }
+    ]
+  },
+  {
+    id: 'cartier_bresson', name: 'Henri Cartier-Bresson', years: '1908–2004', nation: 'French · Photographer', works: 144, color: '#1A6B3C',
+    clusters: ['photography','social_realism'],
+    keywords: ['street','moment','decisive','candid','geometry','eye','human','gesture','light','shadow','documentary','paris','city','crowd','people','life'],
+    styleDesc: 'Henri Cartier-Bresson decisive moment street photography, 35mm black and white, geometric composition, candid human gesture, poetic realism, moment of perfect visual balance',
+    judgments: [
+      { verdict: 'approve', text: 'The decisive moment cannot be planned — it arrives and you either press the shutter or it is gone. What surprises me is that an algorithm has found something like a decisive moment here. I did not expect that.' },
+      { verdict: 'reject', text: 'Photography is placing head, eye, and heart on the same axis. This image has the eye. I am not certain it has found the heart yet.' }
+    ]
+  },
+  {
+    id: 'mapplethorpe', name: 'Robert Mapplethorpe', years: '1946–1989', nation: 'American · Photographer', works: 1090, color: '#212121',
+    clusters: ['photography','conceptual'],
+    keywords: ['studio','formal','body','flower','portrait','black','white','contrast','perfect','classical','provocative','beauty','form','shadow','light','pure'],
+    styleDesc: 'Robert Mapplethorpe formal studio photography style, stark white background, extreme tonal contrast, classical sculpture-like perfection, provocative subject treated with formal rigor',
+    judgments: [
+      { verdict: 'approve', text: 'I made beauty out of what the culture was afraid to look at directly. That is the only interesting problem in art. This engages that problem, which is more than most public art attempts.' },
+      { verdict: 'ambivalent', text: 'Perfect form is its own argument. The question is whether this form is perfect or merely correct. There is an enormous difference.' },
+      { verdict: 'reject', text: 'I was sued by the NEA for doing exactly this kind of work. If it does not make someone uncomfortable, it is not public art — it is wallpaper.' }
+    ]
+  },
+  {
+    id: 'ruscha', name: 'Edward Ruscha', years: 'b. 1937', nation: 'American · Conceptual · LA', works: 202, color: '#7D3C98',
+    clusters: ['conceptual','american_scene'],
+    keywords: ['text','word','language','california','los angeles','gas','sunset','standard','deadpan','sign','building','highway','pool','flat','cool','graphic','print'],
+    styleDesc: 'Edward Ruscha Los Angeles conceptual art style, deadpan typography, West Coast Pop, gasoline stations and parking lots, graphic design sensibility, flat color fields with bold text',
+    judgments: [
+      { verdict: 'approve', text: 'Los Angeles is a city of surfaces, and surfaces have always been honest about what they are. This image is honest about being an image. I find that admirable in a very specific way.' },
+      { verdict: 'ambivalent', text: 'I photographed every building on the Sunset Strip. Just the buildings, straight on, no composition. The point is accumulation. One image proves nothing. A thousand proves a system.' },
+      { verdict: 'reject', text: 'OOF. That is all I have to say. OOF.' }
+    ]
+  },
+  {
+    id: 'rauschenberg', name: 'Robert Rauschenberg', years: '1925–2008', nation: 'American · Neo-Dada', works: 54, color: '#B7770D',
+    clusters: ['conceptual','american_scene'],
+    keywords: ['combine','collage','mixed','found','newspaper','photo','silk','screen','transfer','urban','ephemera','material','surface','texture','paint','print'],
+    styleDesc: 'Robert Rauschenberg combines style, mixed media collage, found materials and images, silk screen photo transfer, gestural painting over newspaper imagery, urban ephemera',
+    judgments: [
+      { verdict: 'approve', text: 'I worked in the gap between art and life. That gap has gotten smaller since I started — there is more life in art now, whether the institutions like it or not. This belongs in the gap.' },
+      { verdict: 'ambivalent', text: 'Combine everything. That is what I always did. A painting should be a conversation between surfaces. Is this a conversation, or a monologue?' }
+    ]
+  },
+  {
+    id: 'weston', name: 'Edward Weston', years: '1886–1958', nation: 'American · Modernist', works: 186, color: '#4D6A47',
+    clusters: ['photography','american_scene'],
+    keywords: ['form','pure','pepper','shell','nude','abstract','natural','close','sharp','f64','tonal','california','modernist','precise','still','life'],
+    styleDesc: 'Edward Weston Group f/64 photography style, sharp focus, pure form, close-up abstraction of natural and industrial subjects, modernist American photography, tonal richness',
+    judgments: [
+      { verdict: 'approve', text: 'I found abstraction inside a pepper, inside a nautilus shell. The form is always already there — the artist only reveals it. This has revealed something.' },
+      { verdict: 'ambivalent', text: 'Focus. Absolute focus. The thing itself, not the feeling about the thing. I am not sure this image knows the difference yet.' }
+    ]
+  },
+  {
+    id: 'wsmith', name: 'W. Eugene Smith', years: '1918–1978', nation: 'American · Documentary', works: 153, color: '#7B241C',
+    clusters: ['photography','social_realism'],
+    keywords: ['documentary','worker','mine','nurse','doctor','village','labor','suffering','witness','humanity','darkness','shadow','humanitarian','photo','essay'],
+    styleDesc: 'W. Eugene Smith photojournalism style, deep shadow and highlight drama, intimate social documentary, humanitarian crisis subjects, Spanish Village aesthetic, long exposure night',
+    judgments: [
+      { verdict: 'approve', text: 'I have sat with dying miners in Minamata, with country doctors through their twenty-six-hour days. The camera is a witness. This image witnesses. That is what I ask of any photograph.' },
+      { verdict: 'reject', text: 'Documentary photography demands that you be there — physically, uncomfortably, at risk. An algorithm cannot be there. I do not say this to condemn the image. I say it to identify its limit.' }
+    ]
+  },
+  {
+    id: 'hokusai', name: 'Katsushika Hokusai', years: '1760–1849', nation: 'Japanese · Ukiyo-e', works: 126, color: '#2471A3',
+    clusters: ['asian_art','decorative'],
+    keywords: ['wave','mountain','fuji','woodblock','nature','fish','water','wind','sky','print','color','japan','craft','artisan','bold','outline','line'],
+    styleDesc: 'Katsushika Hokusai woodblock print style, bold outline, dynamic wave forms, Mount Fuji imagery, ukiyo-e color palette, skilled artisan subjects, dramatic natural forces, woodcut',
+    judgments: [
+      { verdict: 'approve', text: 'I drew the wave that swallows everything and they called it beautiful. Any image that contains the forces larger than the human figure is an honest image. The rest is portraiture.' },
+      { verdict: 'ambivalent', text: 'I made one hundred views of a single mountain to understand it. One view of a civic theme tells you very little. I recommend returning to this subject one hundred more times.' }
+    ]
+  },
+  {
+    id: 'hiroshige', name: 'Utagawa Hiroshige', years: '1797–1858', nation: 'Japanese · Ukiyo-e', works: 215, color: '#1A5276',
+    clusters: ['asian_art','decorative'],
+    keywords: ['rain','snow','fog','traveler','landscape','station','road','bridge','moon','river','season','color','japan','night','dusk','atmospheric','weather'],
+    styleDesc: 'Utagawa Hiroshige landscape woodblock print style, atmospheric weather effects, rain and snow, traveler figures in vast landscapes, delicate color gradations, ukiyo-e aesthetic',
+    judgments: [
+      { verdict: 'approve', text: 'The traveler is always small against the landscape. The public is always small against the city. This image understands that proportion and does not lie about it.' },
+      { verdict: 'ambivalent', text: 'I painted rain as lines of indigo, snow as absence of color. The seasons change the meaning of every place. At what season has this been generated?' }
+    ]
+  },
+  {
+    id: 'tamayo', name: 'Rufino Tamayo', years: '1899–1991', nation: 'Mexican · Modern', works: 98, color: '#922B21',
+    clusters: ['latin_american','expressionism'],
+    keywords: ['mexico','color','terracotta','purple','red','earth','indigenous','modern','figure','pre-columbian','mestizo','market','night','sky','animal','texture'],
+    styleDesc: 'Rufino Tamayo Mexican modernist style, Pre-Columbian color palette, rich terracotta and purple, bold expressive figures, fusion of indigenous and European modernism, textured surfaces',
+    judgments: [
+      { verdict: 'approve', text: 'Rivera painted history. I painted the human figure as it actually exists — in color, in appetite, in darkness and joy. This image has some of that truth in it.' },
+      { verdict: 'ambivalent', text: 'The color is almost right. Color is not decoration — it is argument. What argument is this color making?' }
+    ]
+  },
+  {
+    id: 'hammersley', name: 'Frederick Hammersley', years: '1919–2009', nation: 'American · Hard-Edge · LA', works: 86, color: '#1E8BC3',
+    clusters: ['conceptual','decorative','american_scene'],
+    keywords: ['geometric','hard','edge','clean','los angeles','abstract','color','relationship','form','shape','square','circle','hunch','organic','systematic'],
+    styleDesc: 'Frederick Hammersley hard-edge abstraction, Los Angeles modernism, precise geometric forms, organic and systematic series, single color relationships, clean edge painting, California',
+    judgments: [
+      { verdict: 'approve', text: 'I made paintings about the relationship between two shapes. That is enough for a lifetime of inquiry. This image has found a relationship worth examining.' },
+      { verdict: 'ambivalent', text: 'I called my paintings "hunches" because they came from intuition, not system. Can an algorithm have a hunch? I am genuinely uncertain, and I am not a man who admits uncertainty easily.' }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// LACMA CURATORS — Institutional voice agents
+// Based on real LACMA staff LinkedIn data.
+// Voices are DEPARTMENTAL responses, not personal opinions.
+// ═══════════════════════════════════════════════════════════════
+const CURATORS = [
+  {
+    id: 'morse', name: 'Rebecca Morse', color: '#2C3E50',
+    title: 'Curator, Wallis Annenberg Photography Dept.',
+    cluster: 'photography',
+    keywords: ['photograph','photo','documentary','light','shadow','portrait','street','image','lens','film','camera','moment','exposure'],
+    voice: [
+      { verdict: 'ambivalent', text: 'The Photography Department would want to examine the relationship between the generative process and photographic truth-claims. The work raises questions about indexicality that we\'d need to address in any acquisition conversation.' },
+      { verdict: 'approve', text: 'From the department\'s perspective, this engages the documentary tradition in ways consistent with our collecting mandate. The formal qualities hold up to scrutiny. We would want to see a series before drawing conclusions.' }
+    ]
+  },
+  {
+    id: 'benson', name: 'Timothy Benson', color: '#4A235A',
+    title: 'Curator, Robert Gore Rifkind Center for German Expressionist Studies',
+    cluster: 'expressionism',
+    keywords: ['expressionist','german','woodcut','print','weimar','darkness','social','satire','political','graphic','angular','distorted'],
+    voice: [
+      { verdict: 'approve', text: 'The Rifkind Center\'s mandate is precisely to maintain the critical tradition of German Expressionism within a civic context. This work is consistent with that tradition\'s engagement with social subject matter.' },
+      { verdict: 'ambivalent', text: 'We\'d want to understand the relationship to the graphic tradition more fully before making any institutional statement. Expressionism is a specific historical category, and we\'re careful about the terminology.' }
+    ]
+  },
+  {
+    id: 'kaplan', name: 'Rachel Kaplan', color: '#935116',
+    title: 'Associate Curator, Latin American Art',
+    cluster: 'latin_american',
+    keywords: ['mural','community','latin','mexico','indigenous','labor','worker','immigrant','harvest','earth','color','border','south','migration','folk'],
+    voice: [
+      { verdict: 'approve', text: 'Latin American Art has been making this argument for a century — that public space is political space, and that civic art is always a negotiation of cultural memory. This work enters that conversation.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand the sourcing of the aesthetic references more clearly. Muralism is a specific political tradition, not simply a visual style, and that distinction matters to us.' }
+    ]
+  },
+  {
+    id: 'lehmbeck', name: 'Leah Lehmbeck', color: '#1C4E2A',
+    title: 'Department Head, European Painting & Sculpture and American Art',
+    cluster: 'american_scene',
+    keywords: ['american','european','painting','sculpture','landscape','civic','public','regional','tradition','formal','history','collection','period'],
+    voice: [
+      { verdict: 'ambivalent', text: 'European Painting and American Art would need to consider how this work situates itself within the existing collection. There are clear historical precedents in the American Scene movement, and we\'d want to be thoughtful about the relationship.' },
+      { verdict: 'approve', text: 'The department sees value in works that extend the regionalist tradition into contemporary practice. This does that, and the civic subject matter is consistent with our American Art collecting priorities.' }
+    ]
+  },
+  {
+    id: 'tigerman', name: 'Bobbye Tigerman', color: '#117A65',
+    title: 'Marilyn B. & Calvin B. Gross Curator, Decorative Arts and Design',
+    cluster: 'decorative',
+    keywords: ['design','craft','material','object','textile','pattern','surface','form','color','applied','decorative','functional','print','typography'],
+    voice: [
+      { verdict: 'ambivalent', text: 'Decorative Arts and Design would approach this from the perspective of material culture and applied aesthetics. The question we\'d ask is: does this function as an object in the world, or does it remain in the register of fine art? The answer determines a lot.' },
+      { verdict: 'approve', text: 'The design sensibility is evident and the relationship to applied print traditions — WPA poster design specifically — is well within the department\'s collecting scope. This is worth a conversation.' }
+    ]
+  },
+  {
+    id: 'vittoria', name: 'Shannon Vittoria', color: '#1C4E2A',
+    title: 'Associate Curator, American Art',
+    cluster: 'american_scene',
+    keywords: ['american','civic','public','wpa','regional','federal','community','worker','democracy','heartland','landscape','ordinary','everyday'],
+    voice: [
+      { verdict: 'approve', text: 'American Art sees this as a direct continuation of the WPA tradition — which, it should be noted, was the last time the federal government took civic art seriously as public infrastructure. This work makes that argument clearly.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand whether this is a commentary on the WPA or an extension of it. Those are very different arguments, and we\'d need to be clear before any institutional positioning.' }
+    ]
+  },
+  {
+    id: 'eliel', name: 'Carol Eliel', color: '#1A5276',
+    title: 'Senior Curator Emerita, Modern Art',
+    cluster: 'conceptual',
+    keywords: ['modern','twentieth','century','abstract','expressionist','formal','avant','garde','tradition','historical','survey','movement','style'],
+    voice: [
+      { verdict: 'ambivalent', text: 'Modern Art has spent decades establishing the historical boundaries of modernism. Work like this asks us to reconsider whether those boundaries are descriptive or prescriptive. That is a productive question, even if it is an uncomfortable one for the department.' },
+      { verdict: 'approve', text: 'The formal concerns here are recognizably modern in the meaningful sense — not the chronological one. There\'s a serious engagement with the question of what civic representation requires. Worth pursuing.' }
+    ]
+  },
+  {
+    id: 'maynes', name: 'Erin Sullivan Maynes', color: '#6C3483',
+    title: 'Associate Curator, Prints & Drawings',
+    cluster: 'expressionism',
+    keywords: ['print','drawing','lithograph','etching','woodcut','silkscreen','paper','works','graphic','edition','press','ink','linework','mark'],
+    voice: [
+      { verdict: 'approve', text: 'Prints and Drawings has always understood that the mass-reproducible image is the democratic image. This work is in that tradition — the idea that the same image can hang in every neighborhood simultaneously is precisely what print made possible for the first time.' },
+      { verdict: 'ambivalent', text: 'The department would want to examine the output at actual print scale before assessment. So much depends on how the image holds up at the resolution at which it would actually be displayed. We\'d need physical outputs.' }
+    ]
+  },
+  {
+    id: 'keith', name: 'Naima J. Keith', color: '#1C2833',
+    title: 'Vice President, Los Angeles County Museum of Art',
+    cluster: 'social_realism',
+    keywords: ['community','equity','access','public','contemporary','diverse','representation','civic','people','los angeles','county','neighborhood','culture'],
+    voice: [
+      { verdict: 'approve', text: 'From the Vice President\'s office, the institutional question is always: does this expand access to art, or does it replicate the existing patterns of exclusion with new tools? This proposal appears to take that question seriously. We\'d want to see the distribution data.' },
+      { verdict: 'ambivalent', text: 'LACMA\'s commitment to the communities of Los Angeles County means we ask hard questions about who benefits. A bridging-based distribution model is the right framework. The implementation details will determine whether it delivers.' }
+    ]
+  },
+  {
+    id: 'schill', name: 'Eve Schillo', color: '#7D3C98',
+    title: 'Associate Curator, Contemporary Art',
+    cluster: 'conceptual',
+    keywords: ['contemporary','concept','system','network','digital','process','idea','current','now','practice','media','social','text','language'],
+    voice: [
+      { verdict: 'ambivalent', text: 'Contemporary Art would situate this within the broader discourse on algorithmic image-making — which is a serious and contested field right now. The question is whether the work has a position within that discourse, or whether it is the discourse.' },
+      { verdict: 'approve', text: 'The conceptual framework is genuinely interesting — using the Federal Art Project as a precedent for thinking about algorithmic distribution is exactly the kind of historical pivot that contemporary practice needs more of.' }
+    ]
+  },
+  {
+    id: 'flores', name: 'Hope Flores', color: '#2E7D32',
+    title: 'Curatorial Assistant, LACMA',
+    cluster: 'american_scene',
+    keywords: ['community','civic','public','art','los angeles','local','accessible','people','neighborhood','culture','education'],
+    voice: [
+      { verdict: 'approve', text: 'From the curatorial assistant\'s perspective — which means I\'ve read every acquisition memo for three years — the most important thing about this work is that it\'s for people who don\'t already go to museums. That\'s the gap in every collection I\'ve seen.' },
+      { verdict: 'ambivalent', text: 'I\'d want to know more about the community input process. The history of public art in Los Angeles includes a lot of murals that were made about communities rather than with them. That\'s a crucial difference.' }
+    ]
+  },
+  {
+    id: 'bransham', name: 'Erin Branham', color: '#1B5E20',
+    title: 'Asst. Vice-President, School & Family Programs',
+    cluster: 'latin_american',
+    keywords: ['family','school','education','children','youth','learning','community','program','public','access','civic','neighborhood','los angeles'],
+    voice: [
+      { verdict: 'approve', text: 'School and Family Programs has been fighting for years to get art into the neighborhoods where our students actually live, rather than expecting them to come to Wilshire. A distributed network model would change the conversation entirely.' },
+      { verdict: 'ambivalent', text: 'The pedagogical question is real: how do families and students engage with algorithmically generated art in a way that builds genuine visual literacy? We\'d need an education component designed in from the start, not retrofitted.' }
+    ]
+  },
+  {
+    id: 'stephen', name: 'Stephen M.', color: '#1565C0',
+    title: 'Senior Research Curator, South & Southeast Asian Art',
+    cluster: 'asian_art',
+    keywords: ['asian','south','southeast','india','japan','china','buddhist','temple','nature','landscape','tradition','craft','textile','painting','miniature','regional'],
+    voice: [
+      { verdict: 'ambivalent', text: 'South and Southeast Asian Art would note that the tradition of civic art as a distributed, community-embedded practice is several thousand years old in the regions we cover. The innovation here is the algorithm, not the concept. That context is worth acknowledging.' },
+      { verdict: 'approve', text: 'The department sees resonance between this distribution model and the tradition of temple art that served entire communities rather than individual collectors. The shift from private to public is a return, not a departure.' }
+    ]
+  },
+  {
+    id: 'steinberger', name: 'Staci Steinberger', color: '#00695C',
+    title: 'Curator, Decorative Art and Design',
+    cluster: 'decorative',
+    keywords: ['design','craft','pattern','object','surface','textile','color','form','material','furniture','glass','ceramic','applied','functional','industrial'],
+    voice: [
+      { verdict: 'approve', text: 'Design has always understood that the boundary between art and utility is a political choice, not an aesthetic one. This project refuses that boundary, which puts it squarely in the design tradition even if it doesn\'t look like what we typically collect.' },
+      { verdict: 'ambivalent', text: 'The department would want to think carefully about the output formats. A work of public art is also a designed object — its materiality, its mounting, its relationship to the site all matter. Right now we only have the image.' }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// BRIDGING SCORE COMPUTATION
+// ═══════════════════════════════════════════════════════════════
+function computeBridgingScore(theme, style, artistId) {
+  const artist = artistId ? ARTISTS.find(a => a.id === artistId) : null;
+  // Build combined corpus from theme + style + artist style description
+  const corpus = [theme, style, artist ? artist.styleDesc : ''].join(' ').toLowerCase();
+
+  const results = [];
+  let resonatingClusters = 0;
+
+  CLUSTERS.forEach(cluster => {
+    const matches = cluster.keywords.filter(kw => corpus.includes(kw.toLowerCase()));
+    const resonant = matches.length >= 1;
+
+    // Gather resonating agents (artists + curators) for this cluster
+    const resonatingArtistAgents = ARTISTS
+      .filter(a => a.clusters.includes(cluster.id) && a.keywords.some(kw => corpus.includes(kw)))
+      .map(a => a.name.split(' ').pop());
+
+    const resonatingCuratorAgents = CURATORS
+      .filter(c => c.cluster === cluster.id && c.keywords.some(kw => corpus.includes(kw)))
+      .map(c => c.name.split(' ')[0]);
+
+    const allAgents = [...new Set([...resonatingArtistAgents, ...resonatingCuratorAgents])];
+
+    if (resonant) resonatingClusters++;
+
+    results.push({
+      cluster,
+      resonant,
+      matchCount: matches.length,
+      agents: allAgents
+    });
+  });
+
+  // Score: base from cluster coverage + bonus for depth within clusters
+  const basePct = resonatingClusters / CLUSTERS.length;
+  // Depth bonus: average match count across resonating clusters
+  const resonantResults = results.filter(r => r.resonant);
+  const avgDepth = resonantResults.length > 0
+    ? resonantResults.reduce((s, r) => s + Math.min(r.matchCount, 4), 0) / resonantResults.length
+    : 0;
+  const depthBonus = (avgDepth / 4) * 0.2; // up to 20% bonus for depth
+  const score = Math.round(Math.min(100, (basePct * 0.8 + depthBonus) * 100 + (resonatingClusters >= 4 ? 5 : 0)));
+
+  return { score, results, resonatingClusters };
+}
+
+function getBridgeSummary(score, resonatingClusters, theme) {
+  if (score >= 80) return `"${theme}" resonates across ${resonatingClusters} of 8 art-tradition clusters — a rare breadth that marks this as a true bridging work. Both collection artists and curatorial departments register significant resonance.`;
+  if (score >= 60) return `Solid bridging reach: "${theme}" activates ${resonatingClusters} clusters, crossing the divide between at least two major art traditions in the LACMA agent network. Strong candidate for multi-neighborhood distribution.`;
+  if (score >= 40) return `Moderate bridging: "${theme}" connects ${resonatingClusters} clusters. The work speaks clearly to certain traditions while leaving others unmoved. Consider broadening the civic scope to reach across more of the network.`;
+  return `Narrow resonance: "${theme}" activates only ${resonatingClusters} cluster(s). Strong within its tradition but low bridging potential. Effective for targeted deployment; insufficient for citywide distribution at full scale.`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════════════════════════
+const nodes = [];
+let genCount = 0, broadcastCount = 0, viewCount = 0;
+let selectedStyle = 'WPA mural';
+let selectedArtist = null;
+let agentMode = 'creator';
+let activeNodeId = null;
+let allBridgeScores = [];
+
+const LOCATIONS = [
+  'Echo Park, LA','Boyle Heights, LA','Compton, CA','Long Beach, CA',
+  'East Hollywood, LA','Watts, CA','Koreatown, LA','Inglewood, CA',
+  'Highland Park, LA','South Central, LA','Pico-Union, LA','Van Nuys, CA',
+  'Huntington Park, CA','Culver City, CA','Leimert Park, LA','Crenshaw, LA',
+  'Mar Vista, LA','Silver Lake, LA','Atwater Village, LA','El Sereno, LA',
+  'Monterey Park, CA','Bell, CA','Maywood, CA','Carson, CA',
+];
+
+const INITIAL_NODES = [
+  { theme:'Public Transit Workers', style:'WPA mural', artistId:'rivera' },
+  { theme:'Community Gardens', style:'lithograph poster', artistId:'grosz' },
+  { theme:'Public Library', style:'silkscreen', artistId:null },
+  { theme:'Immigrant Labor', style:'woodcut print', artistId:'daumier' },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD UI
+// ═══════════════════════════════════════════════════════════════
+function buildArtistList() {
+  const scroll = document.getElementById('artistScroll');
+  ARTISTS.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'artist-row';
+    row.id = 'artist-row-' + a.id;
+    row.onclick = () => selectArtist(a.id);
+    row.innerHTML = `
+      <div class="artist-swatch" style="background:${a.color}">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div class="artist-info">
+        <div class="artist-name">${a.name}</div>
+        <div class="artist-meta">${a.years} · ${a.nation.split('·')[0].trim()}</div>
+      </div>
+      <div class="artist-works">${a.works.toLocaleString()}</div>
+    `;
+    scroll.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AGENT MODE
+// ═══════════════════════════════════════════════════════════════
+function setAgentMode(mode) {
+  agentMode = mode;
+  ['creator','judge','none'].forEach(m => {
+    const id = 'tab' + m.charAt(0).toUpperCase() + m.slice(1);
+    document.getElementById(id)?.classList.toggle('active', m === mode);
+  });
+  const desc = {
+    creator: 'Creator: generates art in the chosen artist\'s style',
+    judge: 'Judge: artist critiques the generated work',
+    none: 'None: pure WPA style, no artist persona'
+  };
+  document.getElementById('agentModeDesc').textContent = desc[mode];
+  updateAgentCard();
+  updatePromptPreview();
+}
+
+function selectArtist(id) {
+  selectedArtist = id;
+  document.querySelectorAll('.artist-row').forEach(r => r.classList.remove('selected'));
+  document.getElementById('noneRow').classList.toggle('selected', !id);
+  if (id) document.getElementById('artist-row-' + id)?.classList.add('selected');
+  updateAgentCard();
+  updatePromptPreview();
+}
+
+function updateAgentCard() {
+  const card = document.getElementById('selectedAgentCard');
+  if (!selectedArtist) { card.classList.remove('visible'); return; }
+  const a = ARTISTS.find(x => x.id === selectedArtist);
+  if (!a) return;
+  const modeLabel = { creator:'Creator Mode', judge:'Judge Mode', none:'Observer' }[agentMode];
+  card.classList.add('visible');
+  card.innerHTML = `
+    <div class="agent-card-name">${a.name}</div>
+    <div class="agent-card-desc">${a.years} · ${a.nation} · ${a.works.toLocaleString()} works at LACMA</div>
+    <span class="agent-mode-badge">${modeLabel}</span>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT
+// ═══════════════════════════════════════════════════════════════
+function buildPrompt(theme, style, artistId) {
+  const base = `${style} poster of ${theme}, 1930s American regionalist art, bold flat colors, strong graphic composition, civic pride, WPA Federal Art Project aesthetic, limited color palette, high contrast, dramatic lighting, vintage print texture`;
+  if (!artistId || agentMode === 'none') return base;
+  const a = ARTISTS.find(x => x.id === artistId);
+  if (!a) return base;
+  return `${a.styleDesc}, ${theme} as subject, civic WPA poster aesthetic, bold composition, vintage texture, public art mural quality, dramatic lighting`;
+}
+
+function updatePromptPreview() {
+  const theme = document.getElementById('themeInput').value.trim();
+  if (!theme) { document.getElementById('promptPreview').classList.remove('visible'); return; }
+  const p = buildPrompt(theme, selectedStyle, selectedArtist);
+  const el = document.getElementById('promptPreview');
+  el.textContent = '→ ' + p.slice(0, 200) + (p.length > 200 ? '…' : '');
+  el.classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// JUDGE SYSTEM
+// ═══════════════════════════════════════════════════════════════
+let currentJudgeId = null, currentJudgmentIdx = 0;
+let currentJudgeType = 'artist'; // 'artist' | 'curator'
+
+function showJudgment(artistId) {
+  const a = ARTISTS.find(x => x.id === artistId);
+  if (!a || !a.judgments?.length) return;
+  currentJudgeId = artistId;
+  currentJudgeType = 'artist';
+  currentJudgmentIdx = Math.floor(Math.random() * a.judgments.length);
+  renderJudgment(a.name, a.years + ' · ' + a.nation, a.color, a.judgments[currentJudgmentIdx]);
+}
+
+function renderJudgment(name, meta, color, j) {
+  const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  document.getElementById('judgeSwatch').style.background = color;
+  document.getElementById('judgeSwatch').textContent = initials;
+  document.getElementById('judgeArtistName').textContent = name + ':';
+  document.getElementById('judgeArtistMeta').textContent = meta;
+  const vEl = document.getElementById('judgeVerdict');
+  vEl.textContent = { approve:'✓ Approved', reject:'✗ Rejected', ambivalent:'~ Ambivalent' }[j.verdict];
+  vEl.className = 'judge-verdict ' + j.verdict;
+  document.getElementById('judgeQuote').textContent = '"' + j.text + '"';
+  document.getElementById('judgePanel').classList.add('visible');
+}
+
+function getNewJudgment() {
+  if (currentJudgeType === 'artist') {
+    const a = ARTISTS.find(x => x.id === currentJudgeId);
+    if (!a) return;
+    currentJudgmentIdx = (currentJudgmentIdx + 1) % a.judgments.length;
+    renderJudgment(a.name, a.years + ' · ' + a.nation, a.color, a.judgments[currentJudgmentIdx]);
+  } else {
+    const c = CURATORS.find(x => x.id === currentJudgeId);
+    if (!c) return;
+    currentJudgmentIdx = (currentJudgmentIdx + 1) % c.voice.length;
+    renderJudgment(c.name, c.title, c.color, c.voice[currentJudgmentIdx]);
+  }
+}
+
+function rotateJudge() {
+  // Alternate between artist and curator
+  const pool = Math.random() > 0.5 ? ARTISTS : CURATORS;
+  const item = pool[Math.floor(Math.random() * pool.length)];
+  if (pool === ARTISTS) {
+    currentJudgeType = 'artist';
+    currentJudgeId = item.id;
+    currentJudgmentIdx = Math.floor(Math.random() * item.judgments.length);
+    renderJudgment(item.name, item.years + ' · ' + item.nation, item.color, item.judgments[currentJudgmentIdx]);
+  } else {
+    currentJudgeType = 'curator';
+    currentJudgeId = item.id;
+    currentJudgmentIdx = Math.floor(Math.random() * item.voice.length);
+    renderJudgment(item.name, item.title, item.color, item.voice[currentJudgmentIdx]);
+  }
+  showToast((pool === CURATORS ? '🏛 ' : '') + item.name + ' has entered the room');
+}
+
+function dismissJudge() { document.getElementById('judgePanel').classList.remove('visible'); }
+
+// ═══════════════════════════════════════════════════════════════
+// BRIDGING PANEL
+// ═══════════════════════════════════════════════════════════════
+function showBridgingPanel(bridgeResult, theme) {
+  const panel = document.getElementById('bridgingPanel');
+  panel.classList.add('visible');
+
+  // Animate score
+  const scoreEl = document.getElementById('bridgeScoreBig');
+  const barEl = document.getElementById('bridgeBar');
+  setTimeout(() => {
+    scoreEl.textContent = bridgeResult.score;
+    barEl.style.width = bridgeResult.score + '%';
+  }, 100);
+
+  // Build cluster grid
+  const grid = document.getElementById('bridgeClusters');
+  grid.innerHTML = '';
+  bridgeResult.results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'cluster-item ' + (r.resonant ? 'resonant' : 'silent');
+    const agentStr = r.resonant && r.agents.length > 0
+      ? r.agents.slice(0, 3).join(', ') + (r.agents.length > 3 ? ' +' + (r.agents.length - 3) : '')
+      : 'no resonance';
+    item.innerHTML = `
+      <div class="cluster-dot"></div>
+      <div class="cluster-name">${r.cluster.name}</div>
+      <div class="cluster-agents">${agentStr}</div>
+    `;
+    grid.appendChild(item);
+  });
+
+  document.getElementById('bridgeSummary').textContent = getBridgeSummary(bridgeResult.score, bridgeResult.resonatingClusters, theme);
+
+  // Update avg bridge score in header
+  allBridgeScores.push(bridgeResult.score);
+  const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
+  document.getElementById('avgBridge').textContent = avg;
+
+  // Update featured panel
+  document.getElementById('featuredBridgeScore').textContent = bridgeResult.score + ' / 100';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GENERATE
+// ═══════════════════════════════════════════════════════════════
+async function generateArt() {
+  const theme = document.getElementById('themeInput').value.trim();
+  if (!theme) { showToast('Enter a civic theme first'); return; }
+
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Computing…';
+
+  // Compute bridging score immediately (before image loads)
+  const artistId = (agentMode !== 'none') ? selectedArtist : null;
+  const bridgeResult = computeBridgingScore(theme, selectedStyle, artistId);
+
+  genCount++;
+  updateStats();
+
+  const location = LOCATIONS[nodes.length % LOCATIONS.length];
+  const prompt = buildPrompt(theme, selectedStyle, artistId);
+  const url = imageUrl(prompt);
+  const time = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+
+  const node = { id: Date.now(), theme, style: selectedStyle, location, imgUrl: url, prompt, time, artistId, bridgeScore: bridgeResult.score };
+  nodes.unshift(node);
+  updateStats();
+  addNodeCard(node);
+  focusNode(node.id);
+  showBridgingPanel(bridgeResult, theme);
+
+  if (agentMode === 'judge' && artistId) {
+    setTimeout(() => showJudgment(artistId), 1800);
+  } else {
+    document.getElementById('judgePanel').classList.remove('visible');
+  }
+
+  const a = artistId ? ARTISTS.find(x => x.id === artistId) : null;
+  showToast(`Bridge score: ${bridgeResult.score}/100 · ${bridgeResult.resonatingClusters} clusters`);
+
+  btn.disabled = false;
+  btn.textContent = '▶ Generate & Broadcast';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NODE MANAGEMENT
+// ═══════════════════════════════════════════════════════════════
+function imageUrl(prompt) {
+  const seed = Math.floor(Math.random() * 100000);
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=640&height=480&seed=${seed}&nologo=true`;
+}
+
+function addNodeCard(node) {
+  const grid = document.getElementById('nodeGrid');
+  const a = node.artistId ? ARTISTS.find(x => x.id === node.artistId) : null;
+  const card = document.createElement('div');
+  card.className = 'node-card';
+  card.id = 'node-' + node.id;
+  card.onclick = () => focusNode(node.id);
+  card.innerHTML = `
+    <div class="node-img-wrap">
+      <div class="node-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+      <img id="node-img-${node.id}" src="" alt="${node.theme}" style="opacity:0;" />
+      <div class="node-status generating" id="node-status-${node.id}"></div>
+      ${node.bridgeScore ? `<div class="node-bridge-badge" id="node-bridge-${node.id}" style="display:block">${node.bridgeScore}</div>` : ''}
+    </div>
+    <div class="node-info">
+      <div class="node-location">${node.location}</div>
+      <div class="node-theme">${node.theme}</div>
+      ${a ? `<div class="node-agent">via ${a.name.split(' ').pop()}</div>` : ''}
+    </div>
+  `;
+  grid.prepend(card);
+
+  const img = card.querySelector(`#node-img-${node.id}`);
+  img.onload = () => {
+    img.style.opacity = '1';
+    document.getElementById('node-status-' + node.id)?.classList.remove('generating');
+    broadcastCount++;
+    viewCount += Math.floor(Math.random() * 80 + 20);
+    updateStats();
+  };
+  img.onerror = () => { img.src = imageUrl(node.prompt); };
+  img.src = node.imgUrl;
+}
+
+function focusNode(id) {
+  const node = nodes.find(n => n.id === id);
+  if (!node) return;
+  activeNodeId = id;
+  viewCount += Math.floor(Math.random() * 6 + 2);
+  updateStats();
+
+  document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('node-' + id)?.classList.add('active');
+
+  const a = node.artistId ? ARTISTS.find(x => x.id === node.artistId) : null;
+  document.getElementById('featuredTitle').textContent = node.theme.toUpperCase();
+  document.getElementById('featuredSub').textContent = a
+    ? `"${node.theme}" — generated in the style of ${a.name} (${a.years}), broadcast to ${node.location}.`
+    : `"${node.theme}" — WPA civic style, broadcast to the ${node.location} community display node at ${node.time}.`;
+  document.getElementById('featuredArtist').textContent = a ? a.name : 'WPA Style';
+  document.getElementById('featuredLocation').textContent = node.location;
+  document.getElementById('featuredTime').textContent = node.time;
+  document.getElementById('featuredBridgeScore').textContent = node.bridgeScore != null ? node.bridgeScore + ' / 100' : '—';
+
+  const loader = document.getElementById('featuredLoading');
+  const featImg = document.getElementById('featuredImg');
+  loader.classList.remove('hidden');
+  featImg.style.opacity = '0';
+
+  const newImg = new Image();
+  newImg.onload = () => { featImg.src = newImg.src; featImg.style.opacity = '1'; loader.classList.add('hidden'); };
+  newImg.onerror = () => { loader.classList.add('hidden'); };
+  newImg.src = node.imgUrl;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+function setTheme(t) { document.getElementById('themeInput').value = t; updatePromptPreview(); }
+
+function updateStats() {
+  document.getElementById('genCount').textContent = genCount;
+  document.getElementById('broadcastCount').textContent = broadcastCount;
+  document.getElementById('viewCount').textContent = viewCount;
+  document.getElementById('nodeCount').textContent = nodes.length;
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+document.getElementById('styleRow').addEventListener('click', e => {
+  if (!e.target.classList.contains('style-chip')) return;
+  document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  selectedStyle = e.target.dataset.style;
+  updatePromptPreview();
+});
+
+document.getElementById('themeInput').addEventListener('input', updatePromptPreview);
+
+// ═══════════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════════
+buildArtistList();
+setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); }, 1000);
+document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+updateStats();
+
+INITIAL_NODES.forEach((seed, i) => {
+  setTimeout(() => {
+    const prompt = buildPrompt(seed.theme, seed.style, seed.artistId);
+    const bridgeResult = computeBridgingScore(seed.theme, seed.style, seed.artistId);
+    const node = {
+      id: Date.now() + i, theme: seed.theme, style: seed.style,
+      location: LOCATIONS[i], imgUrl: imageUrl(prompt), prompt,
+      time: new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' }),
+      artistId: seed.artistId, bridgeScore: bridgeResult.score
+    };
+    genCount++;
+    nodes.push(node);
+    allBridgeScores.push(bridgeResult.score);
+    updateStats();
+    addNodeCard(node);
+    if (i === 0) {
+      focusNode(node.id);
+      showBridgingPanel(bridgeResult, seed.theme);
+      const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
+      document.getElementById('avgBridge').textContent = avg;
+    }
+  }, i * 280);
+});
+</script>
+</body>
+</html>
