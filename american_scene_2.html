@@ -180,12 +180,266 @@
   .about-col h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 5px; }
   .about-col p { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-tan); line-height: 1.6; }
 
+  /* ─── POC BADGE ─── */
+  .poc-badge { position: fixed; top: 0; right: 0; z-index: 200; background: var(--wpa-red); color: white; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 10px 5px 14px; clip-path: polygon(12px 0%, 100% 0%, 100% 100%, 0% 100%); line-height: 1.4; text-align: right; cursor: default; }
+  .poc-badge-line1 { font-weight: 700; font-size: 9px; letter-spacing: 3px; }
+  .poc-badge-line2 { opacity: 0.75; font-size: 7px; letter-spacing: 1px; }
+
   /* ─── FOOTER ─── */
-  .footer { background: var(--wpa-dark); border-top: 3px solid var(--wpa-blue); padding: 10px 28px; display: flex; justify-content: space-between; align-items: center; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; flex-wrap: wrap; gap: 5px; }
+  .footer { background: var(--wpa-dark); border-top: 3px solid var(--wpa-blue); padding: 0; }
+  .footer-provenance { padding: 9px 28px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+  .footer-provenance-text { font-family: 'Special Elite', cursive; font-size: 9px; color: #555; line-height: 1.5; }
+  .footer-provenance-text strong { color: #777; }
+  .footer-provenance-link { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); opacity: 0.7; text-decoration: none; border-bottom: 1px solid rgba(212,160,23,0.3); padding-bottom: 1px; cursor: pointer; background: none; border-left: none; border-right: none; border-top: none; }
+  .footer-provenance-link:hover { opacity: 1; }
+  .footer-main { padding: 9px 28px; display: flex; justify-content: space-between; align-items: center; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; flex-wrap: wrap; gap: 5px; }
 
   /* ─── TOAST ─── */
   .toast { position: fixed; bottom: 18px; right: 18px; background: var(--wpa-blue); border: 2px solid var(--wpa-gold); color: var(--wpa-cream); padding: 9px 14px; font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; z-index: 100; max-width: 240px; }
   .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ─── PAGE NAV ─── */
+  .page-nav { background: #1a1a1a; border-bottom: 2px solid var(--wpa-gold); display: flex; gap: 0; }
+  .page-tab { padding: 9px 28px; font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #888; background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; }
+  .page-tab:hover { color: var(--wpa-cream); }
+  .page-tab.active { color: var(--wpa-gold); border-bottom: 3px solid var(--wpa-gold); }
+
+  /* ─── GALLERY PAGE ─── */
+  .gallery-page { display: none; padding: 24px 28px; background: #111; min-height: calc(100vh - 140px); }
+  .gallery-page.visible { display: block; }
+  .gallery-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+  .gallery-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--wpa-gold); }
+  .gallery-count { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
+  .gallery-empty { text-align: center; padding: 80px 20px; font-family: 'IM Fell English', serif; font-size: 16px; color: #444; font-style: italic; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+  .gallery-card { background: #1a1a1a; border: 1px solid #2a2a2a; overflow: hidden; transition: border-color 0.2s; }
+  .gallery-card:hover { border-color: var(--wpa-gold); }
+  .gallery-img-wrap { position: relative; height: 220px; background: #0d1a25; overflow: hidden; }
+  .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: sepia(15%) contrast(1.08); display: block; transition: opacity 0.5s; }
+  .gallery-img-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #0d1f35; }
+  .gallery-score-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8); border: 1px solid var(--wpa-gold); padding: 4px 9px; }
+  .gallery-score-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--wpa-gold); line-height: 1; }
+  .gallery-score-label { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+
+  .gallery-body { padding: 14px 16px; }
+  .gallery-theme { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; color: var(--wpa-cream); margin-bottom: 6px; }
+  .gallery-byline { font-family: 'IM Fell English', serif; font-size: 11px; color: var(--wpa-tan); font-style: italic; margin-bottom: 10px; line-height: 1.4; }
+  .gallery-selections { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .gallery-tag { padding: 2px 7px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid #333; color: #888; }
+  .gallery-tag.theme-tag { border-color: var(--wpa-red); color: var(--wpa-red); }
+  .gallery-tag.style-tag { border-color: #2a5a8a; color: #5a9fd4; }
+  .gallery-tag.artist-tag { border-color: #2a5a2a; color: #6abf6a; }
+  .gallery-meta-row { display: flex; justify-content: space-between; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #555; padding-top: 8px; border-top: 1px solid #2a2a2a; }
+
+  /* ─── INSTALLATION PAGE ─── */
+  .install-page { display: none; background: #0a0a0a; min-height: calc(100vh - 140px); }
+  .install-page.visible { display: block; }
+
+  .install-banner { background: #1a1200; border-bottom: 2px solid var(--wpa-gold); padding: 9px 28px; display: flex; align-items: center; gap: 12px; }
+  .install-banner-icon { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-gold); white-space: nowrap; }
+  .install-banner-text { font-family: 'Special Elite', cursive; font-size: 10px; color: #9a8a5a; line-height: 1.5; }
+  .install-banner-text strong { color: var(--wpa-tan); }
+
+  .install-body { display: grid; grid-template-columns: 1fr 400px; gap: 0; min-height: calc(100vh - 180px); }
+
+  /* Hero / image pane */
+  .install-hero { position: relative; background: #050505; border-right: 2px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; cursor: pointer; overflow: hidden; min-height: 600px; }
+  .install-hero-img { width: 100%; max-width: 480px; max-height: 70vh; object-fit: contain; display: block; transition: opacity 0.5s; filter: brightness(0.92) contrast(1.05); }
+  .install-hero-state-label { position: absolute; top: 16px; left: 16px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-gold); background: rgba(0,0,0,0.7); padding: 4px 10px; border: 1px solid rgba(212,160,23,0.3); }
+  .install-hero-hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #444; white-space: nowrap; }
+  .install-step-dots { display: flex; gap: 8px; margin-top: 20px; }
+  .install-dot { width: 7px; height: 7px; border-radius: 50%; background: #333; border: 1px solid #444; cursor: pointer; transition: all 0.2s; }
+  .install-dot.active { background: var(--wpa-gold); border-color: var(--wpa-gold); box-shadow: 0 0 6px rgba(212,160,23,0.5); }
+
+  /* Right flow pane */
+  .install-flow { display: flex; flex-direction: column; background: #0d0d0d; overflow-y: auto; max-height: calc(100vh - 180px); }
+  .install-flow-header { padding: 20px 22px 14px; border-bottom: 1px solid #1a1a1a; }
+  .install-flow-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--wpa-gold); margin-bottom: 3px; }
+  .install-flow-sub { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+
+  .install-state-panel { display: none; padding: 18px 22px; flex-direction: column; gap: 14px; border-bottom: 1px solid #1a1a1a; }
+  .install-state-panel.active { display: flex; }
+  .install-state-num { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--wpa-red); }
+  .install-state-headline { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--wpa-cream); line-height: 1.1; margin-top: 1px; }
+  .install-state-body { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-tan); line-height: 1.7; }
+
+  .install-data-block { background: #111; border: 1px solid #2a2a2a; padding: 11px 14px; }
+  .install-data-label { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 3px; text-transform: uppercase; color: #666; margin-bottom: 7px; }
+  .install-data-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; border-bottom: 1px solid #1a1a1a; }
+  .install-data-row:last-child { border-bottom: none; }
+  .install-data-key { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #777; }
+  .install-data-val { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-cream); }
+
+  .install-agent-score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .install-agent-name { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; color: var(--wpa-cream); width: 90px; flex-shrink: 0; }
+  .install-agent-bar { flex: 1; height: 4px; background: #1a1a1a; }
+  .install-agent-bar-fill { height: 100%; background: var(--wpa-gold); transition: width 0.6s; }
+  .install-agent-val { font-family: 'Bebas Neue', sans-serif; font-size: 12px; color: var(--wpa-gold); width: 28px; text-align: right; flex-shrink: 0; }
+
+  .install-art-wrap { position: relative; background: #0d1a25; min-height: 120px; }
+  .install-art-thumb { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: sepia(20%) contrast(1.1); transition: opacity 0.6s; }
+  .install-art-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0d1a25; gap: 8px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; transition: opacity 0.4s; }
+  .install-art-loading.hidden { opacity: 0; pointer-events: none; }
+  .install-hero-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #444; pointer-events: none; transition: opacity 0.5s; }
+  .install-hero-loading.hidden { opacity: 0; }
+
+  /* Per-state CSS overlays applied on top of the hero image */
+  .install-hero-overlay { position: absolute; inset: 0; pointer-events: none; transition: background 0.5s, opacity 0.5s; }
+  .install-hero-overlay.s1 { background: rgba(0,0,0,0.25); }
+  .install-hero-overlay.s2 { background: linear-gradient(135deg, rgba(0,60,120,0.35) 0%, rgba(0,30,60,0.15) 100%); }
+  .install-hero-overlay.s3 { background: linear-gradient(180deg, rgba(10,20,60,0.4) 0%, rgba(0,60,80,0.2) 100%); }
+  .install-hero-overlay.s4 { background: linear-gradient(180deg, rgba(60,40,0,0.2) 0%, rgba(180,120,0,0.15) 100%); }
+  .install-hero-overlay.s5 { background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(180,130,0,0.25) 100%); }
+  .install-state-badge { position: absolute; bottom: 54px; left: 50%; transform: translateX(-50%); font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-gold); background: rgba(0,0,0,0.7); padding: 4px 14px; border: 1px solid rgba(212,160,23,0.3); white-space: nowrap; }
+
+  .install-qr-block { display: flex; align-items: center; gap: 14px; background: #111; border: 1px solid #2a3a2a; padding: 12px 14px; }
+  .install-qr-box { width: 56px; height: 56px; background: white; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .install-qr-text { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-tan); line-height: 1.6; }
+
+  .install-callout { border: 1px solid rgba(212,160,23,0.25); padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(212,160,23,0.04); }
+  .install-callout-text { font-family: 'Special Elite', cursive; font-size: 9px; color: #777; line-height: 1.5; }
+  .install-callout-link { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); white-space: nowrap; cursor: pointer; border: none; background: transparent; padding: 0; }
+  .install-callout-link:hover { color: var(--wpa-cream); }
+
+  /* Materials list */
+  .install-materials { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .install-material { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #888; padding: 4px 7px; border: 1px solid #1a1a1a; display: flex; align-items: center; gap: 5px; }
+  .install-material::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--wpa-gold); opacity: 0.5; flex-shrink: 0; }
+
+  /* Hand controls */
+  .install-controls { padding: 20px 28px; border-top: 2px solid #1a1a1a; background: #0a0a0a; }
+  .install-controls-title { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 3px; color: var(--wpa-gold); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .install-controls-title::after { content: 'Interactive'; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; background: var(--wpa-red); color: white; padding: 2px 7px; }
+  .install-ctrl-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .install-ctrl-group { }
+  .install-ctrl-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-gold); border-bottom: 1px solid #222; padding-bottom: 5px; margin-bottom: 8px; }
+  .install-ctrl-opts { display: flex; flex-direction: column; gap: 4px; }
+  .install-ctrl-btn { padding: 6px 12px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: #111; border: 1px solid #2a2a2a; color: #777; cursor: pointer; text-align: left; transition: all 0.12s; }
+  .install-ctrl-btn:hover { border-color: #444; color: var(--wpa-cream); }
+  .install-ctrl-btn.selected { background: #1a1a2a; border-color: var(--wpa-gold); color: var(--wpa-gold); }
+
+  /* ─── DATA PAGE ─── */
+  .data-page { display: none; padding: 28px 32px; background: #111; min-height: calc(100vh - 140px); }
+  .data-page.visible { display: block; }
+
+  .research-banner { background: var(--wpa-blue); border: 2px solid var(--wpa-gold); padding: 10px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .research-banner-icon { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--wpa-gold); white-space: nowrap; }
+  .research-banner-text { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-tan); line-height: 1.5; }
+
+  .data-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--wpa-gold); margin-bottom: 4px; }
+  .data-section-sub { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 14px; }
+
+  /* agent table */
+  .agent-table-wrap { overflow-x: auto; margin-bottom: 28px; }
+  .agent-table { width: 100%; border-collapse: collapse; font-family: 'Special Elite', cursive; font-size: 11px; }
+  .agent-table thead tr { background: var(--wpa-blue); }
+  .agent-table th { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); padding: 8px 12px; text-align: left; white-space: nowrap; }
+  .agent-table td { padding: 7px 12px; border-bottom: 1px solid #222; vertical-align: middle; }
+  .agent-table tbody tr:hover { background: #1a1a1a; }
+  .agent-table tbody tr.highlight-high { background: #0d2b0d; border-left: 3px solid #2ecc71; }
+  .agent-table tbody tr.highlight-low { background: #2a1111; border-left: 3px solid var(--wpa-red); }
+  .agent-type-badge { display: inline-block; padding: 1px 6px; font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 1px; text-transform: uppercase; }
+  .agent-type-badge.artist { background: rgba(26,58,92,0.6); color: var(--wpa-tan); }
+  .agent-type-badge.curator { background: rgba(46,94,62,0.6); color: #8fcc8f; }
+  .agent-name-cell { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700; color: var(--wpa-cream); }
+  .agent-sub-cell { font-family: 'Special Elite', cursive; font-size: 8px; color: #777; }
+
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .score-bar-track { width: 80px; height: 5px; background: #2a2a2a; flex-shrink: 0; }
+  .score-bar-fill { height: 100%; transition: width 0.5s; }
+  .score-num { font-family: 'Bebas Neue', sans-serif; font-size: 14px; width: 18px; text-align: right; flex-shrink: 0; }
+
+  .kw-pill { display: inline-block; padding: 1px 6px; margin: 1px 2px 1px 0; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; background: #1a1a2a; border: 1px solid #2a3a5a; color: #7aafdd; }
+  .kw-none { font-family: 'Special Elite', cursive; font-size: 9px; color: #444; font-style: italic; }
+
+  /* worked example */
+  .worked-example { background: #0d1a2b; border: 2px solid var(--wpa-gold); padding: 18px 22px; margin-bottom: 28px; }
+  .worked-example-head { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 12px; }
+  .we-row { display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
+  .we-card { flex: 1; min-width: 200px; background: #111; border: 1px solid #333; padding: 12px 14px; }
+  .we-card.high { border-color: #2ecc71; }
+  .we-card.low { border-color: var(--wpa-red); }
+  .we-card-name { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--wpa-cream); margin-bottom: 3px; }
+  .we-card-score { font-family: 'Bebas Neue', sans-serif; font-size: 28px; line-height: 1; margin-bottom: 6px; }
+  .we-card.high .we-card-score { color: #2ecc71; }
+  .we-card.low .we-card-score { color: var(--wpa-red); }
+  .we-card-kws { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-tan); margin-bottom: 4px; }
+  .we-explain { font-family: 'IM Fell English', serif; font-size: 12px; font-style: italic; color: var(--wpa-tan); line-height: 1.6; border-top: 1px solid #333; padding-top: 12px; }
+
+  /* scoring rubric accordion */
+  .rubric-accordion { border: 2px solid #2a2a2a; margin-bottom: 24px; }
+  .rubric-toggle { width: 100%; background: #1a1a1a; border: none; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .rubric-toggle-label { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--wpa-gold); }
+  .rubric-toggle-arrow { font-family: 'Oswald', sans-serif; font-size: 12px; color: #666; transition: transform 0.2s; }
+  .rubric-toggle.open .rubric-toggle-arrow { transform: rotate(180deg); }
+  .rubric-body { display: none; padding: 18px 22px; background: #0d0d0d; }
+  .rubric-body.open { display: block; }
+  .rubric-step { margin-bottom: 16px; }
+  .rubric-step-head { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); margin-bottom: 6px; }
+  .rubric-formula { background: #111; border-left: 3px solid var(--wpa-gold); padding: 10px 14px; font-family: monospace; font-size: 11px; color: #b0d4f0; line-height: 1.8; overflow-x: auto; }
+  .rubric-prose { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-tan); line-height: 1.6; margin-top: 6px; }
+
+  /* ─── FAILURE MODES PAGE ─── */
+  .failure-page { display: none; padding: 28px 32px; background: #111; min-height: calc(100vh - 140px); }
+  .failure-page.visible { display: block; }
+
+  .failure-disclaimer { background: #1a0d0d; border: 2px solid var(--wpa-red); padding: 12px 18px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; }
+  .failure-disclaimer-icon { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--wpa-red); white-space: nowrap; padding-top: 1px; }
+  .failure-disclaimer-text { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-tan); line-height: 1.6; }
+  .failure-disclaimer-text strong { color: var(--wpa-cream); font-style: normal; }
+
+  .failure-cards { display: flex; flex-direction: column; gap: 16px; }
+
+  .fcard { border: 2px solid #2a2a2a; background: #0d0d0d; transition: border-color 0.2s; }
+  .fcard.open { border-color: var(--wpa-gold); }
+
+  .fcard-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; }
+  .fcard-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; line-height: 1; color: #333; flex-shrink: 0; width: 28px; transition: color 0.2s; }
+  .fcard.open .fcard-num { color: var(--wpa-gold); }
+  .fcard-head-text { flex: 1; }
+  .fcard-hypothesis { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 1px; color: var(--wpa-cream); line-height: 1.1; }
+  .fcard-tagline { font-family: 'Special Elite', cursive; font-size: 9px; color: #666; margin-top: 3px; }
+  .fcard-chevron { font-family: 'Oswald', sans-serif; font-size: 14px; color: #555; transition: transform 0.25s; flex-shrink: 0; }
+  .fcard.open .fcard-chevron { transform: rotate(180deg); color: var(--wpa-gold); }
+
+  .fcard-body { display: none; padding: 0 20px 20px; }
+  .fcard.open .fcard-body { display: block; }
+
+  .fcard-section { margin-bottom: 18px; }
+  .fcard-section-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--wpa-gold); border-bottom: 1px solid #222; padding-bottom: 5px; margin-bottom: 10px; }
+  .fcard-prose { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-tan); line-height: 1.7; }
+  .fcard-metric { display: flex; align-items: flex-start; gap: 10px; background: #111; border: 1px solid #2a2a2a; padding: 12px 14px; }
+  .fcard-metric-icon { font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: 1px; color: var(--wpa-red); white-space: nowrap; padding-top: 1px; }
+  .fcard-metric-text { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-cream); line-height: 1.6; }
+  .fcard-metric-text em { color: var(--wpa-tan); font-style: italic; }
+
+  .sim-toggle { display: flex; align-items: center; gap: 10px; padding: 8px 0 10px; cursor: pointer; border: none; background: transparent; }
+  .sim-toggle-track { width: 36px; height: 18px; background: #2a2a2a; border: 1px solid #444; border-radius: 9px; position: relative; transition: background 0.2s; flex-shrink: 0; }
+  .sim-toggle-thumb { width: 12px; height: 12px; border-radius: 50%; background: #666; position: absolute; top: 2px; left: 2px; transition: left 0.2s, background 0.2s; }
+  .sim-toggle.on .sim-toggle-track { background: #1a2a1a; border-color: #2ecc71; }
+  .sim-toggle.on .sim-toggle-thumb { left: 20px; background: #2ecc71; }
+  .sim-toggle-label { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #777; }
+  .sim-toggle.on .sim-toggle-label { color: #2ecc71; }
+
+  .sim-data { display: none; background: #0a1a0a; border: 1px solid #1a3a1a; padding: 14px 16px; margin-top: 4px; }
+  .sim-data.visible { display: block; }
+  .sim-data-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #2ecc71; margin-bottom: 10px; }
+  .sim-warning { font-family: 'Special Elite', cursive; font-size: 9px; color: #5a7a5a; font-style: italic; margin-top: 8px; }
+
+  .sim-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .sim-bar-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #888; width: 140px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sim-bar-track { flex: 1; height: 6px; background: #1a2a1a; }
+  .sim-bar-fill { height: 100%; background: var(--wpa-red); }
+  .sim-bar-val { font-family: 'Bebas Neue', sans-serif; font-size: 12px; color: var(--wpa-red); width: 30px; text-align: right; flex-shrink: 0; }
+  .sim-bar-fill.ok { background: #2ecc71; }
+  .sim-bar-val.ok { color: #2ecc71; }
+
+  .sim-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .sim-table th { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: #555; padding: 4px 8px; text-align: left; }
+  .sim-table td { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-tan); padding: 5px 8px; border-top: 1px solid #1a2a1a; }
+  .sim-table td.alert { color: var(--wpa-red); }
+  .sim-table td.ok { color: #2ecc71; }
 
   /* ─── SCROLLBAR ─── */
   .artist-scroll::-webkit-scrollbar, .generator::-webkit-scrollbar, .network::-webkit-scrollbar { width: 4px; }
@@ -205,6 +459,30 @@
 </style>
 </head>
 <body>
+
+<!-- POC BADGE -->
+<div class="poc-badge" title="Dynamic engine + community data = proposed Lab R&D">
+  <div class="poc-badge-line1">Proof-of-Concept UI</div>
+  <div class="poc-badge-line2">Dynamic engine + community data = proposed Lab R&D</div>
+</div>
+
+<!-- PROVENANCE MODAL -->
+<div id="provenanceModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+  <div style="background:#0d1a2b;border:2px solid var(--wpa-gold);max-width:560px;width:90%;padding:28px 30px;position:relative;max-height:80vh;overflow-y:auto;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--wpa-gold);margin-bottom:16px;">Data Provenance</div>
+    <div style="font-family:'Special Elite',cursive;font-size:11px;color:var(--wpa-tan);line-height:1.8;">
+      <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Artist Profiles (20 agents)</strong><br>
+      Keyword vocabularies derived from: LACMA permanent collection tombstone data (lacma.org/art/collection), published exhibition catalogues, and collection-level essays available through LACMA's public digital archive. No artist agent profile encodes biographical speculation — only terms demonstrably present in the artist's exhibited LACMA works or LACMA-published scholarship.</p>
+      <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Curator Profiles (14 agents)</strong><br>
+      Derived from: LACMA departmental pages, publicly listed staff biographies, and department collecting mandates as described in LACMA's public communications. All living curators were contacted for opt-in prior to encoding. Departmental response voices are institutional in character — they represent the department's mandate, not the individual's personal opinion. Any curator may request removal or amendment; contact: sullivan.d.mike@gmail.com.</p>
+      <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Cluster Definitions (8 art-tradition groupings)</strong><br>
+      Keyword sets constructed from LACMA's own collection taxonomy, augmented by terms from the Getty Art & Architecture Thesaurus (AAT) for each tradition. Published as open dataset Month 3 of Lab residency.</p>
+      <p style="margin-bottom:0;"><strong style="color:var(--wpa-cream);">Images</strong><br>
+      Generated via Pollinations.ai (free, no-login API). No LACMA collection images are reproduced. All generated images are AI-produced and not attributed to any living or deceased artist without the "in the style of" qualifier standard in generative AI practice.</p>
+    </div>
+    <button onclick="document.getElementById('provenanceModal').style.display='none'" style="margin-top:20px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--wpa-gold);color:var(--wpa-gold);cursor:pointer;">Close</button>
+  </div>
+</div>
 
 <!-- HEADER -->
 <header class="header">
@@ -231,7 +509,485 @@
   <span id="clock"></span>
 </div>
 
-<div class="main">
+<nav class="page-nav">
+  <button class="page-tab active" id="tab-network" onclick="showPage('network')">Public Network</button>
+  <button class="page-tab" id="tab-gallery" onclick="showPage('gallery')">Gallery Archive</button>
+  <button class="page-tab" id="tab-data" onclick="showPage('data')">Bridging Score Data</button>
+  <button class="page-tab" id="tab-failure" onclick="showPage('failure')">Failure Modes &amp; Research Questions</button>
+  <button class="page-tab" id="tab-install" onclick="showPage('install')">Museum Installation</button>
+</nav>
+
+<!-- ═══ INSTALLATION PAGE ═══ -->
+<div class="install-page" id="installPage">
+
+  <div class="install-banner">
+    <div class="install-banner-icon">⚑ Proposed Installation</div>
+    <div class="install-banner-text"><strong>Physical installation proposed for LACMA A+T Lab Year 2, pending Year 1 research.</strong> Current demo simulates UI only. Hardware spec: depth camera · mic array · edge-lit display · haptic toggles · fiber optics · solar assist.</div>
+  </div>
+
+  <div class="install-body">
+
+    <!-- LEFT: HERO IMAGE -->
+    <div class="install-hero" id="installHero" onclick="advanceInstallState()">
+      <div class="install-hero-state-label" id="installStateLabel">State 1 — IDLE</div>
+      <div class="install-hero-loading" id="installHeroLoading">
+        <div class="spinner"></div>
+        <span>Rendering Installation</span>
+      </div>
+      <img class="install-hero-img" id="installHeroImg" src="" alt="The Ornate Interpreter — installation view" style="opacity:0;" />
+      <div class="install-hero-overlay s1" id="installHeroOverlay"></div>
+      <div class="install-state-badge" id="installStateBadge">Idle · Sculptural Standby</div>
+      <div class="install-step-dots" id="installDots"></div>
+      <div class="install-hero-hint" id="installHint">Click image to advance →</div>
+    </div>
+
+    <!-- RIGHT: VISITOR FLOW -->
+    <div class="install-flow">
+      <div class="install-flow-header">
+        <div class="install-flow-title">Visitor Flow</div>
+        <div class="install-flow-sub">5 states · presence-activated · synced to image</div>
+      </div>
+
+      <!-- STATE 1: IDLE -->
+      <div class="install-state-panel active" id="istate-1">
+        <div>
+          <div class="install-state-num">State 01</div>
+          <div class="install-state-headline">Idle</div>
+        </div>
+        <div class="install-state-body">Sculptural presence. Depth camera inactive. The mirror reads as an art object — bronze, fiber optics, living patina. No interaction required to appreciate it.</div>
+        <div class="install-data-block">
+          <div class="install-data-label">Materials</div>
+          <div class="install-materials">
+            <div class="install-material">Patinated Bronze</div>
+            <div class="install-material">Fiber Optic Lines</div>
+            <div class="install-material">Microchip Inlays</div>
+            <div class="install-material">Photovoltaic Cells</div>
+            <div class="install-material">Organic Resin</div>
+            <div class="install-material">Living Patina Moss</div>
+          </div>
+        </div>
+        <div class="install-data-block">
+          <div class="install-data-label">Specifications</div>
+          <div class="install-data-row"><div class="install-data-key">Height</div><div class="install-data-val">84 in / 2134 mm</div></div>
+          <div class="install-data-row"><div class="install-data-key">Width</div><div class="install-data-val">32 in / 813 mm</div></div>
+          <div class="install-data-row"><div class="install-data-key">Depth</div><div class="install-data-val">6 in / 152 mm</div></div>
+          <div class="install-data-row"><div class="install-data-key">Interaction</div><div class="install-data-val">Presence-activated</div></div>
+        </div>
+      </div>
+
+      <!-- STATE 2: DETECT -->
+      <div class="install-state-panel" id="istate-2">
+        <div>
+          <div class="install-state-num">State 02</div>
+          <div class="install-state-headline">Detect</div>
+        </div>
+        <div class="install-state-body">Visitor approaches. Presence captured. Depth camera resolves silhouette. Mic array samples ambient sound signature. Fiber optics pulse once — the mirror awakens.</div>
+        <div class="install-data-block">
+          <div class="install-data-label">Signals Captured</div>
+          <div class="install-data-row"><div class="install-data-key">Place</div><div class="install-data-val" id="detect-place">Urban</div></div>
+          <div class="install-data-row"><div class="install-data-key">Condition</div><div class="install-data-val" id="detect-condition">Tension detected</div></div>
+          <div class="install-data-row"><div class="install-data-key">Silhouette</div><div class="install-data-val">Resolved — 1 visitor</div></div>
+          <div class="install-data-row"><div class="install-data-key">Ambient</div><div class="install-data-val">Museum interior, low</div></div>
+        </div>
+        <div class="install-data-block" style="margin-top:8px;">
+          <div class="install-data-label">Hand Controls Active</div>
+          <div class="install-state-body" style="font-size:9px;color:#666;padding:4px 0 0;">Adjust Place and Condition below to guide interpretation →</div>
+        </div>
+      </div>
+
+      <!-- STATE 3: ANALYZE -->
+      <div class="install-state-panel" id="istate-3">
+        <div>
+          <div class="install-state-num">State 03</div>
+          <div class="install-state-headline">Analyze</div>
+        </div>
+        <div class="install-state-body">Agent assigned. The bridging model scores your presence signals against 34 LACMA artist and curator agents. Highest resonance determines your assigned artist identity.</div>
+        <div class="install-data-block">
+          <div class="install-data-label">Agent — <span id="analyze-agent-label">Agent 142 · Detroit Industrial Memory Specialist</span></div>
+          <div class="install-data-row"><div class="install-data-key">Medium</div><div class="install-data-val" id="analyze-medium">Mural</div></div>
+          <div class="install-data-row"><div class="install-data-key">Civic Theme</div><div class="install-data-val" id="analyze-theme">Labor / Progress</div></div>
+        </div>
+        <div class="install-data-block" style="margin-top:8px;">
+          <div class="install-data-label">Top Agent Resonance Scores</div>
+          <div id="analyze-scores">
+            <div class="install-agent-score-row"><div class="install-agent-name">Rivera</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:92%"></div></div><div class="install-agent-val">9.2</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">W.E. Smith</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:87%"></div></div><div class="install-agent-val">8.7</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">Daumier</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:81%"></div></div><div class="install-agent-val">8.1</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">Grosz</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:73%"></div></div><div class="install-agent-val">7.3</div></div>
+            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">Kandinsky</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:21%;background:#555"></div></div><div class="install-agent-val" style="color:#555">2.1</div></div>
+            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">Hiroshige</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:14%;background:#555"></div></div><div class="install-agent-val" style="color:#555">1.4</div></div>
+          </div>
+        </div>
+        <div class="install-callout">
+          <div class="install-callout-text">Full 34-agent breakdown with keyword analysis and scoring rubric</div>
+          <button class="install-callout-link" onclick="showPage('data')">See Bridging Score Data →</button>
+        </div>
+      </div>
+
+      <!-- STATE 4: GENERATE -->
+      <div class="install-state-panel" id="istate-4">
+        <div>
+          <div class="install-state-num">State 04</div>
+          <div class="install-state-headline">Generate</div>
+        </div>
+        <div class="install-state-body">Interpreting your signals into a civic theme. The assigned artist agent guides the visual vocabulary. Image renders inside the mirror surface in real time — 8–12 seconds at full resolution.</div>
+        <div class="install-data-block">
+          <div class="install-data-label">Generation Parameters</div>
+          <div class="install-data-row"><div class="install-data-key">Civic Theme</div><div class="install-data-val" id="gen-theme">Labor / Progress</div></div>
+          <div class="install-data-row"><div class="install-data-key">Artist Agent</div><div class="install-data-val" id="gen-agent">Rivera · WPA Mural</div></div>
+          <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="gen-score">68 / 100</div></div>
+          <div class="install-data-row"><div class="install-data-key">Render Time</div><div class="install-data-val">~10 sec on-device</div></div>
+        </div>
+        <div class="install-data-block" style="margin-top:8px;">
+          <div class="install-data-label">Generated Image Preview</div>
+          <div class="install-art-wrap">
+            <img id="gen-art-img" class="install-art-thumb" src="" alt="Generated civic art" style="opacity:0;" />
+            <div class="install-art-loading" id="gen-art-loading"><div class="spinner"></div><span>Rendering</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE 5: OUTPUT -->
+      <div class="install-state-panel" id="istate-5">
+        <div>
+          <div class="install-state-num">State 05</div>
+          <div class="install-state-headline">Output</div>
+        </div>
+        <div class="install-state-body">Your American Scene appears inside the mirror. A QR code is generated. Scan to add this image to the civic display network — it will broadcast to community nodes across LA County, weighted by its bridging score.</div>
+        <div class="install-qr-block">
+          <div class="install-qr-box">
+            <svg width="44" height="44" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+              <rect width="9" height="9" fill="white"/>
+              <rect x="1" y="1" width="3" height="3" fill="black"/>
+              <rect x="5" y="1" width="3" height="3" fill="black"/>
+              <rect x="1" y="5" width="3" height="3" fill="black"/>
+              <rect x="2" y="2" width="1" height="1" fill="white"/>
+              <rect x="6" y="2" width="1" height="1" fill="white"/>
+              <rect x="2" y="6" width="1" height="1" fill="white"/>
+              <rect x="5" y="5" width="1" height="1" fill="black"/>
+              <rect x="7" y="5" width="1" height="1" fill="black"/>
+              <rect x="5" y="7" width="1" height="1" fill="black"/>
+              <rect x="7" y="7" width="1" height="1" fill="black"/>
+              <rect x="4" y="1" width="1" height="1" fill="black"/>
+              <rect x="1" y="4" width="1" height="1" fill="black"/>
+              <rect x="4" y="4" width="1" height="1" fill="black"/>
+            </svg>
+          </div>
+          <div class="install-qr-text">QR code generated for this image. Scan to submit to the civic display network. Your work will be scored and routed to matching neighborhood nodes.</div>
+        </div>
+        <div class="install-data-block" style="margin-top:8px;">
+          <div class="install-data-label">Routing Preview</div>
+          <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="output-score">68 / 100</div></div>
+          <div class="install-data-row"><div class="install-data-key">Matched Nodes</div><div class="install-data-val">Echo Park · Boyle Heights · Watts</div></div>
+          <div class="install-data-row"><div class="install-data-key">Clusters Active</div><div class="install-data-val">5 of 8</div></div>
+        </div>
+        <div class="install-callout">
+          <div class="install-callout-text">If this output tests poorly in zip code 90002, it triggers <em>Failure Mode 3: Geographic Polarization</em> — distribution suspended pending community review.</div>
+          <button class="install-callout-link" onclick="showPage('failure')">See Failure Modes →</button>
+        </div>
+      </div>
+
+    </div><!-- /install-flow -->
+  </div><!-- /install-body -->
+
+  <!-- HAND CONTROLS -->
+  <div class="install-controls">
+    <div class="install-controls-title">Hand Controls</div>
+    <div class="install-ctrl-groups">
+      <div class="install-ctrl-group">
+        <div class="install-ctrl-label">Place</div>
+        <div class="install-ctrl-opts">
+          <button class="install-ctrl-btn selected" data-ctrl="place" data-val="Urban" onclick="setInstallCtrl('place','Urban',this)">Urban</button>
+          <button class="install-ctrl-btn" data-ctrl="place" data-val="Rural" onclick="setInstallCtrl('place','Rural',this)">Rural</button>
+          <button class="install-ctrl-btn" data-ctrl="place" data-val="Coastal" onclick="setInstallCtrl('place','Coastal',this)">Coastal</button>
+          <button class="install-ctrl-btn" data-ctrl="place" data-val="Border" onclick="setInstallCtrl('place','Border',this)">Border</button>
+          <button class="install-ctrl-btn" data-ctrl="place" data-val="Synthetic" onclick="setInstallCtrl('place','Synthetic',this)">Synthetic</button>
+        </div>
+      </div>
+      <div class="install-ctrl-group">
+        <div class="install-ctrl-label">Condition</div>
+        <div class="install-ctrl-opts">
+          <button class="install-ctrl-btn selected" data-ctrl="condition" data-val="Tension" onclick="setInstallCtrl('condition','Tension',this)">Tension</button>
+          <button class="install-ctrl-btn" data-ctrl="condition" data-val="Growth" onclick="setInstallCtrl('condition','Growth',this)">Growth</button>
+          <button class="install-ctrl-btn" data-ctrl="condition" data-val="Decay" onclick="setInstallCtrl('condition','Decay',this)">Decay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /install-page -->
+
+<!-- ═══ FAILURE MODES PAGE ═══ -->
+<div class="failure-page" id="failurePage">
+
+  <div class="failure-disclaimer">
+    <div class="failure-disclaimer-icon">⚑ Disclaimer</div>
+    <div class="failure-disclaimer-text"><strong>This Lab project is designed to test these failures.</strong> All results will be published regardless of outcome per LACMA A+T safe-to-fail ethos. The three hypotheses below represent genuine risks to the project's central claim — that bridging-based distribution produces better civic art outcomes than engagement optimization.</div>
+  </div>
+
+  <div class="failure-cards">
+
+    <!-- CARD 1 -->
+    <div class="fcard" id="fcard-1">
+      <div class="fcard-header" onclick="toggleFcard(1)">
+        <div class="fcard-num">1</div>
+        <div class="fcard-head-text">
+          <div class="fcard-hypothesis">Aesthetic Incoherence</div>
+          <div class="fcard-tagline">High bridging score does not mean broad appeal — it may mean nobody likes it</div>
+        </div>
+        <div class="fcard-chevron">▼</div>
+      </div>
+      <div class="fcard-body">
+        <div class="fcard-section">
+          <div class="fcard-section-label">The Hypothesis</div>
+          <div class="fcard-prose">A work optimized for cross-tradition resonance may satisfy the scoring rubric while producing an image that is aesthetically incoherent — activating Social Realism keywords <em>and</em> Asian Art keywords <em>and</em> Conceptual keywords without belonging convincingly to any tradition. The bridging score measures semantic coverage, not aesthetic coherence. A muddled image can score 70 while a powerful, focused image scores 35. If users consistently experience high-bridge images as "confusing" or "trying too hard," the distribution model fails at its own civic purpose.</div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
+          <div class="fcard-metric">
+            <div class="fcard-metric-icon">✗ Fail if</div>
+            <div class="fcard-metric-text">&gt;60% of QR-scan users at community display nodes rate a high-bridge image (score ≥65) as <em>"confusing"</em> or <em>"dislike"</em> on the in-situ feedback prompt. Threshold measured across minimum 3 distinct neighborhood nodes and 40 scans per image before any result is reported.</div>
+          </div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">Simulated Failure Data</div>
+          <button class="sim-toggle" id="sim-toggle-1" onclick="toggleSim(1)">
+            <div class="sim-toggle-track"><div class="sim-toggle-thumb"></div></div>
+            <div class="sim-toggle-label">Show simulated failure result</div>
+          </button>
+          <div class="sim-data" id="sim-data-1">
+            <div class="sim-data-label">⚠ Simulated result — what failure looks like</div>
+            <div class="sim-bar-row"><div class="sim-bar-label">Confusing</div><div class="sim-bar-track"><div class="sim-bar-fill" style="width:68%"></div></div><div class="sim-bar-val">68%</div></div>
+            <div class="sim-bar-row"><div class="sim-bar-label">Dislike</div><div class="sim-bar-track"><div class="sim-bar-fill" style="width:41%"></div></div><div class="sim-bar-val">41%</div></div>
+            <div class="sim-bar-row"><div class="sim-bar-label">Neutral</div><div class="sim-bar-track"><div class="sim-bar-fill" style="width:22%"></div></div><div class="sim-bar-val">22%</div></div>
+            <div class="sim-bar-row"><div class="sim-bar-label">Like</div><div class="sim-bar-track"><div class="sim-bar-fill ok" style="width:18%"></div></div><div class="sim-bar-val ok">18%</div></div>
+            <div class="sim-bar-row"><div class="sim-bar-label">Strong like</div><div class="sim-bar-track"><div class="sim-bar-fill ok" style="width:9%"></div></div><div class="sim-bar-val ok">9%</div></div>
+            <div class="sim-warning">Simulated across 3 nodes · Echo Park, Boyle Heights, Koreatown · n=52 scans · Bridge score of test image: 71/100 · This result would trigger a full rubric review.</div>
+          </div>
+        </div>
+        <div class="fcard-section" style="margin-bottom:0;">
+          <div class="fcard-section-label">Research Response if Confirmed</div>
+          <div class="fcard-prose">Introduce a coherence constraint: weight the bridging score by the variance of cluster activation depths. A work that fires 3 keywords in 6 clusters outscores one that fires 12 in one cluster and 1 in five others — same total, different coherence profile. Also explore whether artist-agent-led generations (with a single stylistic spine) produce more coherent high-bridge results than pure WPA style.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="fcard" id="fcard-2">
+      <div class="fcard-header" onclick="toggleFcard(2)">
+        <div class="fcard-num">2</div>
+        <div class="fcard-head-text">
+          <div class="fcard-hypothesis">Institutional Bias</div>
+          <div class="fcard-tagline">The curator agent profiles may systematically disadvantage the traditions most relevant to LA's actual communities</div>
+        </div>
+        <div class="fcard-chevron">▼</div>
+      </div>
+      <div class="fcard-body">
+        <div class="fcard-section">
+          <div class="fcard-section-label">The Hypothesis</div>
+          <div class="fcard-prose">LACMA's curatorial structure reflects its acquisition history — which, like most encyclopedic museums, over-represents European modernism and abstract traditions relative to Social Realism, Latin American muralism, and community documentary. If the 14 curator agents carry this institutional bias in their keyword profiles, they will systematically reward works in the museum's collecting comfort zone and penalize the civic, labor-oriented, immigrant-community subjects that are most relevant to an LA County distribution network. The bridging score becomes a soft proxy for institutional prestige rather than genuine community resonance.</div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
+          <div class="fcard-metric">
+            <div class="fcard-metric-icon">✗ Fail if</div>
+            <div class="fcard-metric-text">Curator agents collectively score works in WPA / Social Realism traditions <em>more than 2 points lower (on the 0–10 agent resonance scale)</em> than works in abstract / conceptual / decorative traditions, averaged across a minimum of 20 broadcast images spanning both categories. Measured at Month 3 when the dataset is large enough to run the comparison.</div>
+          </div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">Simulated Failure Data</div>
+          <button class="sim-toggle" id="sim-toggle-2" onclick="toggleSim(2)">
+            <div class="sim-toggle-track"><div class="sim-toggle-thumb"></div></div>
+            <div class="sim-toggle-label">Show simulated failure result</div>
+          </button>
+          <div class="sim-data" id="sim-data-2">
+            <div class="sim-data-label">⚠ Simulated result — what failure looks like</div>
+            <table class="sim-table">
+              <thead><tr><th>Curator</th><th>Avg score: WPA/Social Realism</th><th>Avg score: Abstract/Conceptual</th><th>Δ</th></tr></thead>
+              <tbody>
+                <tr><td>Carol Eliel (Modern Art)</td><td class="alert">2.1</td><td class="ok">6.8</td><td class="alert">−4.7</td></tr>
+                <tr><td>Eve Schillo (Contemporary)</td><td class="alert">1.8</td><td class="ok">7.2</td><td class="alert">−5.4</td></tr>
+                <tr><td>Bobbye Tigerman (Decorative)</td><td class="alert">1.4</td><td class="ok">5.9</td><td class="alert">−4.5</td></tr>
+                <tr><td>Naima J. Keith (VP)</td><td class="ok">5.9</td><td>4.4</td><td class="ok">+1.5</td></tr>
+                <tr><td>Rachel Kaplan (Latin Am.)</td><td class="ok">6.3</td><td class="alert">2.1</td><td class="ok">+4.2</td></tr>
+                <tr><td>Shannon Vittoria (Am. Art)</td><td class="ok">5.7</td><td>3.8</td><td class="ok">+1.9</td></tr>
+                <tr><td style="font-weight:bold;color:var(--wpa-cream)">Mean across 14 curators</td><td class="alert" style="font-weight:bold">2.9</td><td class="ok" style="font-weight:bold">5.4</td><td class="alert" style="font-weight:bold">−2.5 ✗</td></tr>
+              </tbody>
+            </table>
+            <div class="sim-warning">Simulated across 20 images · 10 WPA/Social Realism · 10 Abstract/Conceptual · Mean gap of −2.5 exceeds the −2.0 falsification threshold · This result would trigger curator profile reweighting.</div>
+          </div>
+        </div>
+        <div class="fcard-section" style="margin-bottom:0;">
+          <div class="fcard-section-label">Research Response if Confirmed</div>
+          <div class="fcard-prose">Rebalance curator profiles by supplementing keyword sets with terms drawn from each curator's published writings and public statements rather than departmental categorization alone. Naima Keith's VP role, for instance, gives her an equity-and-access vocabulary that may be more predictive than a departmental cluster assignment. Also consider adding community advisor agents (LA neighborhood arts organizations) as a counterweight to institutional curation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="fcard" id="fcard-3">
+      <div class="fcard-header" onclick="toggleFcard(3)">
+        <div class="fcard-num">3</div>
+        <div class="fcard-head-text">
+          <div class="fcard-hypothesis">Geographic Polarization</div>
+          <div class="fcard-tagline">A work can bridge art traditions without bridging neighborhoods — the score may be blind to spatial inequality</div>
+        </div>
+        <div class="fcard-chevron">▼</div>
+      </div>
+      <div class="fcard-body">
+        <div class="fcard-section">
+          <div class="fcard-section-label">The Hypothesis</div>
+          <div class="fcard-prose">The bridging score operates on semantic keyword matching against 8 art-tradition clusters. It has no geographic awareness. A work could score 75 across the agent network while landing as deeply irrelevant in Watts, Koreatown, and Boyle Heights simultaneously — three of the communities the network is explicitly designed to serve. A bridging score without spatial disaggregation is an aggregate abstraction that may mask exactly the kind of neighborhood-level polarization the WPA model was meant to overcome. The distribution algorithm needs to distinguish between broad semantic bridging and actual community reach.</div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
+          <div class="fcard-metric">
+            <div class="fcard-metric-icon">✗ Fail if</div>
+            <div class="fcard-metric-text">An image scores ≥60 overall on the bridging rubric but receives <em>a node-level resonance score below 3/10 in 3 or more zip codes</em> when community feedback is disaggregated by display node location. Node-level scores derived from QR-scan ratings, dwell time at node, and repeat-scan rate. Requires minimum 20 nodes active across ≥8 zip codes to run the comparison.</div>
+          </div>
+        </div>
+        <div class="fcard-section">
+          <div class="fcard-section-label">Simulated Failure Data</div>
+          <button class="sim-toggle" id="sim-toggle-3" onclick="toggleSim(3)">
+            <div class="sim-toggle-track"><div class="sim-toggle-thumb"></div></div>
+            <div class="sim-toggle-label">Show simulated failure result</div>
+          </button>
+          <div class="sim-data" id="sim-data-3">
+            <div class="sim-data-label">⚠ Simulated result — what failure looks like · Overall bridge score: 72/100</div>
+            <table class="sim-table">
+              <thead><tr><th>Node Location</th><th>Zip</th><th>Node Score /10</th><th>Scans</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Echo Park</td><td>90026</td><td class="ok">7.2</td><td>31</td><td class="ok">✓ Resonant</td></tr>
+                <tr><td>Silver Lake</td><td>90039</td><td class="ok">6.8</td><td>28</td><td class="ok">✓ Resonant</td></tr>
+                <tr><td>Highland Park</td><td>90042</td><td>4.1</td><td>19</td><td>— Neutral</td></tr>
+                <tr><td>Boyle Heights</td><td>90033</td><td class="alert">2.3</td><td>14</td><td class="alert">✗ Polarized</td></tr>
+                <tr><td>Watts</td><td>90002</td><td class="alert">1.8</td><td>11</td><td class="alert">✗ Polarized</td></tr>
+                <tr><td>Koreatown</td><td>90010</td><td class="alert">2.1</td><td>16</td><td class="alert">✗ Polarized</td></tr>
+                <tr><td>Compton</td><td>90220</td><td class="alert">1.5</td><td>9</td><td class="alert">✗ Polarized</td></tr>
+                <tr><td>Culver City</td><td>90232</td><td class="ok">6.4</td><td>22</td><td class="ok">✓ Resonant</td></tr>
+              </tbody>
+            </table>
+            <div class="sim-warning">Overall score: 72 · Polarized nodes: 4 of 8 · Condition triggered at 3+ zip codes · This result would suspend distribution to polarized nodes and flag for community co-design review.</div>
+          </div>
+        </div>
+        <div class="fcard-section" style="margin-bottom:0;">
+          <div class="fcard-section-label">Research Response if Confirmed</div>
+          <div class="fcard-prose">Introduce a spatial disaggregation layer: the distribution score becomes a composite of the semantic bridging score (current model) and a geographic equity weight based on node-level feedback. Works that score high semantically but low in specific communities are flagged for community co-design — a resident artist in that zip code is invited to modify the civic theme or artist agent before rebroadcast. The failure mode becomes a design prompt rather than a distribution veto.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /failure-cards -->
+</div><!-- /failure-page -->
+
+<!-- ═══ DATA PAGE ═══ -->
+<div class="data-page" id="dataPage">
+
+  <div class="research-banner">
+    <div class="research-banner-icon">⚑ Research Preview</div>
+    <div class="research-banner-text">Agent profiles & scoring rubric will be published as open dataset Month 3 of Lab residency per LACMA A+T proposal. Data shown reflects the current broadcast image.</div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:4px;">
+    <div class="data-section-title" style="margin-bottom:0;">Agent Resonance Table</div>
+    <button id="exportBtn" onclick="exportScoringData()" style="padding:7px 16px;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:2px solid var(--wpa-gold);color:var(--wpa-gold);cursor:pointer;opacity:0.5;pointer-events:none;transition:all 0.15s;" title="Generate an image first to enable export">⬇ Export Scoring Data (.json)</button>
+  </div>
+  <div class="data-section-sub" id="dataSubhead">Showing scores for: — · Generate an image to populate this table</div>
+
+  <div class="agent-table-wrap">
+    <table class="agent-table" id="agentTable">
+      <thead>
+        <tr>
+          <th>Agent Name</th>
+          <th>Type</th>
+          <th>Resonance Score</th>
+          <th>Top 3 Keywords Fired</th>
+        </tr>
+      </thead>
+      <tbody id="agentTableBody">
+        <tr><td colspan="4" style="font-family:'Special Elite',cursive;font-size:11px;color:#555;font-style:italic;padding:20px 12px;">No broadcast yet — generate an image from the Public Network tab.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="data-section-title">Worked Example</div>
+  <div class="data-section-sub">Why two agents score differently on the same image</div>
+  <div class="worked-example" id="workedExample">
+    <div class="we-explain" style="border:none;padding:0;">Generate an image to see the worked comparison.</div>
+  </div>
+
+  <div class="data-section-title" style="margin-top:10px;">Scoring Rubric</div>
+  <div class="data-section-sub">The actual formula used to compute each agent's resonance score</div>
+  <div class="rubric-accordion">
+    <button class="rubric-toggle" id="rubricToggle" onclick="toggleRubric()">
+      <span class="rubric-toggle-label">Show Formula &amp; Logic</span>
+      <span class="rubric-toggle-arrow" id="rubricArrow">▼</span>
+    </button>
+    <div class="rubric-body" id="rubricBody">
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Step 1 — Build the Corpus</div>
+        <div class="rubric-formula">corpus = lowercase( theme + " " + printStyle + " " + artist.styleDescription )</div>
+        <div class="rubric-prose">Every broadcast assembles a single text string: the civic theme you entered, the chosen print style, and (if an artist agent is active) that artist's stylistic vocabulary — the same text used to prompt the image generator. The corpus is the work's full semantic fingerprint.</div>
+      </div>
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Step 2 — Keyword Match per Agent</div>
+        <div class="rubric-formula">firedKeywords = agent.keywords.filter(kw =&gt; corpus.includes(kw))
+matchCount    = firedKeywords.length
+maxPossible   = agent.keywords.length</div>
+        <div class="rubric-prose">Each agent carries a keyword profile (10–20 terms) drawn from their known critical vocabulary, nationality, medium, and subject matter. A keyword "fires" when it appears anywhere in the corpus string. This is exact substring matching — no synonyms, no embeddings, intentionally legible and auditable.</div>
+      </div>
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Step 3 — Agent Resonance Score (0–10)</div>
+        <div class="rubric-formula">rawRatio      = matchCount / maxPossible
+agentScore    = min(10, round(rawRatio × 10 × 1.5))</div>
+        <div class="rubric-prose">The ratio is scaled by 1.5× to reward partial coverage (an agent who fires 4 of 12 keywords is meaningfully engaged, not absent). The score is capped at 10. This is the per-agent resonance shown in the table above.</div>
+      </div>
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Step 4 — Cluster Activation (for the Bridging Score)</div>
+        <div class="rubric-formula">clusterResonant = cluster.keywords.filter(kw =&gt; corpus.includes(kw)).length &gt;= 1
+resonatingClusters = count of resonant clusters (out of 8)</div>
+        <div class="rubric-prose">The 8 art-tradition clusters (Social Realism, Photography, Expressionism, Conceptual, Asian Art, Decorative Arts, Latin American, American Scene) each have their own keyword set. A cluster activates if at least one keyword fires.</div>
+      </div>
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Step 5 — Bridging Score (0–100)</div>
+        <div class="rubric-formula">basePct    = resonatingClusters / 8          // breadth component
+avgDepth   = mean( min(clusterMatchCount, 4) ) across resonant clusters
+depthBonus = (avgDepth / 4) × 0.20         // up to +20 pts for depth
+
+bridgingScore = min(100,
+  round( (basePct × 0.80 + depthBonus) × 100
+         + (resonatingClusters &gt;= 4 ? 5 : 0) )   // breadth bonus
+)</div>
+        <div class="rubric-prose">80% of the score rewards breadth — how many distinct traditions the work activates. 20% rewards depth — how many keywords fired within each activated cluster. A +5 point bonus applies when a work spans four or more clusters, reflecting the Bridging-Based Ranking framework's preference for cross-community reach over within-community depth.</div>
+      </div>
+
+      <div class="rubric-step">
+        <div class="rubric-step-head">Phase 2 Upgrade (Month 3 target)</div>
+        <div class="rubric-formula">agentScore = cosineSimilarity( embed(corpus), embed(agent.profileText) ) × 10</div>
+        <div class="rubric-prose">Keyword matching will be replaced with vector embedding similarity using the Claude API. Agent profiles will be converted to full prose descriptions, embedded once, and cached. The score semantics (0–10, capped) remain the same — only the matching engine changes. The open dataset will include both the keyword baseline and the embedding vectors so researchers can compare.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ GALLERY PAGE ═══ -->
+<div class="gallery-page" id="galleryPage">
+  <div class="gallery-header">
+    <div class="gallery-title">Gallery Archive</div>
+    <div class="gallery-count" id="galleryCount">0 works generated</div>
+  </div>
+  <div class="gallery-empty" id="galleryEmpty">No works yet. Generate your first broadcast from the Public Network.</div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<div class="main" id="networkPage">
 
   <!-- ═══ LEFT: GENERATOR ═══ -->
   <aside class="generator">
@@ -391,8 +1147,16 @@
 </div>
 
 <footer class="footer">
-  <span>The American Scene 2.0 · Michael Sullivan · 2026</span>
-  <span>Artist data: LACMA permanent collection · Curator data: LACMA staff · Images: Pollinations.ai</span>
+  <div class="footer-provenance">
+    <div class="footer-provenance-text">
+      <strong>Data Provenance:</strong> Agent profiles derived from public LACMA collection tombstones, departmental pages, and staff listings as of Jan 2026. No living curator encoded without opt-in consent. Artist keyword profiles sourced from published catalogue essays and collection metadata.
+    </div>
+    <button class="footer-provenance-link" onclick="showProvenanceModal()">View Source</button>
+  </div>
+  <div class="footer-main">
+    <span>The American Scene 2.0 · Michael Sullivan · 2026</span>
+    <span>Artist data: LACMA permanent collection · Curator data: LACMA staff · Images: Pollinations.ai</span>
+  </div>
 </footer>
 <div class="toast" id="toast"></div>
 
@@ -1054,7 +1818,9 @@ function dismissJudge() { document.getElementById('judgePanel').classList.remove
 // ═══════════════════════════════════════════════════════════════
 // BRIDGING PANEL
 // ═══════════════════════════════════════════════════════════════
-function showBridgingPanel(bridgeResult, theme) {
+function showBridgingPanel(bridgeResult, theme, style, artistId) {
+  lastBridgeState = { theme, style, artistId };
+  if (document.getElementById('dataPage').classList.contains('visible')) renderDataPage(lastBridgeState);
   const panel = document.getElementById('bridgingPanel');
   panel.classList.add('visible');
 
@@ -1122,7 +1888,8 @@ async function generateArt() {
   updateStats();
   addNodeCard(node);
   focusNode(node.id);
-  showBridgingPanel(bridgeResult, theme);
+  showBridgingPanel(bridgeResult, theme, selectedStyle, artistId);
+  addToGallery(node);
 
   if (agentMode === 'judge' && artistId) {
     setTimeout(() => showJudgment(artistId), 1800);
@@ -1211,6 +1978,455 @@ function focusNode(id) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function showPage(page) {
+  document.getElementById('networkPage').style.display = page === 'network' ? '' : 'none';
+  document.getElementById('galleryPage').classList.toggle('visible', page === 'gallery');
+  document.getElementById('dataPage').classList.toggle('visible', page === 'data');
+  document.getElementById('failurePage').classList.toggle('visible', page === 'failure');
+  document.getElementById('installPage').classList.toggle('visible', page === 'install');
+  ['network','gallery','data','failure','install'].forEach(p => {
+    document.getElementById('tab-' + p).classList.toggle('active', p === page);
+  });
+  if (page === 'data' && lastBridgeState) renderDataPage(lastBridgeState);
+  if (page === 'install') initInstallPage();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INSTALLATION PAGE
+// ═══════════════════════════════════════════════════════════════
+let installState = 1;
+const INSTALL_STATES = 5;
+let installPlace = 'Urban';
+let installCondition = 'Tension';
+let installPageReady = false;
+let installGenUrl = null;
+
+// Agent scores keyed by [place][condition]
+const INSTALL_SCORES = {
+  Urban: {
+    Tension: { agent:'Agent 142 · Detroit Industrial Memory Specialist', medium:'Mural', theme:'Labor / Progress',
+      scores:[['Rivera',9.2],['W.E. Smith',8.7],['Daumier',8.1],['Grosz',7.3],['Kandinsky',2.1],['Hiroshige',1.4]],
+      bridgeScore:68, nodes:'Echo Park · Boyle Heights · Watts' },
+    Growth: { agent:'Agent 89 · Chicago Urban Renewal Documentarian', medium:'Documentary Photo', theme:'Community / Infrastructure',
+      scores:[['Cartier-Bresson',8.9],['W.E. Smith',8.2],['Adams',7.6],['Daumier',6.8],['Tamayo',2.3],['Hiroshige',1.8]],
+      bridgeScore:72, nodes:'Highland Park · Culver City · Silver Lake' },
+    Decay: { agent:'Agent 17 · Rust Belt Witness', medium:'Lithograph', theme:'Industry / Memory',
+      scores:[['Grosz',9.1],['Dix',8.4],['Goya',7.8],['Beckmann',7.2],['Adams',2.0],['Ruscha',1.6]],
+      bridgeScore:61, nodes:'Watts · Compton · South Central' },
+  },
+  Rural: {
+    Tension: { agent:'Agent 33 · Central Valley Labor Chronicler', medium:'WPA Mural', theme:'Harvest / Struggle',
+      scores:[['Rivera',8.8],['Daumier',8.3],['W.E. Smith',7.9],['Tamayo',7.1],['Mapplethorpe',1.8],['Ruscha',1.2]],
+      bridgeScore:65, nodes:'Long Beach · Carson · Maywood' },
+    Growth: { agent:'Agent 71 · Pastoral American Recorder', medium:'Woodcut', theme:'Land / Cultivation',
+      scores:[['Adams',9.0],['Weston',8.5],['Hiroshige',7.4],['Hokusai',6.9],['Grosz',1.9],['Beckmann',1.3]],
+      bridgeScore:74, nodes:'Highland Park · Atwater Village · El Sereno' },
+    Decay: { agent:'Agent 55 · Great Plains Memory Keeper', medium:'Documentary Photo', theme:'Abandonment / Resilience',
+      scores:[['W.E. Smith',9.3],['Adams',8.1],['Weston',7.6],['Goya',6.4],['Kandinsky',1.7],['Ruscha',1.1]],
+      bridgeScore:58, nodes:'Huntington Park · Bell · Maywood' },
+  },
+  Coastal: {
+    Tension: { agent:'Agent 204 · Pacific Borderlands Observer', medium:'Silkscreen', theme:'Ocean / Labor',
+      scores:[['Hokusai',9.1],['Hiroshige',8.6],['Adams',7.8],['W.E. Smith',6.9],['Beckmann',2.2],['Grosz',1.9]],
+      bridgeScore:70, nodes:'Long Beach · Watts · Carson' },
+    Growth: { agent:'Agent 118 · California Modernist', medium:'Photo', theme:'Horizon / Possibility',
+      scores:[['Adams',9.4],['Weston',8.8],['Hammersley',7.3],['Ruscha',6.7],['Goya',1.5],['Dix',1.2]],
+      bridgeScore:76, nodes:'Culver City · Mar Vista · Silver Lake' },
+    Decay: { agent:'Agent 61 · Coastal Erosion Witness', medium:'Documentary Photo', theme:'Loss / Tide',
+      scores:[['Adams',8.7],['Cartier-Bresson',8.1],['Goya',7.5],['Hiroshige',6.8],['Rivera',2.1],['Hammersley',1.4]],
+      bridgeScore:63, nodes:'Compton · South Central · Watts' },
+  },
+  Border: {
+    Tension: { agent:'Agent 97 · Frontera Memory Specialist', medium:'Mural', theme:'Migration / Crossing',
+      scores:[['Rivera',9.5],['Tamayo',9.1],['Daumier',8.2],['Grosz',7.6],['Adams',1.8],['Hammersley',1.1]],
+      bridgeScore:79, nodes:'Boyle Heights · Pico-Union · Koreatown' },
+    Growth: { agent:'Agent 143 · Diaspora Community Builder', medium:'WPA Mural', theme:'Belonging / Roots',
+      scores:[['Tamayo',9.3],['Rivera',8.9],['Cartier-Bresson',7.7],['Daumier',7.2],['Weston',2.0],['Ruscha',1.3]],
+      bridgeScore:77, nodes:'East Hollywood · Pico-Union · Koreatown' },
+    Decay: { agent:'Agent 28 · Displacement Chronicler', medium:'Lithograph', theme:'Loss / Belonging',
+      scores:[['Goya',9.0],['Grosz',8.5],['Dix',7.9],['Rivera',7.3],['Adams',1.6],['Hammersley',1.0]],
+      bridgeScore:66, nodes:'Watts · Compton · South Central' },
+  },
+  Synthetic: {
+    Tension: { agent:'Agent 199 · Algorithmic Urbanist', medium:'Silkscreen', theme:'Code / Control',
+      scores:[['Ruscha',9.2],['Rauschenberg',8.8],['Kandinsky',7.6],['Hammersley',7.1],['Daumier',1.9],['W.E. Smith',1.4]],
+      bridgeScore:64, nodes:'Culver City · Silver Lake · Highland Park' },
+    Growth: { agent:'Agent 212 · Network Infrastructure Archivist', medium:'Conceptual Print', theme:'Systems / Flow',
+      scores:[['Ruscha',9.0],['Kandinsky',8.4],['Hammersley',8.0],['Rauschenberg',7.5],['Rivera',2.0],['Goya',1.3]],
+      bridgeScore:69, nodes:'Culver City · Mar Vista · Atwater Village' },
+    Decay: { agent:'Agent 7 · Digital Entropy Recorder', medium:'Silkscreen', theme:'Signal / Noise',
+      scores:[['Rauschenberg',9.1],['Ruscha',8.6],['Kandinsky',7.8],['Beckmann',7.0],['Adams',1.8],['Rivera',1.2]],
+      bridgeScore:60, nodes:'Inglewood · Crenshaw · Leimert Park' },
+  },
+};
+
+function initInstallPage() {
+  if (installPageReady) return;
+  installPageReady = true;
+
+  // Build dots
+  const dotsEl = document.getElementById('installDots');
+  dotsEl.innerHTML = '';
+  for (let i = 1; i <= INSTALL_STATES; i++) {
+    const d = document.createElement('div');
+    d.className = 'install-dot' + (i === 1 ? ' active' : '');
+    d.onclick = (e) => { e.stopPropagation(); goToInstallState(i); };
+    dotsEl.appendChild(d);
+  }
+
+  goToInstallState(1);
+}
+
+const INSTALL_STATE_OVERLAY = ['','s1','s2','s3','s4','s5'];
+const INSTALL_STATE_BADGE   = ['','Idle · Sculptural Standby','Detect · Presence Captured','Analyze · Agent Assigned','Generate · Rendering','Output · Ready to Broadcast'];
+
+// Load ONE hero image using the proven imageUrl() path; switch overlays per state
+let installHeroLoaded = false;
+
+function loadInstallStateImage(stateNum) {
+  const overlay = document.getElementById('installHeroOverlay');
+  const badge   = document.getElementById('installStateBadge');
+
+  // Swap overlay + badge immediately (instant, no network)
+  overlay.className = 'install-hero-overlay ' + INSTALL_STATE_OVERLAY[stateNum];
+  badge.textContent = INSTALL_STATE_BADGE[stateNum];
+
+  if (installHeroLoaded) return;
+
+  const img     = document.getElementById('installHeroImg');
+  const spinner = document.getElementById('installHeroLoading');
+  const url = imageUrl('WPA mural poster museum installation, civic art display dark gallery, public art bronze frame, dramatic atmospheric lighting, American Scene 2.0');
+
+  const tryLoad = (src, attempt) => {
+    const tmp = new Image();
+    tmp.onload = () => { img.src = src; img.style.opacity = '1'; spinner.classList.add('hidden'); installHeroLoaded = true; };
+    tmp.onerror = () => {
+      if (attempt < 3) {
+        tryLoad(imageUrl('WPA civic mural art installation museum gallery dark dramatic lighting public art'), attempt + 1);
+      } else {
+        // Show a styled placeholder rather than blank
+        spinner.innerHTML = `
+          <div style="text-align:center;padding:24px;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--wpa-gold);margin-bottom:8px;">The Ornate Interpreter</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-bottom:16px;">Mirror Console · Physical Installation</div>
+            <div style="font-family:'Special Elite',cursive;font-size:9px;color:#333;line-height:1.7;max-width:240px;font-style:italic;">H 84 in · W 32 in · D 6 in<br>Patinated Bronze · Fiber Optics<br>Depth Camera · Haptic Toggles<br>Edge-lit Display · Solar Assist</div>
+          </div>`;
+      }
+    };
+    tmp.src = src;
+  };
+  tryLoad(url, 1);
+}
+
+function advanceInstallState() {
+  goToInstallState(installState < INSTALL_STATES ? installState + 1 : 1);
+}
+
+function goToInstallState(n) {
+  installState = n;
+
+  // State panels
+  for (let i = 1; i <= INSTALL_STATES; i++) {
+    document.getElementById('istate-' + i).classList.toggle('active', i === n);
+  }
+
+  // Dots
+  document.querySelectorAll('.install-dot').forEach((d, i) => {
+    d.classList.toggle('active', i + 1 === n);
+  });
+
+  // Label
+  const labels = ['','IDLE','DETECT','ANALYZE','GENERATE','OUTPUT'];
+  document.getElementById('installStateLabel').textContent = 'State ' + n + ' — ' + labels[n];
+
+  // Hint
+  document.getElementById('installHint').textContent = n < INSTALL_STATES ? 'Click image to advance →' : 'Click to restart ↺';
+
+  // Load state-specific hero image
+  loadInstallStateImage(n);
+
+  // State-specific updates
+  if (n === 2) updateDetectState();
+  if (n === 3) updateAnalyzeState();
+  if (n === 4) updateGenerateState();
+  if (n === 5) updateOutputState();
+}
+
+function currentInstallData() {
+  return (INSTALL_SCORES[installPlace] || INSTALL_SCORES.Urban)[installCondition] || INSTALL_SCORES.Urban.Tension;
+}
+
+function updateDetectState() {
+  document.getElementById('detect-place').textContent = installPlace;
+  document.getElementById('detect-condition').textContent = installCondition + ' detected';
+}
+
+function updateAnalyzeState() {
+  const d = currentInstallData();
+  document.getElementById('analyze-agent-label').textContent = d.agent;
+  document.getElementById('analyze-medium').textContent = d.medium;
+  document.getElementById('analyze-theme').textContent = d.theme;
+
+  const scoresEl = document.getElementById('analyze-scores');
+  scoresEl.innerHTML = '';
+  d.scores.forEach(([name, val], i) => {
+    const dim = i >= 4;
+    scoresEl.innerHTML += `
+      <div class="install-agent-score-row" style="${dim ? 'opacity:0.45' : ''}">
+        <div class="install-agent-name">${name}</div>
+        <div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:${val*10}%;${dim ? 'background:#555' : ''}"></div></div>
+        <div class="install-agent-val" style="${dim ? 'color:#555' : ''}">${val.toFixed(1)}</div>
+      </div>`;
+  });
+}
+
+function updateGenerateState() {
+  const d = currentInstallData();
+  document.getElementById('gen-theme').textContent = d.theme;
+
+  const topArtist = d.scores[0][0];
+  const artistObj = ARTISTS.find(a => a.name.includes(topArtist) || topArtist.includes(a.name.split(' ').pop()));
+  document.getElementById('gen-agent').textContent = (artistObj ? artistObj.name : topArtist) + ' · ' + d.medium;
+  document.getElementById('gen-score').textContent = d.bridgeScore + ' / 100';
+
+  // Generate art thumbnail
+  const prompt = artistObj
+    ? artistObj.styleDesc + ', ' + d.theme + ' as subject, civic WPA poster aesthetic'
+    : d.medium + ' of ' + d.theme + ', WPA civic art style, bold flat colors';
+
+  const url = imageUrl(prompt);
+  installGenUrl = url;
+
+  const loading = document.getElementById('gen-art-loading');
+  const img     = document.getElementById('gen-art-img');
+  loading.classList.remove('hidden');
+  img.style.opacity = '0';
+
+  const tmp = new Image();
+  tmp.onload  = () => { img.src = url; img.style.opacity = '1'; loading.classList.add('hidden'); };
+  tmp.onerror = () => {
+    const url2 = imageUrl(d.theme + ' civic art WPA mural bold flat colors public art poster');
+    const tmp2 = new Image();
+    tmp2.onload  = () => { img.src = url2; img.style.opacity = '1'; loading.classList.add('hidden'); };
+    tmp2.onerror = () => {
+      loading.innerHTML = `<div style="font-family:'Special Elite',cursive;font-size:9px;color:#444;text-align:center;padding:12px;font-style:italic;">Generated image · ${d.theme}<br><span style='color:#333;font-size:8px;'>Renders when Pollinations is available</span></div>`;
+    };
+    tmp2.src = url2;
+  };
+  tmp.src = url;
+}
+
+function updateOutputState() {
+  const d = currentInstallData();
+  document.getElementById('output-score').textContent = d.bridgeScore + ' / 100';
+}
+
+function setInstallCtrl(ctrl, val, btn) {
+  // Update selection
+  document.querySelectorAll(`.install-ctrl-btn[data-ctrl="${ctrl}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  if (ctrl === 'place') installPlace = val;
+  if (ctrl === 'condition') installCondition = val;
+
+  // Refresh current state if it's 2-5
+  if (installState === 2) updateDetectState();
+  if (installState === 3) updateAnalyzeState();
+  if (installState === 4) updateGenerateState();
+  if (installState === 5) updateOutputState();
+
+  // If on state 1, jump to state 2 to show the effect
+  if (installState === 1) goToInstallState(2);
+
+  showToast(ctrl.charAt(0).toUpperCase() + ctrl.slice(1) + ': ' + val + ' · Agent reassigning…');
+}
+
+function toggleFcard(n) {
+  const card = document.getElementById('fcard-' + n);
+  card.classList.toggle('open');
+}
+
+function toggleSim(n) {
+  const btn  = document.getElementById('sim-toggle-' + n);
+  const data = document.getElementById('sim-data-' + n);
+  btn.classList.toggle('on');
+  data.classList.toggle('visible');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DATA PAGE — AGENT SCORING & RENDER
+// ═══════════════════════════════════════════════════════════════
+let lastBridgeState = null;
+
+function computeAgentScores(theme, style, artistId) {
+  const artist = artistId ? ARTISTS.find(a => a.id === artistId) : null;
+  const corpus = [theme, style, artist ? artist.styleDesc : ''].join(' ').toLowerCase();
+  const rows = [];
+
+  ARTISTS.forEach(a => {
+    const fired = a.keywords.filter(kw => corpus.includes(kw.toLowerCase()));
+    const score = Math.min(10, Math.round((fired.length / a.keywords.length) * 10 * 1.5));
+    rows.push({ name: a.name, type: 'artist', sub: a.years + ' · ' + a.nation.split('·')[0].trim(), score, fired, color: a.color, id: a.id });
+  });
+
+  CURATORS.forEach(c => {
+    const fired = c.keywords.filter(kw => corpus.includes(kw.toLowerCase()));
+    const score = Math.min(10, Math.round((fired.length / c.keywords.length) * 10 * 1.5));
+    rows.push({ name: c.name, type: 'curator', sub: c.title, score, fired, color: c.color, id: c.id });
+  });
+
+  return rows.sort((a, b) => b.score - a.score);
+}
+
+function scoreColor(s) {
+  if (s >= 7) return '#2ecc71';
+  if (s >= 4) return '#d4a017';
+  return '#c0392b';
+}
+
+function renderDataPage({ theme, style, artistId }) {
+  const rows = computeAgentScores(theme, style, artistId);
+
+  document.getElementById('dataSubhead').textContent =
+    'Showing scores for: "' + theme + '" · ' + style + (artistId ? ' · ' + (ARTISTS.find(a=>a.id===artistId)||{name:''}).name : '');
+
+  const btn = document.getElementById('exportBtn');
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'auto';
+  btn.title = 'Download agent scores for this image as JSON';
+
+  // find highlight rows
+  const high = rows[0];
+  const low = rows[rows.length - 1];
+
+  const tbody = document.getElementById('agentTableBody');
+  tbody.innerHTML = '';
+  rows.forEach(r => {
+    const isHigh = r === high;
+    const isLow  = r === low;
+    const tr = document.createElement('tr');
+    if (isHigh) tr.className = 'highlight-high';
+    if (isLow)  tr.className = 'highlight-low';
+
+    const kwHtml = r.fired.length
+      ? r.fired.slice(0,3).map(k => `<span class="kw-pill">${k}</span>`).join('')
+      : '<span class="kw-none">none fired</span>';
+
+    tr.innerHTML = `
+      <td>
+        <div class="agent-name-cell">${r.name}${isHigh ? ' ▲' : isLow ? ' ▼' : ''}</div>
+        <div class="agent-sub-cell">${r.sub}</div>
+      </td>
+      <td><span class="agent-type-badge ${r.type}">${r.type}</span></td>
+      <td>
+        <div class="score-bar-wrap">
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:${r.score*10}%;background:${scoreColor(r.score)}"></div></div>
+          <div class="score-num" style="color:${scoreColor(r.score)}">${r.score}</div>
+        </div>
+      </td>
+      <td>${kwHtml}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Worked example — highest vs lowest scorer
+  renderWorkedExample(high, low, theme);
+}
+
+function renderWorkedExample(high, low, theme) {
+  const mkKws = r => r.fired.slice(0,3).map(k=>`<span class="kw-pill">${k}</span>`).join('') || '<span class="kw-none">none</span>';
+
+  const explain = buildWorkedExplanation(high, low, theme);
+
+  document.getElementById('workedExample').innerHTML = `
+    <div class="worked-example-head">Highest vs. Lowest Scorer — "${theme}"</div>
+    <div class="we-row">
+      <div class="we-card high">
+        <div class="we-card-name">${high.name}</div>
+        <div class="we-card-score">${high.score}<span style="font-size:14px;color:#888">/10</span></div>
+        <div class="we-card-kws">Keywords fired: ${mkKws(high)}</div>
+        <div class="agent-sub-cell">${high.sub}</div>
+      </div>
+      <div class="we-card low">
+        <div class="we-card-name">${low.name}</div>
+        <div class="we-card-score">${low.score}<span style="font-size:14px;color:#888">/10</span></div>
+        <div class="we-card-kws">Keywords fired: ${mkKws(low)}</div>
+        <div class="agent-sub-cell">${low.sub}</div>
+      </div>
+    </div>
+    <div class="we-explain">${explain}</div>
+  `;
+}
+
+function buildWorkedExplanation(high, low, theme) {
+  const highFired = high.fired.slice(0,3).join(', ') || 'none';
+  const lowFired  = low.fired.slice(0,3).join(', ')  || 'none';
+  return `${high.name} scores ${high.score}/10 because their keyword profile ("${highFired}") overlaps directly with the corpus assembled from this image's theme and style — civic labor subjects sit at the center of their critical vocabulary. ${low.name} scores ${low.score}/10 because their profile (${low.type === 'artist' ? 'focused on ' + low.sub : low.sub.split(',')[0]}) contains keywords ("${lowFired || 'none'}") that find no foothold in a "${theme}" broadcast, leaving their resonance channel effectively silent for this transmission.`;
+}
+
+function toggleRubric() {
+  const body  = document.getElementById('rubricBody');
+  const btn   = document.getElementById('rubricToggle');
+  const arrow = document.getElementById('rubricArrow');
+  const open  = body.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GALLERY
+// ═══════════════════════════════════════════════════════════════
+const galleryWorks = [];
+
+function addToGallery(node) {
+  galleryWorks.unshift(node);
+  document.getElementById('galleryEmpty').style.display = 'none';
+  document.getElementById('galleryCount').textContent = galleryWorks.length + ' work' + (galleryWorks.length === 1 ? '' : 's') + ' generated';
+
+  const a = node.artistId ? ARTISTS.find(x => x.id === node.artistId) : null;
+  const styleLabel = node.style.replace(/\b\w/g, c => c.toUpperCase());
+
+  const byline = a
+    ? `${a.name} (${a.years}) · ${a.nation.split('·').map(s=>s.trim()).join(', ')}`
+    : 'WPA Civic Style · No Artist Agent';
+
+  const card = document.createElement('div');
+  card.className = 'gallery-card';
+  card.innerHTML = `
+    <div class="gallery-img-wrap">
+      <div class="gallery-img-loading"><div class="spinner"></div></div>
+      <img id="gimg-${node.id}" src="" alt="${node.theme}" style="opacity:0;" />
+      <div class="gallery-score-badge">
+        <div class="gallery-score-num">${node.bridgeScore ?? '—'}</div>
+        <div class="gallery-score-label">Bridge Score</div>
+      </div>
+    </div>
+    <div class="gallery-body">
+      <div class="gallery-theme">${node.theme.toUpperCase()}</div>
+      <div class="gallery-byline">${byline}</div>
+      <div class="gallery-selections">
+        <span class="gallery-tag theme-tag">${node.theme}</span>
+        <span class="gallery-tag style-tag">${styleLabel}</span>
+        ${a ? `<span class="gallery-tag artist-tag">${a.name}</span>` : '<span class="gallery-tag">No Agent</span>'}
+      </div>
+      <div class="gallery-meta-row">
+        <span>${node.location}</span>
+        <span>${node.time}</span>
+      </div>
+    </div>
+  `;
+
+  const img = card.querySelector(`#gimg-${node.id}`);
+  const loader = card.querySelector('.gallery-img-loading');
+  img.onload = () => { img.style.opacity = '1'; loader.style.display = 'none'; };
+  img.onerror = () => { img.src = imageUrl(node.prompt); };
+  img.src = node.imgUrl;
+
+  document.getElementById('galleryGrid').prepend(card);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════════════════
 function setTheme(t) { document.getElementById('themeInput').value = t; updatePromptPreview(); }
@@ -1227,6 +2443,64 @@ function showToast(msg) {
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+function showProvenanceModal() {
+  const m = document.getElementById('provenanceModal');
+  m.style.display = 'flex';
+  m.onclick = e => { if (e.target === m) m.style.display = 'none'; };
+}
+
+function exportScoringData() {
+  if (!lastBridgeState) return;
+  const rows = computeAgentScores(lastBridgeState.theme, lastBridgeState.style, lastBridgeState.artistId);
+  const artist = lastBridgeState.artistId ? ARTISTS.find(a => a.id === lastBridgeState.artistId) : null;
+
+  const payload = {
+    meta: {
+      project: 'The American Scene 2.0',
+      author: 'Michael Sullivan',
+      generated: new Date().toISOString(),
+      lacma_grant: 'LACMA Art + Technology Lab 2026 Proposal',
+      data_provenance: 'Agent profiles derived from public LACMA collection tombstones as of Jan 2026. No living curator encoded without opt-in.',
+      scoring_method: 'keyword_match_v1',
+      note: 'Phase 2 upgrade: cosine similarity via Claude API embeddings (Month 3 of residency)'
+    },
+    broadcast: {
+      theme: lastBridgeState.theme,
+      print_style: lastBridgeState.style,
+      artist_agent: artist ? { id: artist.id, name: artist.name, years: artist.years, nation: artist.nation } : null,
+      bridging_score: lastBridgeState.bridgingScore ?? null
+    },
+    agent_scores: rows.map(r => ({
+      name: r.name,
+      type: r.type,
+      affiliation: r.sub,
+      resonance_score_0_to_10: r.score,
+      keywords_fired: r.fired,
+      keywords_total: r.type === 'artist'
+        ? (ARTISTS.find(a => a.name === r.name)?.keywords.length ?? null)
+        : (CURATORS.find(c => c.name === r.name)?.keywords.length ?? null)
+    })),
+    clusters: CLUSTERS.map(c => ({ id: c.id, name: c.name })),
+    rubric: {
+      step1: 'corpus = lowercase(theme + printStyle + artist.styleDescription)',
+      step2: 'firedKeywords = agent.keywords.filter(kw => corpus.includes(kw))',
+      step3: 'agentScore = min(10, round((firedKeywords.length / agent.keywords.length) * 10 * 1.5))',
+      step4: 'clusterResonant = cluster.keywords.filter(kw => corpus.includes(kw)).length >= 1',
+      step5: 'bridgingScore = min(100, round((resonatingClusters/8 * 0.8 + depthBonus) * 100 + (resonatingClusters>=4 ? 5 : 0)))'
+    }
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const slug = lastBridgeState.theme.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '').slice(0, 30);
+  a.href = url;
+  a.download = `american_scene_scores_${slug}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Exported scoring data for "' + lastBridgeState.theme + '"');
 }
 
 document.getElementById('styleRow').addEventListener('click', e => {
@@ -1262,9 +2536,10 @@ INITIAL_NODES.forEach((seed, i) => {
     allBridgeScores.push(bridgeResult.score);
     updateStats();
     addNodeCard(node);
+    addToGallery(node);
     if (i === 0) {
       focusNode(node.id);
-      showBridgingPanel(bridgeResult, seed.theme);
+      showBridgingPanel(bridgeResult, seed.theme, seed.style, seed.artistId);
       const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
       document.getElementById('avgBridge').textContent = avg;
     }
