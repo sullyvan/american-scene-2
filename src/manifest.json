@@ -1,0 +1,46 @@
+[
+  {
+    "file": "src/transit_workers_rivera.jpg",
+    "title": "Public Transit Workers",
+    "artist": "Diego Rivera",
+    "style": "WPA Mural",
+    "score": 68,
+    "clusters": ["Social Realism", "Latin American Art", "American Scene"],
+    "location": "Echo Park, LA",
+    "date": "2026",
+    "keywords": ["worker", "labor", "mural", "public", "community"]
+  },
+  {
+    "file": "src/community_gardens_grosz.jpg",
+    "title": "Community Gardens",
+    "artist": "George Grosz",
+    "style": "Lithograph",
+    "score": 54,
+    "clusters": ["Social Realism", "Expressionism"],
+    "location": "Boyle Heights, LA",
+    "date": "2026",
+    "keywords": ["community", "urban", "satire", "worker"]
+  },
+  {
+    "file": "src/public_library.jpg",
+    "title": "Public Library",
+    "artist": "WPA Style",
+    "style": "Silkscreen",
+    "score": 61,
+    "clusters": ["American Scene", "Conceptual / Contemporary"],
+    "location": "Compton, CA",
+    "date": "2026",
+    "keywords": ["public", "civic", "community", "american"]
+  },
+  {
+    "file": "src/immigrant_labor_daumier.jpg",
+    "title": "Immigrant Labor",
+    "artist": "Honoré Daumier",
+    "style": "Woodcut",
+    "score": 72,
+    "clusters": ["Social Realism", "Latin American Art", "American Scene", "Expressionism"],
+    "location": "Long Beach, CA",
+    "date": "2026",
+    "keywords": ["labor", "immigrant", "worker", "lithograph", "public"]
+  }
+]

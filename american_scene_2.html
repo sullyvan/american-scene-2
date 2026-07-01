@@ -232,6 +232,52 @@
   .gallery-tag.artist-tag { border-color: #2a5a2a; color: #6abf6a; }
   .gallery-meta-row { display: flex; justify-content: space-between; font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #555; padding-top: 8px; border-top: 1px solid #2a2a2a; }
 
+  /* ─── IMAGE LIBRARY PAGE ─── */
+  .library-page { display: none; background: #0a0a0a; min-height: calc(100vh - 140px); padding: 28px 32px; }
+  .library-page.visible { display: block; }
+
+  .library-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 10px; }
+  .library-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--wpa-gold); }
+  .library-count { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+  .library-sub { font-family: 'Special Elite', cursive; font-size: 10px; color: #444; margin-bottom: 22px; line-height: 1.6; }
+  .library-sub code { font-family: monospace; font-size: 10px; color: #666; background: #111; padding: 1px 5px; }
+
+  .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap: 20px; }
+
+  .lib-card { background: #0d0d0d; border: 1px solid #1a1a1a; display: grid; grid-template-columns: 1fr 200px; transition: border-color 0.2s; }
+  .lib-card:hover { border-color: rgba(212,160,23,0.4); }
+
+  .lib-img-wrap { position: relative; background: #050505; overflow: hidden; min-height: 280px; }
+  .lib-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(15%) contrast(1.08); transition: opacity 0.5s; }
+  .lib-img-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #050505; }
+  .lib-score-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); border: 1px solid var(--wpa-gold); padding: 4px 10px; }
+  .lib-score-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--wpa-gold); line-height: 1; }
+  .lib-score-label { font-family: 'Oswald', sans-serif; font-size: 6px; letter-spacing: 2px; text-transform: uppercase; color: #888; }
+
+  .lib-data { padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; border-left: 1px solid #1a1a1a; }
+  .lib-data-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--wpa-cream); line-height: 1.1; }
+  .lib-data-artist { font-family: 'IM Fell English', serif; font-size: 10px; color: var(--wpa-tan); font-style: italic; margin-top: 1px; }
+
+  .lib-divider { height: 1px; background: #1a1a1a; }
+
+  .lib-field { }
+  .lib-field-label { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 3px; }
+  .lib-field-val { font-family: 'Special Elite', cursive; font-size: 9px; color: #888; line-height: 1.5; }
+
+  .lib-clusters { display: flex; flex-direction: column; gap: 3px; }
+  .lib-cluster-tag { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 6px; border: 1px solid #2a2a2a; color: #666; display: inline-block; align-self: flex-start; }
+  .lib-cluster-tag.active { border-color: rgba(212,160,23,0.3); color: var(--wpa-tan); }
+
+  .lib-keywords { display: flex; flex-wrap: wrap; gap: 3px; }
+  .lib-kw { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 1px; padding: 1px 5px; background: #111; border: 1px solid #222; color: #555; }
+
+  .lib-missing { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 280px; }
+  .lib-missing-inner { text-align: center; padding: 20px; }
+  .lib-missing-icon { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #222; margin-bottom: 8px; }
+  .lib-missing-text { font-family: 'Special Elite', cursive; font-size: 9px; color: #333; font-style: italic; line-height: 1.6; }
+
+  .lib-empty { text-align: center; padding: 80px 20px; font-family: 'IM Fell English', serif; font-size: 15px; color: #333; font-style: italic; }
+
   /* ─── INSTALLATION PAGE ─── */
   .install-page { display: none; background: #0a0a0a; min-height: calc(100vh - 140px); }
   .install-page.visible { display: block; }
@@ -449,12 +495,22 @@
   .network::-webkit-scrollbar-thumb { background: var(--wpa-blue); }
 
   @media (max-width: 820px) {
+    .page-nav { overflow-x: auto; }
+    .page-tab { padding: 9px 16px; white-space: nowrap; }
     .main { grid-template-columns: 1fr; }
     .generator { height: auto; max-height: none; border-right: none; border-bottom: 4px solid var(--wpa-gold); }
     .network { height: auto; }
     .featured { grid-template-columns: 1fr; }
     .featured-image-container { min-height: 180px; }
     .about-strip, .bridging-clusters { grid-template-columns: 1fr; }
+    .gallery-page, .data-page, .failure-page { padding: 18px 16px; }
+    .gallery-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .install-body { grid-template-columns: 1fr; }
+    .install-hero { min-height: 420px; border-right: none; border-bottom: 2px solid #1a1a1a; }
+    .install-flow { max-height: none; }
+    .install-banner { align-items: flex-start; flex-direction: column; }
+    .install-ctrl-groups { gap: 14px; }
+    .we-row { gap: 10px; }
   }
 </style>
 </head>
@@ -515,6 +571,7 @@
   <button class="page-tab" id="tab-data" onclick="showPage('data')">Bridging Score Data</button>
   <button class="page-tab" id="tab-failure" onclick="showPage('failure')">Failure Modes &amp; Research Questions</button>
   <button class="page-tab" id="tab-install" onclick="showPage('install')">Museum Installation</button>
+  <button class="page-tab" id="tab-library" onclick="showPage('library')">Image Library</button>
 </nav>
 
 <!-- ═══ INSTALLATION PAGE ═══ -->
@@ -716,6 +773,20 @@
   </div>
 
 </div><!-- /install-page -->
+
+<!-- ═══ IMAGE LIBRARY PAGE ═══ -->
+<div class="library-page" id="libraryPage">
+  <div class="library-header">
+    <div class="library-title">Image Library</div>
+    <div class="library-count" id="libraryCount">0 works</div>
+  </div>
+  <div class="library-sub">
+    Works collected from the Public Display Network. To add an image: download it, place it in the <code>src/</code> folder, add an entry to <code>src/manifest.json</code>, then commit and push — it appears here automatically.
+  </div>
+  <div class="library-grid" id="libraryGrid">
+    <div class="lib-empty" id="libraryEmpty">Loading library…</div>
+  </div>
+</div>
 
 <!-- ═══ FAILURE MODES PAGE ═══ -->
 <div class="failure-page" id="failurePage">
@@ -1819,7 +1890,13 @@ function dismissJudge() { document.getElementById('judgePanel').classList.remove
 // BRIDGING PANEL
 // ═══════════════════════════════════════════════════════════════
 function showBridgingPanel(bridgeResult, theme, style, artistId) {
-  lastBridgeState = { theme, style, artistId };
+  lastBridgeState = {
+    theme,
+    style,
+    artistId,
+    bridgingScore: bridgeResult.score,
+    resonatingClusters: bridgeResult.resonatingClusters
+  };
   if (document.getElementById('dataPage').classList.contains('visible')) renderDataPage(lastBridgeState);
   const panel = document.getElementById('bridgingPanel');
   panel.classList.add('visible');
@@ -1851,13 +1928,14 @@ function showBridgingPanel(bridgeResult, theme, style, artistId) {
 
   document.getElementById('bridgeSummary').textContent = getBridgeSummary(bridgeResult.score, bridgeResult.resonatingClusters, theme);
 
-  // Update avg bridge score in header
-  allBridgeScores.push(bridgeResult.score);
-  const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
-  document.getElementById('avgBridge').textContent = avg;
-
   // Update featured panel
   document.getElementById('featuredBridgeScore').textContent = bridgeResult.score + ' / 100';
+}
+
+function recordBridgeScore(score) {
+  allBridgeScores.push(score);
+  const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
+  document.getElementById('avgBridge').textContent = avg;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1889,6 +1967,7 @@ async function generateArt() {
   addNodeCard(node);
   focusNode(node.id);
   showBridgingPanel(bridgeResult, theme, selectedStyle, artistId);
+  recordBridgeScore(bridgeResult.score);
   addToGallery(node);
 
   if (agentMode === 'judge' && artistId) {
@@ -1942,7 +2021,15 @@ function addNodeCard(node) {
     viewCount += Math.floor(Math.random() * 80 + 20);
     updateStats();
   };
-  img.onerror = () => { img.src = imageUrl(node.prompt); };
+  let retryCount = 0;
+  img.onerror = () => {
+    if (retryCount < 2) {
+      retryCount++;
+      img.src = imageUrl(node.prompt);
+      return;
+    }
+    document.getElementById('node-status-' + node.id)?.classList.remove('generating');
+  };
   img.src = node.imgUrl;
 }
 
@@ -1986,11 +2073,112 @@ function showPage(page) {
   document.getElementById('dataPage').classList.toggle('visible', page === 'data');
   document.getElementById('failurePage').classList.toggle('visible', page === 'failure');
   document.getElementById('installPage').classList.toggle('visible', page === 'install');
-  ['network','gallery','data','failure','install'].forEach(p => {
+  document.getElementById('libraryPage').classList.toggle('visible', page === 'library');
+  ['network','gallery','data','failure','install','library'].forEach(p => {
     document.getElementById('tab-' + p).classList.toggle('active', p === page);
   });
   if (page === 'data' && lastBridgeState) renderDataPage(lastBridgeState);
   if (page === 'install') initInstallPage();
+  if (page === 'library') initLibrary();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMAGE LIBRARY
+// ═══════════════════════════════════════════════════════════════
+let libraryLoaded = false;
+
+async function initLibrary() {
+  if (libraryLoaded) return;
+  libraryLoaded = true;
+
+  let manifest;
+  try {
+    const res = await fetch('src/manifest.json');
+    if (!res.ok) throw new Error('not found');
+    manifest = await res.json();
+  } catch(e) {
+    document.getElementById('libraryEmpty').textContent = 'No images yet. Add files to src/ and update src/manifest.json to populate this library.';
+    return;
+  }
+
+  const grid  = document.getElementById('libraryGrid');
+  const count = document.getElementById('libraryCount');
+  grid.innerHTML = '';
+  count.textContent = manifest.length + ' work' + (manifest.length === 1 ? '' : 's');
+
+  manifest.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'lib-card';
+
+    const clusterHTML = (item.clusters || []).map(c =>
+      `<div class="lib-cluster-tag active">${c}</div>`
+    ).join('');
+
+    const kwHTML = (item.keywords || []).map(k =>
+      `<span class="lib-kw">${k}</span>`
+    ).join('');
+
+    const scoreColor = item.score >= 70 ? '#2ecc71' : item.score >= 50 ? '#d4a017' : '#c0392b';
+
+    card.innerHTML = `
+      <div class="lib-img-wrap">
+        <div class="lib-img-loading" id="lib-loading-${item.file.replace(/\W/g,'_')}">
+          <div class="spinner"></div>
+        </div>
+        <img class="lib-img" style="opacity:0;" alt="${item.title}" />
+        <div class="lib-score-badge">
+          <div class="lib-score-num" style="color:${scoreColor}">${item.score}</div>
+          <div class="lib-score-label">Bridge Score</div>
+        </div>
+      </div>
+      <div class="lib-data">
+        <div>
+          <div class="lib-data-title">${item.title.toUpperCase()}</div>
+          <div class="lib-data-artist">${item.artist}</div>
+        </div>
+        <div class="lib-divider"></div>
+        <div class="lib-field">
+          <div class="lib-field-label">Print Style</div>
+          <div class="lib-field-val">${item.style}</div>
+        </div>
+        <div class="lib-field">
+          <div class="lib-field-label">Location</div>
+          <div class="lib-field-val">${item.location || '—'}</div>
+        </div>
+        <div class="lib-field">
+          <div class="lib-field-label">Year</div>
+          <div class="lib-field-val">${item.date || '2026'}</div>
+        </div>
+        <div class="lib-divider"></div>
+        <div class="lib-field">
+          <div class="lib-field-label">Clusters Activated</div>
+          <div class="lib-clusters">${clusterHTML}</div>
+        </div>
+        <div class="lib-field">
+          <div class="lib-field-label">Keywords Fired</div>
+          <div class="lib-keywords">${kwHTML}</div>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+
+    // Load image
+    const img     = card.querySelector('.lib-img');
+    const loading = card.querySelector('.lib-img-loading');
+    const tmp = new Image();
+    tmp.onload = () => { img.src = item.file; img.style.opacity = '1'; loading.style.display = 'none'; };
+    tmp.onerror = () => {
+      loading.innerHTML = `
+        <div class="lib-missing">
+          <div class="lib-missing-inner">
+            <div class="lib-missing-icon">[ ]</div>
+            <div class="lib-missing-text">${item.file}<br>Add this file to your src/ folder</div>
+          </div>
+        </div>`;
+    };
+    tmp.src = item.file;
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2420,7 +2608,15 @@ function addToGallery(node) {
   const img = card.querySelector(`#gimg-${node.id}`);
   const loader = card.querySelector('.gallery-img-loading');
   img.onload = () => { img.style.opacity = '1'; loader.style.display = 'none'; };
-  img.onerror = () => { img.src = imageUrl(node.prompt); };
+  let retryCount = 0;
+  img.onerror = () => {
+    if (retryCount < 2) {
+      retryCount++;
+      img.src = imageUrl(node.prompt);
+      return;
+    }
+    loader.style.display = 'none';
+  };
   img.src = node.imgUrl;
 
   document.getElementById('galleryGrid').prepend(card);
@@ -2533,15 +2729,13 @@ INITIAL_NODES.forEach((seed, i) => {
     };
     genCount++;
     nodes.push(node);
-    allBridgeScores.push(bridgeResult.score);
+    recordBridgeScore(bridgeResult.score);
     updateStats();
     addNodeCard(node);
     addToGallery(node);
     if (i === 0) {
       focusNode(node.id);
       showBridgingPanel(bridgeResult, seed.theme, seed.style, seed.artistId);
-      const avg = Math.round(allBridgeScores.reduce((a,b)=>a+b,0) / allBridgeScores.length);
-      document.getElementById('avgBridge').textContent = avg;
     }
   }, i * 280);
 });
