@@ -1115,6 +1115,7 @@ bridgingScore = min(100,
     <!-- 4: GENERATE -->
     <div class="gen-section" style="border-bottom:none;">
       <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Broadcast</button>
+      <button class="generate-btn" id="saveLibBtn" onclick="saveToLibrary()" style="background:var(--wpa-green);margin-top:6px;font-size:14px;display:none;">⬇ Save to Library</button>
       <p style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:8px;line-height:1.4;font-style:italic;">
         Bridging score is computed live by matching the work's content against 8 art-tradition clusters represented by LACMA collection artists and curators.
       </p>
@@ -1506,6 +1507,43 @@ const ARTISTS = [
       { verdict: 'approve', text: 'I made paintings about the relationship between two shapes. That is enough for a lifetime of inquiry. This image has found a relationship worth examining.' },
       { verdict: 'ambivalent', text: 'I called my paintings "hunches" because they came from intuition, not system. Can an algorithm have a hunch? I am genuinely uncertain, and I am not a man who admits uncertainty easily.' }
     ]
+  },
+  // ── WPA PROGRAM AGENTS ───────────────────────────────────────────
+  {
+    id: 'cahill', name: 'Holger Cahill', years: '1887–1960', nation: 'American · WPA Director', works: 0, color: '#8B1A1A',
+    clusters: ['social_realism','american_scene','conceptual'],
+    keywords: ['federal','wpa','new deal','civic','public','community','regional','worker','america','post office','mural','program','art project','relief','sponsor','nation','distribute','broadcast','network','access'],
+    styleDesc: 'WPA Federal Art Project poster style, Holger Cahill civic mandate, bold lithographic flat color, regionalist American subject matter, post office and public building mural scale, social realism, New Deal 1935–1943 aesthetic, strong silhouette, community labor subjects, limited palette of earth reds blues and ochres, democratic civic purpose',
+    judgments: [
+      { verdict: 'approve', text: 'The Federal Art Project existed for one reason: to put art where the people already were — the post office, the school, the hospital waiting room. Not the gallery. Not the collector\'s wall. This image understands that. It belongs on a public wall.' },
+      { verdict: 'approve', text: 'We employed ten thousand artists in forty-eight states because we believed that a democracy requires a visual culture it can actually see. This work carries that argument forward. I would have funded it.' },
+      { verdict: 'ambivalent', text: 'The program I ran had one rule above all others: the work had to be for the community, not about it. I am not yet certain which side of that line this falls on. Show me where it will hang and I will tell you whether it is art or decoration.' },
+      { verdict: 'reject', text: 'I reviewed ten thousand proposals. The ones that failed always had the same flaw: they assumed the audience was an abstraction. The public is not an abstraction. They are the transit worker, the schoolteacher, the person in the relief line. Speak directly to them or do not speak at all.' }
+    ]
+  },
+  {
+    id: 'shahn', name: 'Ben Shahn', years: '1898–1969', nation: 'American · Social Realist', works: 112, color: '#7B3F00',
+    clusters: ['social_realism','american_scene','expressionism'],
+    keywords: ['worker','labor','justice','trial','sacco','vanzetti','protest','poster','lithograph','text','letter','script','community','immigrant','coal','mine','street','photograph','mural','politics','union','civil rights','america','civic','public'],
+    styleDesc: 'Ben Shahn WPA social realist style, hand-lettered text integrated with image, flat expressive figures with elongated hands and faces, primary colors on dark ground, labor and justice subjects, WPA poster aesthetic, Sacco and Vanzetti graphic tradition, photographic reference combined with painterly distortion, civic mural scale',
+    judgments: [
+      { verdict: 'approve', text: 'I photographed the coal miners and then I painted them. The photograph tells you what happened. The painting tells you what it meant. This image is trying to do both at once. That is exactly the right ambition for a public wall.' },
+      { verdict: 'approve', text: 'Art is not a luxury. It is how a people tells itself the truth about its own life. I spent my career making that argument in post offices and courthouses and union halls. This work makes the same argument. I am for it.' },
+      { verdict: 'ambivalent', text: 'The hands are wrong. I always say: look at the hands first. The hands of a worker are the biography of their labor. If the hands in this image have not worked, the image has not told the truth yet.' },
+      { verdict: 'reject', text: 'I painted Sacco and Vanzetti because no one else would. Civic art without a willingness to name the injustice is just decoration with good intentions. What is this image willing to name? I am waiting.' }
+    ]
+  },
+  {
+    id: 'lange', name: 'Dorothea Lange', years: '1895–1965', nation: 'American · Documentary', works: 89, color: '#4A4A2A',
+    clusters: ['photography','social_realism','american_scene'],
+    keywords: ['documentary','photograph','migrant','dust bowl','depression','worker','mother','family','poverty','farm','california','road','labor','camp','face','hands','witness','fsa','wpa','federal','public','community','america','dignity','suffer'],
+    styleDesc: 'Dorothea Lange FSA documentary photography style, intimate close-up of labor and suffering, Migrant Mother compositional gravity, natural available light, deep tonal range, hands and faces as primary subject, roadside and field settings, unflinching witness to economic hardship, American documentary realism 1930s–1940s, dignity in extremity',
+    judgments: [
+      { verdict: 'approve', text: 'I made Migrant Mother in ten minutes by the side of a road in Nipomo. She did not ask to be photographed. She did not know her face would become the face of an era. This image has that quality of necessity — the sense that it had to be made. That is the only standard I apply.' },
+      { verdict: 'approve', text: 'The camera is an instrument that teaches people how to see without a camera. This work teaches that. I can see in it a way of looking at the civic world that is honest about what the civic world actually costs the people who build it.' },
+      { verdict: 'ambivalent', text: 'I photographed people who had nothing left to lose. That is what gave the images their weight — not my skill, but their truth. I am not sure this image has found its Migrant Mother yet. The subject is there. The person inside the subject is still hidden.' },
+      { verdict: 'reject', text: 'Documentary photography has one obligation: do not lie. It does not matter how beautiful the composition is or how correct the politics are. If the image is not true, it is a lie with good lighting. I am not yet persuaded this is true.' }
+    ]
   }
 ];
 
@@ -1662,8 +1700,10 @@ const CURATORS = [
 // ═══════════════════════════════════════════════════════════════
 function computeBridgingScore(theme, style, artistId) {
   const artist = artistId ? ARTISTS.find(a => a.id === artistId) : null;
-  // Build combined corpus from theme + style + artist style description
-  const corpus = [theme, style, artist ? artist.styleDesc : ''].join(' ').toLowerCase();
+  // Build combined corpus — Pure WPA falls back to Cahill styleDesc
+  const cahillAgent = ARTISTS.find(a => a.id === 'cahill');
+  const fallbackDesc = cahillAgent ? cahillAgent.styleDesc : '';
+  const corpus = [theme, style, artist ? artist.styleDesc : fallbackDesc].join(' ').toLowerCase();
 
   const results = [];
   let resonatingClusters = 0;
@@ -1808,10 +1848,16 @@ function updateAgentCard() {
 // PROMPT
 // ═══════════════════════════════════════════════════════════════
 function buildPrompt(theme, style, artistId) {
-  const base = `${style} poster of ${theme}, 1930s American regionalist art, bold flat colors, strong graphic composition, civic pride, WPA Federal Art Project aesthetic, limited color palette, high contrast, dramatic lighting, vintage print texture`;
-  if (!artistId || agentMode === 'none') return base;
+  // Pure WPA mode: use Holger Cahill agent styleDesc for historically grounded prompt
+  if (!artistId || agentMode === 'none') {
+    const cahill = ARTISTS.find(x => x.id === 'cahill');
+    const wpaBase = cahill
+      ? `${cahill.styleDesc}, ${theme} as subject, ${style}, civic public art, bold composition, vintage print texture, democratic purpose`
+      : `${style} poster of ${theme}, 1930s American regionalist art, bold flat colors, strong graphic composition, civic pride, WPA Federal Art Project aesthetic, limited color palette, high contrast, dramatic lighting, vintage print texture`;
+    return wpaBase;
+  }
   const a = ARTISTS.find(x => x.id === artistId);
-  if (!a) return base;
+  if (!a) return `${style} poster of ${theme}, WPA Federal Art Project aesthetic, bold flat colors, civic pride, high contrast, vintage print texture`;
   return `${a.styleDesc}, ${theme} as subject, civic WPA poster aesthetic, bold composition, vintage texture, public art mural quality, dramatic lighting`;
 }
 
@@ -1962,6 +2008,7 @@ async function generateArt() {
   const time = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
 
   const node = { id: Date.now(), theme, style: selectedStyle, location, imgUrl: url, prompt, time, artistId, bridgeScore: bridgeResult.score };
+  lastBroadcastNode = node;
   nodes.unshift(node);
   updateStats();
   addNodeCard(node);
@@ -1981,6 +2028,66 @@ async function generateArt() {
 
   btn.disabled = false;
   btn.textContent = '▶ Generate & Broadcast';
+  document.getElementById('saveLibBtn').style.display = '';
+}
+
+function saveToLibrary() {
+  if (!lastBroadcastNode) return;
+  const n = lastBroadcastNode;
+  const a = n.artistId ? ARTISTS.find(x => x.id === n.artistId) : null;
+  const artistName = a ? a.name : 'WPA Style';
+  const slug = n.theme.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '').slice(0, 30)
+    + '_' + (a ? a.name.split(' ').pop().toLowerCase() : 'wpa');
+  const filename = slug + '.jpg';
+
+  // Trigger image download
+  const link = document.createElement('a');
+  link.href = n.imgUrl;
+  link.download = filename;
+  link.target = '_blank';
+  link.click();
+
+  // Fire keywords from bridging result for manifest
+  const bridgeResult = computeBridgingScore(n.theme, n.style, n.artistId);
+  const keywords = [...new Set([
+    ...n.theme.toLowerCase().split(/\s+/).filter(w => w.length > 3),
+    ...(a ? a.keywords.slice(0, 3) : ['civic', 'public', 'community'])
+  ])].slice(0, 6);
+
+  const entry = {
+    file: 'src/' + filename,
+    title: n.theme.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+    artist: artistName,
+    style: n.style || 'WPA Mural',
+    score: n.bridgeScore,
+    clusters: bridgeResult.results.filter(r => r.resonant).map(r => r.cluster.name),
+    location: n.location,
+    date: new Date().getFullYear().toString(),
+    keywords
+  };
+
+  // Show modal with manifest entry
+  let modal = document.getElementById('saveLibModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'saveLibModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div style="background:var(--wpa-cream);color:var(--wpa-dark);max-width:560px;width:100%;padding:28px;font-family:'Special Elite',cursive;border:4px solid var(--wpa-gold);position:relative;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--wpa-blue);border-bottom:3px solid var(--wpa-red);padding-bottom:6px;margin-bottom:14px;">Save to Library</div>
+      <p style="font-size:11px;margin-bottom:12px;line-height:1.5;">
+        The image is downloading as <strong>${filename}</strong>.<br>
+        Move it into your <code style="background:#eee;padding:1px 5px;">src/</code> folder, then copy this entry into <code style="background:#eee;padding:1px 5px;">src/manifest.json</code>:
+      </p>
+      <textarea id="manifestEntry" readonly style="width:100%;height:200px;font-family:monospace;font-size:11px;background:#1c1c1c;color:#d4a017;border:2px solid var(--wpa-blue);padding:10px;resize:none;">${JSON.stringify(entry, null, 2)}</textarea>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button onclick="document.getElementById('manifestEntry').select();document.execCommand('copy');this.textContent='✓ Copied!';" style="flex:1;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;background:var(--wpa-blue);color:white;border:none;cursor:pointer;">Copy JSON</button>
+        <button onclick="document.getElementById('saveLibModal').remove();" style="flex:1;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;background:var(--wpa-red);color:white;border:none;cursor:pointer;">Done</button>
+      </div>
+    </div>`;
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2447,6 +2554,7 @@ function toggleSim(n) {
 // DATA PAGE — AGENT SCORING & RENDER
 // ═══════════════════════════════════════════════════════════════
 let lastBridgeState = null;
+let lastBroadcastNode = null;
 
 function computeAgentScores(theme, style, artistId) {
   const artist = artistId ? ARTISTS.find(a => a.id === artistId) : null;
