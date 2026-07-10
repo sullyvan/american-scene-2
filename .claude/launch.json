@@ -3,14 +3,14 @@
   "configurations": [
     {
       "name": "american-scene",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "--directory", "/Users/mikehibyeok/Desktop/Claude repo", "8765"],
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd '/private/tmp/claude-501/-Users-mikehibyeok-Desktop-Claude-repo/31fc1a72-e013-4d09-a7a6-ed4204d83fd4/scratchpad/as2' && python3 -m http.server 8765"],
       "port": 8765
     },
     {
       "name": "mikehibyeok",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd '/private/tmp/claude-501/-Users-mikehibyeok-Desktop-Claude-repo/31fc1a72-e013-4d09-a7a6-ed4204d83fd4/scratchpad/site' && python3 -m http.server 8766"],
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-I", "/private/tmp/claude-501/-Users-mikehibyeok-Desktop-Claude-repo/9cb7073a-6946-4243-acc4-1f49fd3ba1bc/scratchpad/serve.py"],
       "port": 8766
     }
   ]

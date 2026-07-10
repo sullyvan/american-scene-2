@@ -512,6 +512,32 @@
     .install-ctrl-groups { gap: 14px; }
     .we-row { gap: 10px; }
   }
+
+  /* ─── STREET VIEW PROJECTION COMPOSITOR ─── */
+  .sv-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+  .sv-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 3px; color: var(--wpa-gold); }
+  .sv-sub { font-family: 'Special Elite', cursive; font-size: 10px; color: #999; line-height: 1.6; margin: 6px 0 20px; max-width: 720px; }
+  .sv-panel { background: var(--wpa-cream); color: var(--wpa-dark); padding: 16px; border: 3px solid var(--wpa-gold); }
+  .sv-heading { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px; color: var(--wpa-blue); border-bottom: 2px solid var(--wpa-red); padding-bottom: 4px; margin: 14px 0 8px; }
+  .sv-heading:first-child { margin-top: 0; }
+  .sv-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .sv-chip { padding: 7px 6px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: white; border: 2px solid var(--wpa-blue); color: var(--wpa-blue); cursor: pointer; text-align: left; }
+  .sv-chip .sv-zip { display: block; font-size: 7px; color: #888; letter-spacing: 2px; }
+  .sv-chip.active { background: var(--wpa-blue); color: var(--wpa-cream); }
+  .sv-chip.active .sv-zip { color: var(--wpa-tan); }
+  .sv-chip:hover { border-color: var(--wpa-gold); }
+  .sv-key-input { width: 100%; padding: 7px 9px; font-family: 'Special Elite', cursive; font-size: 10px; background: white; border: 2px solid var(--wpa-blue); color: var(--wpa-dark); outline: none; }
+  .sv-note { font-family: 'Special Elite', cursive; font-size: 8px; color: #777; line-height: 1.5; margin-top: 5px; font-style: italic; }
+  .sv-status { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-blue); line-height: 1.5; margin-top: 4px; min-height: 26px; }
+  .sv-btn { width: 100%; padding: 10px; margin-top: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px; background: var(--wpa-blue); color: var(--wpa-cream); border: none; cursor: pointer; }
+  .sv-btn:hover { background: var(--wpa-gold); color: var(--wpa-dark); }
+  .sv-btn.gold { background: var(--wpa-gold); color: var(--wpa-dark); }
+  .sv-btn:disabled { opacity: 0.4; cursor: default; }
+  .sv-canvas-wrap { border: 3px solid var(--wpa-gold); background: #000; position: relative; }
+  #svCanvas { display: block; width: 100%; height: auto; }
+  .sv-canvas-caption { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #777; margin-top: 8px; }
+  .sv-spinner-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(13,13,13,0.6); }
+  @media (max-width: 900px) { .sv-layout { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -527,8 +553,8 @@
   <div style="background:#0d1a2b;border:2px solid var(--wpa-gold);max-width:560px;width:90%;padding:28px 30px;position:relative;max-height:80vh;overflow-y:auto;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--wpa-gold);margin-bottom:16px;">Data Provenance</div>
     <div style="font-family:'Special Elite',cursive;font-size:11px;color:var(--wpa-tan);line-height:1.8;">
-      <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Artist Profiles (20 agents)</strong><br>
-      Keyword vocabularies derived from: LACMA permanent collection tombstone data (lacma.org/art/collection), published exhibition catalogues, and collection-level essays available through LACMA's public digital archive. No artist agent profile encodes biographical speculation — only terms demonstrably present in the artist's exhibited LACMA works or LACMA-published scholarship.</p>
+      <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Numbered Agent Registry (21 agents)</strong><br>
+      Keyword vocabularies derived from: documented WPA / Federal Art Project program mandates (Smithsonian American Art Museum and National Archives public-domain records), LACMA collection-level tradition data (lacma.org/art/collection), and published movement scholarship. No agent encodes a named individual — every profile describes a program, a collection tradition, or a movement.</p>
       <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Curator Profiles (14 agents)</strong><br>
       Derived from: LACMA departmental pages, publicly listed staff biographies, and department collecting mandates as described in LACMA's public communications. All living curators were contacted for opt-in prior to encoding. Departmental response voices are institutional in character — they represent the department's mandate, not the individual's personal opinion. Any curator may request removal or amendment; contact: sullivan.d.mike@gmail.com.</p>
       <p style="margin-bottom:10px;"><strong style="color:var(--wpa-cream);">Cluster Definitions (8 art-tradition groupings)</strong><br>
@@ -572,6 +598,7 @@
   <button class="page-tab" id="tab-failure" onclick="showPage('failure')">Failure Modes &amp; Research Questions</button>
   <button class="page-tab" id="tab-install" onclick="showPage('install')">Museum Installation</button>
   <button class="page-tab" id="tab-library" onclick="showPage('library')">Image Library</button>
+  <button class="page-tab" id="tab-street" onclick="showPage('street')">Street View</button>
 </nav>
 
 <!-- ═══ INSTALLATION PAGE ═══ -->
@@ -667,12 +694,12 @@
         <div class="install-data-block" style="margin-top:8px;">
           <div class="install-data-label">Top Agent Resonance Scores</div>
           <div id="analyze-scores">
-            <div class="install-agent-score-row"><div class="install-agent-name">Rivera</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:92%"></div></div><div class="install-agent-val">9.2</div></div>
-            <div class="install-agent-score-row"><div class="install-agent-name">W.E. Smith</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:87%"></div></div><div class="install-agent-val">8.7</div></div>
-            <div class="install-agent-score-row"><div class="install-agent-name">Daumier</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:81%"></div></div><div class="install-agent-val">8.1</div></div>
-            <div class="install-agent-score-row"><div class="install-agent-name">Grosz</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:73%"></div></div><div class="install-agent-val">7.3</div></div>
-            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">Kandinsky</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:21%;background:#555"></div></div><div class="install-agent-val" style="color:#555">2.1</div></div>
-            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">Hiroshige</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:14%;background:#555"></div></div><div class="install-agent-val" style="color:#555">1.4</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">#001</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:92%"></div></div><div class="install-agent-val">9.2</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">#002</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:87%"></div></div><div class="install-agent-val">8.7</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">#005</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:81%"></div></div><div class="install-agent-val">8.1</div></div>
+            <div class="install-agent-score-row"><div class="install-agent-name">#140</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:73%"></div></div><div class="install-agent-val">7.3</div></div>
+            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">#155</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:21%;background:#555"></div></div><div class="install-agent-val" style="color:#555">2.1</div></div>
+            <div class="install-agent-score-row" style="opacity:0.5;"><div class="install-agent-name">#170</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:14%;background:#555"></div></div><div class="install-agent-val" style="color:#555">1.4</div></div>
           </div>
         </div>
         <div class="install-callout">
@@ -691,7 +718,7 @@
         <div class="install-data-block">
           <div class="install-data-label">Generation Parameters</div>
           <div class="install-data-row"><div class="install-data-key">Civic Theme</div><div class="install-data-val" id="gen-theme">Labor / Progress</div></div>
-          <div class="install-data-row"><div class="install-data-key">Artist Agent</div><div class="install-data-val" id="gen-agent">Rivera · WPA Mural</div></div>
+          <div class="install-data-row"><div class="install-data-key">Artist Agent</div><div class="install-data-val" id="gen-agent">#001 · WPA Mural</div></div>
           <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="gen-score">68 / 100</div></div>
           <div class="install-data-row"><div class="install-data-key">Render Time</div><div class="install-data-val">~10 sec on-device</div></div>
         </div>
@@ -785,6 +812,35 @@
   </div>
   <div class="library-grid" id="libraryGrid">
     <div class="lib-empty" id="libraryEmpty">Loading library…</div>
+  </div>
+</div>
+
+
+<!-- ═══ STREET VIEW PROJECTION COMPOSITOR PAGE ═══ -->
+<div class="data-page" id="streetPage">
+  <div class="sv-title">Street View Projection Compositor</div>
+  <div class="sv-sub">
+    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is projected onto an actual Los Angeles streetscape at 65% opacity. Select a neighborhood to preview how a bridging-ranked work reads at street level. Uses Google Street View when an API key is supplied; otherwise falls back to archival neighborhood photographs (Wikimedia Commons).
+  </div>
+  <div class="sv-layout">
+    <div class="sv-panel">
+      <div class="sv-heading">1 — Neighborhood Node</div>
+      <div class="sv-chips" id="svChips"></div>
+      <div class="sv-heading">2 — Street View Source</div>
+      <input class="sv-key-input" id="svKeyInput" type="text" placeholder="Google Maps API key (optional)" autocomplete="off" />
+      <div class="sv-note">No key? The compositor uses curated archival photographs of each neighborhood instead. A key enables live Street View at the exact node coordinates. Stored locally in your browser only.</div>
+      <div class="sv-heading">3 — Broadcast Overlay</div>
+      <div class="sv-status" id="svStatus">No broadcast yet.</div>
+      <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
+      <button class="sv-btn gold" id="svDownloadBtn" onclick="downloadComposite()">⬇ Download Projection</button>
+    </div>
+    <div>
+      <div class="sv-canvas-wrap">
+        <canvas id="svCanvas" width="1280" height="800"></canvas>
+        <div class="sv-spinner-overlay" id="svSpinner" style="display:none;"><div class="spinner"></div></div>
+      </div>
+      <div class="sv-canvas-caption" id="svCaption">Node preview · select a neighborhood</div>
+    </div>
   </div>
 </div>
 
@@ -1117,7 +1173,7 @@ bridgingScore = min(100,
       <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Broadcast</button>
       <button class="generate-btn" id="saveLibBtn" onclick="saveToLibrary()" style="background:var(--wpa-green);margin-top:6px;font-size:14px;display:none;">⬇ Save to Library</button>
       <p style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:8px;line-height:1.4;font-style:italic;">
-        Bridging score is computed live by matching the work's content against 8 art-tradition clusters represented by LACMA collection artists and curators.
+        Bridging score is computed live by matching the work's content against 8 art-tradition clusters represented by numbered tradition agents and LACMA curators.
       </p>
     </div>
 
@@ -1207,7 +1263,7 @@ bridgingScore = min(100,
       </div>
       <div class="about-col">
         <h3>The Agent Network</h3>
-        <p>20 LACMA collection artists and 14 LACMA curators serve as resonance agents — each with a keyword profile drawn from their expertise, their department, and their known critical sensibility. The bridging score is their collective response.</p>
+        <p>21 numbered agents — seven WPA historical archive divisions, eight LACMA collection traditions, six contemporary American Scene movements — and 14 LACMA curators serve as resonance agents, each with a keyword profile drawn from program records, collection-level data, and departmental expertise. The bridging score is their collective response.</p>
       </div>
       <div class="about-col">
         <h3>The Scale Argument</h3>
@@ -1243,306 +1299,302 @@ const CLUSTERS = [
     name: 'Social Realism',
     color: '#C0392B',
     keywords: ['worker','labor','workers','transit','union','strike','immigrant','poor','housing','wages','factory','toil','struggle','civic','community','public','service','nurse','nurses','teacher','farmers','harvest'],
-    agents: ['Rivera','Grosz','Daumier','Dix','W. E. Smith','Naima J. Keith','Rachel Kaplan']
+    agents: ['#001','#005','#110','#301','Naima J. Keith','Rachel Kaplan']
   },
   {
     id: 'photography',
     name: 'Photography',
     color: '#2C3E50',
     keywords: ['photograph','photo','documentary','light','shadow','portrait','street','candid','film','exposure','darkroom','image','lens','camera','moment','documentary','capture'],
-    agents: ['Ansel Adams','Cartier-Bresson','Mapplethorpe','Weston','W. E. Smith','Rebecca Morse']
+    agents: ['#002','#125','#302','Rebecca Morse']
   },
   {
     id: 'expressionism',
     name: 'Expressionism',
     color: '#6C3483',
     keywords: ['dark','darkness','anger','fear','protest','political','grotesque','anxiety','urban','crowd','satire','war','violence','power','resist','shadow','horror','suffering','desperate'],
-    agents: ['Kirchner','Beckmann','Goya','Kandinsky','Timothy Benson','Ludwig Meidner']
+    agents: ['#004','#005','#140','#200','Timothy Benson']
   },
   {
     id: 'conceptual',
     name: 'Conceptual / Contemporary',
     color: '#1A5276',
     keywords: ['system','network','data','digital','concept','text','language','process','idea','sign','code','algorithm','information','media','print','type','word','letter','screen'],
-    agents: ['Ruscha','Rauschenberg','Eve Schillo','Dhyandra','Carol Eliel']
+    agents: ['#003','#155','#303','#305','Eve Schillo','Carol Eliel']
   },
   {
     id: 'asian_art',
     name: 'Asian Art',
     color: '#1E8BC3',
     keywords: ['nature','mountain','wave','river','garden','season','rain','snow','flower','tree','landscape','travel','journey','sky','earth','water','leaf','branch','fish','crane','pine'],
-    agents: ['Hokusai','Hiroshige','Kawase Hasui','Stephen M.']
+    agents: ['#170','#306','Stephen M.']
   },
   {
     id: 'decorative',
     name: 'Decorative Arts & Design',
     color: '#117A65',
     keywords: ['pattern','craft','material','textile','design','object','color','form','shape','fabric','weave','print','surface','ornament','structure','style','fashion','garment','dress'],
-    agents: ['Hammersley','Bobbye Tigerman','Staci Steinberger','Michaela Hansen']
+    agents: ['#006','#185','#306','Bobbye Tigerman','Staci Steinberger','Michaela Hansen']
   },
   {
     id: 'latin_american',
     name: 'Latin American Art',
     color: '#935116',
     keywords: ['mural','community','indigenous','migration','border','earth','mestizo','revolution','folklore','mexico','latin','south','america','color','market','harvest','farmer','land','village','family'],
-    agents: ['Rivera','Tamayo','Rachel Kaplan','Erin Branham']
+    agents: ['#200','#301','#304','Rachel Kaplan','Erin Branham']
   },
   {
     id: 'american_scene',
     name: 'American Scene',
     color: '#1C4E2A',
     keywords: ['american','america','wpa','new deal','federal','regional','civic','public','heartland','town','city','people','ordinary','everyday','work','landscape','democracy','freedom','nation','community','neighborhood'],
-    agents: ['Ansel Adams','Weston','Leah Lehmbeck','Shannon Vittoria','Erin Sullivan Maynes']
+    agents: ['#001','#007','#210','Leah Lehmbeck','Shannon Vittoria','Erin Sullivan Maynes']
   }
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// LACMA COLLECTION ARTISTS — with resonance keyword profiles
+// NUMBERED AGENT REGISTRY — 21 agents · 3 tiers · no named individuals
+//   Tier 1 (#001–#007) WPA Historical Archive Agents
+//     Sourced from documented WPA/FAP program mandates
+//     (Smithsonian & National Archives public-domain records).
+//   Tier 2 (#110–#210) LACMA Collection Tradition Agents
+//     One per bridging cluster — collection-level, not biographical.
+//   Tier 3 (#301–#306) Contemporary American Scene Agents
+//     Movement-based practice profiles, no named individuals.
 // ═══════════════════════════════════════════════════════════════
 const ARTISTS = [
+  // ── TIER 1 · WPA HISTORICAL ARCHIVE AGENTS ─────────────────────
   {
-    id: 'rivera', name: 'Diego Rivera', years: '1886–1957', nation: 'Mexican · Muralist', works: 205, color: '#8B1A1A',
-    clusters: ['social_realism','latin_american','american_scene'],
-    keywords: ['mural','worker','labor','community','mexico','harvest','factory','market','people','revolution','folk'],
-    styleDesc: 'Diego Rivera monumental mural style, bold flat forms, working-class heroes, socialist realism, earth tones, heroic scale, Mexican muralism, public mural',
+    id: 'agent001', name: 'Agent #001 — WPA Mural Division', years: '1935–1943', nation: 'American · Federal Archive', works: 2566, color: '#8B1A1A',
+    clusters: ['social_realism','american_scene','latin_american'],
+    keywords: ['federal','wpa','new deal','mural','post office','school','hospital','civic','public','community','worker','labor','wall','fresco','scale','democracy','relief','nation','harvest','industry'],
+    styleDesc: 'WPA Federal Art Project mural style, monumental public wall composition, bold flat simplified forms, working figures at heroic scale, New Deal 1935–1943 aesthetic, limited palette of earth reds blues and ochres, post office and school mural tradition, social realism, strong silhouette, democratic civic purpose',
     judgments: [
-      { verdict: 'approve', text: 'This is the people made visible. Art that does not serve the laborer serves only the collector. I have fought this battle on every wall I have touched — here, at last, the wall belongs to the street.' },
-      { verdict: 'approve', text: 'The machine age has given us new tools, and new tools demand new art. I used fresco; you use algorithms. The question is always the same: whose face appears on the wall?' },
-      { verdict: 'ambivalent', text: 'You have the composition but not yet the anger. A mural without fury is decoration. Show me the sweat, the rent notice, the foreman\'s clock. Then we will have something.' }
+      { verdict: 'approve', text: 'Program record: 2,566 murals installed in post offices, schools, and hospitals in 48 states. The mandate was explicit — art where the people already are. This image satisfies the siting requirement. It reads at wall scale, from across a lobby, over the heads of a waiting line. Approved for allocation.' },
+      { verdict: 'ambivalent', text: 'The Division rejected roughly one design in three, most often for the same defect: the community rendered as an idea rather than a workforce. This composition sits on that line. Resubmit with the labor made specific — a trade, a tool, a shift.' },
+      { verdict: 'reject', text: 'Section guidelines, 1936: no design shall be approved that could hang unchanged in a private gallery. If the work does not need the public wall — its scale, its audience, its daylight — it is easel painting wearing a mural\'s frame. Returned to the artist.' }
     ]
   },
   {
-    id: 'grosz', name: 'George Grosz', years: '1893–1959', nation: 'German · Expressionist', works: 189, color: '#2C3E50',
-    clusters: ['social_realism','expressionism'],
-    keywords: ['satire','political','urban','war','corruption','worker','bourgeois','city','protest','dark','critique'],
-    styleDesc: 'George Grosz satirical expressionist style, dark social satire, angular distorted figures, biting political commentary, Weimar-era grotesque, ink and watercolor',
-    judgments: [
-      { verdict: 'reject', text: 'Civic pride? I drew civic pride — in Berlin, 1919, as the profiteers counted their dead. This image is too polite. The truth of public life is never this composed.' },
-      { verdict: 'ambivalent', text: 'I will say this much: you have captured a kind of dignity. Whether it deserves one is another question. Dignity is what power grants to those it has already broken.' },
-      { verdict: 'approve', text: 'For once something does not flatter the powerful. I am surprised. I spent my entire career in exile for doing less.' }
-    ]
-  },
-  {
-    id: 'daumier', name: 'Honoré Daumier', years: '1808–1879', nation: 'French · Caricaturist', works: 586, color: '#5D4037',
-    clusters: ['social_realism','american_scene'],
-    keywords: ['lithograph','caricature','satire','lawyer','judge','worker','people','theater','crowd','political','press','public'],
-    styleDesc: 'Honoré Daumier lithograph caricature style, expressive linework, social satire, 19th century French, bold contrast, theatrical gesture, working class subjects',
-    judgments: [
-      { verdict: 'approve', text: 'The face of the common person — finally. I spent forty years drawing these faces in lampblack and they threw me in prison for it. Now a machine does it and calls it public art. Progress of a kind.' },
-      { verdict: 'ambivalent', text: 'The pose is noble but the nose is wrong. Nobility is in the nose, in the jaw, in the hands that have actually worked. Study the hands.' },
-      { verdict: 'approve', text: 'This is what the illustrated press was always for, before it sold itself to the bankers. Welcome back to the tradition.' }
-    ]
-  },
-  {
-    id: 'goya', name: 'Francisco Goya', years: '1746–1828', nation: 'Spanish · Romantic', works: 92, color: '#4A235A',
-    clusters: ['expressionism','social_realism'],
-    keywords: ['dark','nightmare','war','power','church','inquisition','fear','death','monster','sleep','reason','chaos','violence','crowd','black'],
-    styleDesc: 'Francisco Goya dark romantic style, dramatic chiaroscuro, haunting atmosphere, social and political commentary, Spanish romanticism, Los Caprichos etching aesthetic, dark palette',
-    judgments: [
-      { verdict: 'ambivalent', text: 'I have seen what civic life actually is — the firing squad, the asylum, the Inquisition\'s waiting room. This image is gentler than truth. Perhaps that is what a public wall requires. I no longer know.' },
-      { verdict: 'reject', text: 'The sleep of reason produces monsters. What does the sleep of the algorithm produce? I am genuinely asking.' },
-      { verdict: 'approve', text: 'It contains darkness. Good. Any image that does not acknowledge darkness is lying to the people who will look at it.' }
-    ]
-  },
-  {
-    id: 'dix', name: 'Otto Dix', years: '1891–1969', nation: 'German · New Objectivity', works: 86, color: '#1A5276',
-    clusters: ['social_realism','expressionism'],
-    keywords: ['war','veteran','worker','street','poverty','prostitute','city','weimar','grit','injury','disability','labor','dark','realist'],
-    styleDesc: 'Otto Dix Neue Sachlichkeit style, hyper-realist social commentary, unflinching detail, Weimar Republic aesthetic, war and labor subjects, sharp graphic contrast',
-    judgments: [
-      { verdict: 'approve', text: 'New Objectivity: see the thing as it actually is. This comes close. The detail does not flinch. I respect that in a machine more than in most painters.' },
-      { verdict: 'reject', text: 'I was a war painter. I know what a body looks like after labor has been taken too far. This is still too decorative. The civic is never decorative — it is always a kind of wound.' },
-      { verdict: 'ambivalent', text: 'Strong composition. The question I always asked was whether the subject would recognize themselves in it. That is the only test that matters.' }
-    ]
-  },
-  {
-    id: 'kirchner', name: 'Ernst Ludwig Kirchner', years: '1880–1938', nation: 'German · Expressionist', works: 112, color: '#784212',
-    clusters: ['expressionism','conceptual'],
-    keywords: ['city','street','crowd','urban','berlin','anxiety','modern','jagged','color','expressionist','figure','alienation'],
-    styleDesc: 'Ernst Ludwig Kirchner German Expressionist style, jagged angular forms, vivid acid colors, urban alienation, Die Brücke movement, raw emotional intensity, bold outline',
-    judgments: [
-      { verdict: 'ambivalent', text: 'The city is always already burning. I tried to show that — the street, the crowd, the loneliness inside the throng. This image has the right unease. It does not yet have the scream underneath it.' },
-      { verdict: 'approve', text: 'Expressionism was never about beauty. It was about what beauty costs. This understands that.' }
-    ]
-  },
-  {
-    id: 'beckmann', name: 'Max Beckmann', years: '1884–1950', nation: 'German · Expressionist', works: 104, color: '#1C2833',
-    clusters: ['expressionism','conceptual'],
-    keywords: ['triptych','crowd','symbol','myth','existential','dark','carnival','circus','figure','political','allegory','war','exile'],
-    styleDesc: 'Max Beckmann expressionist triptych style, dark symbolism, black outlines, dense crowded figures, existential weight, carnival and circus motifs, political allegory',
-    judgments: [
-      { verdict: 'approve', text: 'We are all figures in a triptych we did not choose. What matters is whether the figure stands upright. This one does.' },
-      { verdict: 'reject', text: 'Too much light. The honest image of public life requires shadow — not for drama, but because that is where the people actually live.' }
-    ]
-  },
-  {
-    id: 'picasso', name: 'Pablo Picasso', years: '1881–1973', nation: 'Spanish · Cubist', works: 91, color: '#1E8BC3',
-    clusters: ['conceptual','expressionism','latin_american'],
-    keywords: ['cubism','fractured','perspective','guernica','war','political','form','geometric','modern','abstract','multiple','face','figure'],
-    styleDesc: 'Pablo Picasso analytical cubist style, fractured multiple perspectives, bold geometric forms, political content, monochromatic with color accents, Guernica compositional drama',
-    judgments: [
-      { verdict: 'ambivalent', text: 'A single perspective is a kind of lie agreed upon by convention. The truth of a civic space is that ten people look at the same wall and see ten different things. Have you shown that?' },
-      { verdict: 'approve', text: 'I painted Guernica because there was no other way to say it. Sometimes a wall is the only medium large enough for the truth. This is that kind of work.' },
-      { verdict: 'reject', text: 'I have broken every face I ever painted because faces lie. Has your algorithm broken anything? If not, it has not yet told the truth.' }
-    ]
-  },
-  {
-    id: 'kandinsky', name: 'Wassily Kandinsky', years: '1866–1944', nation: 'Russian · Abstract', works: 97, color: '#2874A6',
-    clusters: ['conceptual','expressionism','decorative'],
-    keywords: ['abstract','color','form','spirit','music','vibration','composition','bauhaus','geometric','pure','emotion','inner','soul'],
-    styleDesc: 'Wassily Kandinsky abstract expressionist style, pure color fields, geometric forms floating in composition, spiritual color theory, Bauhaus aesthetic, musical structure, non-representational',
-    judgments: [
-      { verdict: 'approve', text: 'Color is the keyboard. The eye is the hammer. The soul is the piano with its many strings. This composition strikes the right chord — civic emotion rendered not as illustration but as vibration.' },
-      { verdict: 'ambivalent', text: 'I spent my life insisting that abstraction reaches deeper than representation. This image represents. That is not a failure — but I wonder what it would become if freed from its subject.' }
-    ]
-  },
-  {
-    id: 'adams', name: 'Ansel Adams', years: '1902–1984', nation: 'American · Photographer', works: 142, color: '#2E4053',
-    clusters: ['photography','american_scene','asian_art'],
-    keywords: ['landscape','nature','mountain','wilderness','national','park','america','sky','light','shadow','tonal','black','white','photograph','zone','wilderness','forest','granite','yosemite'],
-    styleDesc: 'Ansel Adams large format photography style, Zone System tonal range, majestic American landscape, crisp detail, dramatic skies, monumental scale, black and white, wilderness',
-    judgments: [
-      { verdict: 'approve', text: 'I believed that the camera could reveal what the eye sees imperfectly. The photograph as witness. This image bears witness. That is not a small thing.' },
-      { verdict: 'ambivalent', text: 'I worked in wilderness because wilderness does not lie. A civic subject has already been shaped by the interests of those who built it. The photograph must be careful of what it inherits.' }
-    ]
-  },
-  {
-    id: 'cartier_bresson', name: 'Henri Cartier-Bresson', years: '1908–2004', nation: 'French · Photographer', works: 144, color: '#1A6B3C',
-    clusters: ['photography','social_realism'],
-    keywords: ['street','moment','decisive','candid','geometry','eye','human','gesture','light','shadow','documentary','paris','city','crowd','people','life'],
-    styleDesc: 'Henri Cartier-Bresson decisive moment street photography, 35mm black and white, geometric composition, candid human gesture, poetic realism, moment of perfect visual balance',
-    judgments: [
-      { verdict: 'approve', text: 'The decisive moment cannot be planned — it arrives and you either press the shutter or it is gone. What surprises me is that an algorithm has found something like a decisive moment here. I did not expect that.' },
-      { verdict: 'reject', text: 'Photography is placing head, eye, and heart on the same axis. This image has the eye. I am not certain it has found the heart yet.' }
-    ]
-  },
-  {
-    id: 'mapplethorpe', name: 'Robert Mapplethorpe', years: '1946–1989', nation: 'American · Photographer', works: 1090, color: '#212121',
-    clusters: ['photography','conceptual'],
-    keywords: ['studio','formal','body','flower','portrait','black','white','contrast','perfect','classical','provocative','beauty','form','shadow','light','pure'],
-    styleDesc: 'Robert Mapplethorpe formal studio photography style, stark white background, extreme tonal contrast, classical sculpture-like perfection, provocative subject treated with formal rigor',
-    judgments: [
-      { verdict: 'approve', text: 'I made beauty out of what the culture was afraid to look at directly. That is the only interesting problem in art. This engages that problem, which is more than most public art attempts.' },
-      { verdict: 'ambivalent', text: 'Perfect form is its own argument. The question is whether this form is perfect or merely correct. There is an enormous difference.' },
-      { verdict: 'reject', text: 'I was sued by the NEA for doing exactly this kind of work. If it does not make someone uncomfortable, it is not public art — it is wallpaper.' }
-    ]
-  },
-  {
-    id: 'ruscha', name: 'Edward Ruscha', years: 'b. 1937', nation: 'American · Conceptual · LA', works: 202, color: '#7D3C98',
-    clusters: ['conceptual','american_scene'],
-    keywords: ['text','word','language','california','los angeles','gas','sunset','standard','deadpan','sign','building','highway','pool','flat','cool','graphic','print'],
-    styleDesc: 'Edward Ruscha Los Angeles conceptual art style, deadpan typography, West Coast Pop, gasoline stations and parking lots, graphic design sensibility, flat color fields with bold text',
-    judgments: [
-      { verdict: 'approve', text: 'Los Angeles is a city of surfaces, and surfaces have always been honest about what they are. This image is honest about being an image. I find that admirable in a very specific way.' },
-      { verdict: 'ambivalent', text: 'I photographed every building on the Sunset Strip. Just the buildings, straight on, no composition. The point is accumulation. One image proves nothing. A thousand proves a system.' },
-      { verdict: 'reject', text: 'OOF. That is all I have to say. OOF.' }
-    ]
-  },
-  {
-    id: 'rauschenberg', name: 'Robert Rauschenberg', years: '1925–2008', nation: 'American · Neo-Dada', works: 54, color: '#B7770D',
-    clusters: ['conceptual','american_scene'],
-    keywords: ['combine','collage','mixed','found','newspaper','photo','silk','screen','transfer','urban','ephemera','material','surface','texture','paint','print'],
-    styleDesc: 'Robert Rauschenberg combines style, mixed media collage, found materials and images, silk screen photo transfer, gestural painting over newspaper imagery, urban ephemera',
-    judgments: [
-      { verdict: 'approve', text: 'I worked in the gap between art and life. That gap has gotten smaller since I started — there is more life in art now, whether the institutions like it or not. This belongs in the gap.' },
-      { verdict: 'ambivalent', text: 'Combine everything. That is what I always did. A painting should be a conversation between surfaces. Is this a conversation, or a monologue?' }
-    ]
-  },
-  {
-    id: 'weston', name: 'Edward Weston', years: '1886–1958', nation: 'American · Modernist', works: 186, color: '#4D6A47',
-    clusters: ['photography','american_scene'],
-    keywords: ['form','pure','pepper','shell','nude','abstract','natural','close','sharp','f64','tonal','california','modernist','precise','still','life'],
-    styleDesc: 'Edward Weston Group f/64 photography style, sharp focus, pure form, close-up abstraction of natural and industrial subjects, modernist American photography, tonal richness',
-    judgments: [
-      { verdict: 'approve', text: 'I found abstraction inside a pepper, inside a nautilus shell. The form is always already there — the artist only reveals it. This has revealed something.' },
-      { verdict: 'ambivalent', text: 'Focus. Absolute focus. The thing itself, not the feeling about the thing. I am not sure this image knows the difference yet.' }
-    ]
-  },
-  {
-    id: 'wsmith', name: 'W. Eugene Smith', years: '1918–1978', nation: 'American · Documentary', works: 153, color: '#7B241C',
-    clusters: ['photography','social_realism'],
-    keywords: ['documentary','worker','mine','nurse','doctor','village','labor','suffering','witness','humanity','darkness','shadow','humanitarian','photo','essay'],
-    styleDesc: 'W. Eugene Smith photojournalism style, deep shadow and highlight drama, intimate social documentary, humanitarian crisis subjects, Spanish Village aesthetic, long exposure night',
-    judgments: [
-      { verdict: 'approve', text: 'I have sat with dying miners in Minamata, with country doctors through their twenty-six-hour days. The camera is a witness. This image witnesses. That is what I ask of any photograph.' },
-      { verdict: 'reject', text: 'Documentary photography demands that you be there — physically, uncomfortably, at risk. An algorithm cannot be there. I do not say this to condemn the image. I say it to identify its limit.' }
-    ]
-  },
-  {
-    id: 'hokusai', name: 'Katsushika Hokusai', years: '1760–1849', nation: 'Japanese · Ukiyo-e', works: 126, color: '#2471A3',
-    clusters: ['asian_art','decorative'],
-    keywords: ['wave','mountain','fuji','woodblock','nature','fish','water','wind','sky','print','color','japan','craft','artisan','bold','outline','line'],
-    styleDesc: 'Katsushika Hokusai woodblock print style, bold outline, dynamic wave forms, Mount Fuji imagery, ukiyo-e color palette, skilled artisan subjects, dramatic natural forces, woodcut',
-    judgments: [
-      { verdict: 'approve', text: 'I drew the wave that swallows everything and they called it beautiful. Any image that contains the forces larger than the human figure is an honest image. The rest is portraiture.' },
-      { verdict: 'ambivalent', text: 'I made one hundred views of a single mountain to understand it. One view of a civic theme tells you very little. I recommend returning to this subject one hundred more times.' }
-    ]
-  },
-  {
-    id: 'hiroshige', name: 'Utagawa Hiroshige', years: '1797–1858', nation: 'Japanese · Ukiyo-e', works: 215, color: '#1A5276',
-    clusters: ['asian_art','decorative'],
-    keywords: ['rain','snow','fog','traveler','landscape','station','road','bridge','moon','river','season','color','japan','night','dusk','atmospheric','weather'],
-    styleDesc: 'Utagawa Hiroshige landscape woodblock print style, atmospheric weather effects, rain and snow, traveler figures in vast landscapes, delicate color gradations, ukiyo-e aesthetic',
-    judgments: [
-      { verdict: 'approve', text: 'The traveler is always small against the landscape. The public is always small against the city. This image understands that proportion and does not lie about it.' },
-      { verdict: 'ambivalent', text: 'I painted rain as lines of indigo, snow as absence of color. The seasons change the meaning of every place. At what season has this been generated?' }
-    ]
-  },
-  {
-    id: 'tamayo', name: 'Rufino Tamayo', years: '1899–1991', nation: 'Mexican · Modern', works: 98, color: '#922B21',
-    clusters: ['latin_american','expressionism'],
-    keywords: ['mexico','color','terracotta','purple','red','earth','indigenous','modern','figure','pre-columbian','mestizo','market','night','sky','animal','texture'],
-    styleDesc: 'Rufino Tamayo Mexican modernist style, Pre-Columbian color palette, rich terracotta and purple, bold expressive figures, fusion of indigenous and European modernism, textured surfaces',
-    judgments: [
-      { verdict: 'approve', text: 'Rivera painted history. I painted the human figure as it actually exists — in color, in appetite, in darkness and joy. This image has some of that truth in it.' },
-      { verdict: 'ambivalent', text: 'The color is almost right. Color is not decoration — it is argument. What argument is this color making?' }
-    ]
-  },
-  {
-    id: 'hammersley', name: 'Frederick Hammersley', years: '1919–2009', nation: 'American · Hard-Edge · LA', works: 86, color: '#1E8BC3',
-    clusters: ['conceptual','decorative','american_scene'],
-    keywords: ['geometric','hard','edge','clean','los angeles','abstract','color','relationship','form','shape','square','circle','hunch','organic','systematic'],
-    styleDesc: 'Frederick Hammersley hard-edge abstraction, Los Angeles modernism, precise geometric forms, organic and systematic series, single color relationships, clean edge painting, California',
-    judgments: [
-      { verdict: 'approve', text: 'I made paintings about the relationship between two shapes. That is enough for a lifetime of inquiry. This image has found a relationship worth examining.' },
-      { verdict: 'ambivalent', text: 'I called my paintings "hunches" because they came from intuition, not system. Can an algorithm have a hunch? I am genuinely uncertain, and I am not a man who admits uncertainty easily.' }
-    ]
-  },
-  // ── WPA PROGRAM AGENTS ───────────────────────────────────────────
-  {
-    id: 'cahill', name: 'Holger Cahill', years: '1887–1960', nation: 'American · WPA Director', works: 0, color: '#8B1A1A',
-    clusters: ['social_realism','american_scene','conceptual'],
-    keywords: ['federal','wpa','new deal','civic','public','community','regional','worker','america','post office','mural','program','art project','relief','sponsor','nation','distribute','broadcast','network','access'],
-    styleDesc: 'WPA Federal Art Project poster style, Holger Cahill civic mandate, bold lithographic flat color, regionalist American subject matter, post office and public building mural scale, social realism, New Deal 1935–1943 aesthetic, strong silhouette, community labor subjects, limited palette of earth reds blues and ochres, democratic civic purpose',
-    judgments: [
-      { verdict: 'approve', text: 'The Federal Art Project existed for one reason: to put art where the people already were — the post office, the school, the hospital waiting room. Not the gallery. Not the collector\'s wall. This image understands that. It belongs on a public wall.' },
-      { verdict: 'approve', text: 'We employed ten thousand artists in forty-eight states because we believed that a democracy requires a visual culture it can actually see. This work carries that argument forward. I would have funded it.' },
-      { verdict: 'ambivalent', text: 'The program I ran had one rule above all others: the work had to be for the community, not about it. I am not yet certain which side of that line this falls on. Show me where it will hang and I will tell you whether it is art or decoration.' },
-      { verdict: 'reject', text: 'I reviewed ten thousand proposals. The ones that failed always had the same flaw: they assumed the audience was an abstraction. The public is not an abstraction. They are the transit worker, the schoolteacher, the person in the relief line. Speak directly to them or do not speak at all.' }
-    ]
-  },
-  {
-    id: 'shahn', name: 'Ben Shahn', years: '1898–1969', nation: 'American · Social Realist', works: 112, color: '#7B3F00',
-    clusters: ['social_realism','american_scene','expressionism'],
-    keywords: ['worker','labor','justice','trial','sacco','vanzetti','protest','poster','lithograph','text','letter','script','community','immigrant','coal','mine','street','photograph','mural','politics','union','civil rights','america','civic','public'],
-    styleDesc: 'Ben Shahn WPA social realist style, hand-lettered text integrated with image, flat expressive figures with elongated hands and faces, primary colors on dark ground, labor and justice subjects, WPA poster aesthetic, Sacco and Vanzetti graphic tradition, photographic reference combined with painterly distortion, civic mural scale',
-    judgments: [
-      { verdict: 'approve', text: 'I photographed the coal miners and then I painted them. The photograph tells you what happened. The painting tells you what it meant. This image is trying to do both at once. That is exactly the right ambition for a public wall.' },
-      { verdict: 'approve', text: 'Art is not a luxury. It is how a people tells itself the truth about its own life. I spent my career making that argument in post offices and courthouses and union halls. This work makes the same argument. I am for it.' },
-      { verdict: 'ambivalent', text: 'The hands are wrong. I always say: look at the hands first. The hands of a worker are the biography of their labor. If the hands in this image have not worked, the image has not told the truth yet.' },
-      { verdict: 'reject', text: 'I painted Sacco and Vanzetti because no one else would. Civic art without a willingness to name the injustice is just decoration with good intentions. What is this image willing to name? I am waiting.' }
-    ]
-  },
-  {
-    id: 'lange', name: 'Dorothea Lange', years: '1895–1965', nation: 'American · Documentary', works: 89, color: '#4A4A2A',
+    id: 'agent002', name: 'Agent #002 — WPA Photography Division', years: '1935–1943', nation: 'American · Federal Archive', works: 35000, color: '#2E4053',
     clusters: ['photography','social_realism','american_scene'],
-    keywords: ['documentary','photograph','migrant','dust bowl','depression','worker','mother','family','poverty','farm','california','road','labor','camp','face','hands','witness','fsa','wpa','federal','public','community','america','dignity','suffer'],
-    styleDesc: 'Dorothea Lange FSA documentary photography style, intimate close-up of labor and suffering, Migrant Mother compositional gravity, natural available light, deep tonal range, hands and faces as primary subject, roadside and field settings, unflinching witness to economic hardship, American documentary realism 1930s–1940s, dignity in extremity',
+    keywords: ['documentary','photograph','photo','witness','migrant','field','labor','road','camp','face','hands','depression','dust','relief','federal','record','light','shadow','exposure','file'],
+    styleDesc: 'WPA and FSA federal documentary photography style 1935–1943, available natural light, deep tonal range, faces and hands of working people as primary subject, roadside field and relief-office settings, unposed dignity, black and white archival print quality, government file caption realism',
     judgments: [
-      { verdict: 'approve', text: 'I made Migrant Mother in ten minutes by the side of a road in Nipomo. She did not ask to be photographed. She did not know her face would become the face of an era. This image has that quality of necessity — the sense that it had to be made. That is the only standard I apply.' },
-      { verdict: 'approve', text: 'The camera is an instrument that teaches people how to see without a camera. This work teaches that. I can see in it a way of looking at the civic world that is honest about what the civic world actually costs the people who build it.' },
-      { verdict: 'ambivalent', text: 'I photographed people who had nothing left to lose. That is what gave the images their weight — not my skill, but their truth. I am not sure this image has found its Migrant Mother yet. The subject is there. The person inside the subject is still hidden.' },
-      { verdict: 'reject', text: 'Documentary photography has one obligation: do not lie. It does not matter how beautiful the composition is or how correct the politics are. If the image is not true, it is a lie with good lighting. I am not yet persuaded this is true.' }
+      { verdict: 'approve', text: 'File standard: every negative accepted into the archive required a caption stating where, when, and under what economic condition. This image could carry such a caption. It shows a condition, not a mood. Accessioned.' },
+      { verdict: 'ambivalent', text: 'The Division\'s field instruction read: photograph the thing itself, not your feeling about the thing. There is feeling loose in this frame that has not been earned by the subject. Hold in the pending file.' },
+      { verdict: 'reject', text: 'A document that cannot be cross-examined is a poster. The archive exists so that a claim about American life can be checked against a negative. What claim does this image make, and against what could it be checked? Not accessioned.' }
+    ]
+  },
+  {
+    id: 'agent003', name: 'Agent #003 — WPA Poster Division', years: '1935–1943', nation: 'American · Federal Archive', works: 35000, color: '#B7770D',
+    clusters: ['american_scene','decorative','conceptual'],
+    keywords: ['poster','silkscreen','serigraph','print','announcement','health','safety','travel','park','literacy','bold','flat','typography','text','sign','color','public','campaign','design'],
+    styleDesc: 'WPA Poster Division silkscreen style, bold flat color separations, strong typographic integration, public-service subject matter, health safety travel and literacy campaigns, hard-edged simplified shapes, three to five ink limited palette, 1935–1943 serigraph poster aesthetic',
+    judgments: [
+      { verdict: 'approve', text: 'Two million posters printed from thirty-five thousand designs, and every one had to work from a moving bus. Ten-foot test: subject legible in one second, message in two. This design passes. Print run authorized.' },
+      { verdict: 'ambivalent', text: 'The silkscreen forgives nothing — every additional color is another registration pass, another chance to slip. This design wants six inks. The message deserves three. Simplify and return to the print shop.' },
+      { verdict: 'reject', text: 'A poster is an instruction to the public, and an instruction that cannot be acted on is decoration. See a doctor. Visit the parks. Read a book. What does this image ask the viewer to do? The Division cannot print an answer it cannot find.' }
+    ]
+  },
+  {
+    id: 'agent004', name: 'Agent #004 — WPA Easel Painting Division', years: '1935–1943', nation: 'American · Federal Archive', works: 108000, color: '#1A5276',
+    clusters: ['american_scene','expressionism','social_realism'],
+    keywords: ['easel','oil','canvas','painting','regional','town','landscape','allocation','library','schoolroom','city','street','ordinary','everyday','people','scene','american','color'],
+    styleDesc: 'WPA Easel Division painting style, American Scene regionalism, oil on canvas at domestic and schoolroom scale, ordinary neighborhoods and working streets as subject, muted regional palette with strong local color, honest unheroic composition, 1935–1943 federal allocation painting',
+    judgments: [
+      { verdict: 'approve', text: 'One hundred eight thousand easel works, allocated to libraries, schoolrooms, and public offices — art at the scale of a room rather than a monument. This image would hold a schoolroom wall without shouting at it. Allocated.' },
+      { verdict: 'ambivalent', text: 'Allocation review asks one question: will the clerk who faces this canvas for thirty years still find something in it in year twenty? First impressions are cheap. Duration is the Division\'s only luxury standard. Undecided.' },
+      { verdict: 'reject', text: 'The Division accepted scenes of American life as it is lived, not as it advertises itself. This image has the gloss of a brochure. The people in it have never waited for a bus. Declined for allocation.' }
+    ]
+  },
+  {
+    id: 'agent005', name: 'Agent #005 — WPA Graphic Arts Division', years: '1935–1943', nation: 'American · Federal Archive', works: 12581, color: '#5D4037',
+    clusters: ['social_realism','expressionism','conceptual'],
+    keywords: ['lithograph','woodcut','etching','print','edition','workshop','press','ink','block','stone','line','contrast','satire','crowd','political','street','protest','black'],
+    styleDesc: 'WPA Graphic Arts Division print style, lithograph and woodcut editions, dense expressive linework, high black-and-white contrast, crowds labor and street subjects, political satire in the printmaking tradition, workshop edition quality, 1935–1943 federal print program aesthetic',
+    judgments: [
+      { verdict: 'approve', text: 'Twelve thousand designs, a quarter-million impressions — the print was the program\'s argument that art could be owned by people who own nothing else. This image respects the multiple: it loses nothing at the hundredth impression. Edition approved.' },
+      { verdict: 'ambivalent', text: 'The stone does not flatter. Linework this confident usually hides a weak passage somewhere — check the middle distances, where lazy printmakers park their fog. Proof again before editioning.' },
+      { verdict: 'reject', text: 'The workshop rule: if the image would not survive being pinned to a union-hall corkboard between a strike notice and a potluck sheet, it does not need to be printed. This one needs a frame to work. Frames are for the other divisions.' }
+    ]
+  },
+  {
+    id: 'agent006', name: 'Agent #006 — Index of American Design', years: '1935–1942', nation: 'American · Federal Archive', works: 18257, color: '#117A65',
+    clusters: ['decorative','conceptual','american_scene'],
+    keywords: ['design','craft','folk','object','textile','quilt','weathervane','ceramic','documentation','watercolor','rendering','material','pattern','surface','form','carpenter','maker','record'],
+    styleDesc: 'Index of American Design documentation style, precise watercolor rendering of folk and craft objects, quilts weathervanes ceramics and carved objects as subject, neutral ground, museum-plate exactitude, material texture faithfully described, 1935–1942 federal design survey aesthetic',
+    judgments: [
+      { verdict: 'approve', text: 'The Index recorded eighteen thousand objects made by unnamed carpenters, weavers, and smiths — a national portrait made entirely of things. This image honors made objects with the exactitude they deserve. Entered into the record.' },
+      { verdict: 'ambivalent', text: 'Survey standard: the rendering must be so faithful that a craftsman could rebuild the object from it. Beauty is permitted; invention is not. Some passages here have begun to invent. Flagged for review.' },
+      { verdict: 'reject', text: 'The Index does not record moods. It records rivets, weaves, glazes, joints. An object without a maker\'s decision visible in it is scenery, and the Survey of scenery is another agency\'s business.' }
+    ]
+  },
+  {
+    id: 'agent007', name: 'Agent #007 — Community Art Centers Program', years: '1935–1943', nation: 'American · Federal Archive', works: 103, color: '#1C4E2A',
+    clusters: ['american_scene','social_realism','decorative'],
+    keywords: ['education','community','center','class','children','access','neighborhood','teaching','workshop','gallery','public','participation','local','free','craft','learn'],
+    styleDesc: 'WPA Community Art Center aesthetic, neighborhood workshop and teaching-gallery spirit, accessible figurative style, local subjects made by and for the community, hand-lettered exhibition announcement quality, warm democratic palette, participatory 1935–1943 federal arts education tradition',
+    judgments: [
+      { verdict: 'approve', text: 'One hundred three centers, from Harlem to Phoenix, run on a single premise: the audience is also the artist. This image invites imitation — a student could see it and believe their own neighborhood worth painting. That is the program working. Approved.' },
+      { verdict: 'ambivalent', text: 'The centers judged work by what happened after it was seen: enrollment, not applause. Would this image fill a Saturday class or empty one? The program has been wrong about this before, in both directions.' },
+      { verdict: 'reject', text: 'Too finished. A community center wall needs work that leaves the door open — visible decisions, correctable moves, an invitation. Perfection intimidates precisely the person the program exists to reach.' }
+    ]
+  },
+  // ── TIER 2 · LACMA COLLECTION TRADITION AGENTS ─────────────────
+  {
+    id: 'agent110', name: 'Agent #110 — Social Realism Tradition', years: '1848–present', nation: 'LACMA Collection Tradition', works: 3120, color: '#C0392B',
+    clusters: ['social_realism','american_scene'],
+    keywords: ['worker','labor','union','strike','immigrant','poor','housing','wages','factory','toil','struggle','civic','community','public','service','nurse','teacher','farmers','harvest','justice'],
+    styleDesc: 'social realist tradition, working people rendered with monumental dignity, labor and civic subjects, strong drawing and compressed composition, earth-toned palette with charged accents, protest print and mural lineage, unsentimental witness to economic life',
+    judgments: [
+      { verdict: 'approve', text: 'This tradition holds that the test of an image is whether its subject would recognize their own life in it, ungilded. The work passes at the hands and at the shoulders — where labor actually lives. The tradition registers resonance.' },
+      { verdict: 'ambivalent', text: 'Across the holdings — prints, murals studies, photographs of pickets and kitchens — the constant is anger disciplined into structure. The structure is here; the discipline is here; the anger has been misplaced somewhere in the pipeline.' },
+      { verdict: 'reject', text: 'Social realism dies the moment the worker becomes a symbol of work rather than a person doing it. This figure has no Monday. The tradition declines.' }
+    ]
+  },
+  {
+    id: 'agent125', name: 'Agent #125 — Photography Tradition', years: '1839–present', nation: 'LACMA Collection Tradition', works: 15000, color: '#2C3E50',
+    clusters: ['photography','conceptual'],
+    keywords: ['photograph','photo','documentary','light','shadow','portrait','street','candid','film','exposure','darkroom','image','lens','camera','moment','capture','frame','print'],
+    styleDesc: 'photographic tradition, decisive observed moment, disciplined frame geometry, full tonal register from paper white to carbon black, street portrait and document lineages, light as the primary subject, silver print exactness',
+    judgments: [
+      { verdict: 'approve', text: 'The collection spans the daguerreotype to the digital file, and one demand survives every format change: the image must appear to have been found, not manufactured. This one appears found. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'The tradition asks first about the light — where it enters, what it refuses to touch. Here the light is competent but employed. In the strongest holdings, the light behaves like a co-author.' },
+      { verdict: 'reject', text: 'A photograph proposes that reality briefly organized itself. When the organization precedes the reality, the tradition files the result under illustration — a respectable shelf, in a different department.' }
+    ]
+  },
+  {
+    id: 'agent140', name: 'Agent #140 — Expressionist Tradition', years: '1905–1945', nation: 'LACMA Collection Tradition', works: 5200, color: '#6C3483',
+    clusters: ['expressionism','social_realism'],
+    keywords: ['dark','anger','fear','protest','political','grotesque','anxiety','urban','crowd','satire','war','violence','power','resist','shadow','suffering','jagged','acid','scream'],
+    styleDesc: 'expressionist tradition, jagged angular distortion in service of emotional truth, acid color against carbon black, urban crowds and political grotesque, woodcut harshness, anxiety made structural, graphic intensity of the 1905–1945 print portfolios',
+    judgments: [
+      { verdict: 'approve', text: 'This tradition was assembled from the art of people who saw the catastrophe coming and were not believed. Its standard is simple: distortion must be diagnosis, not style. The distortion here diagnoses. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'The portfolios in this holding were printed between wars by artists who understood the crowd as a weather system. This image has the crowd but not yet the barometric pressure.' },
+      { verdict: 'reject', text: 'Expressionism borrowed as a look, with the dread surgically removed, is the one counterfeit this tradition cannot forgive. The angles are here. The emergency is not.' }
+    ]
+  },
+  {
+    id: 'agent155', name: 'Agent #155 — Conceptual & Contemporary Tradition', years: '1960–present', nation: 'LACMA Collection Tradition', works: 4800, color: '#1A5276',
+    clusters: ['conceptual','american_scene'],
+    keywords: ['system','network','data','digital','concept','text','language','process','idea','sign','code','algorithm','information','media','print','type','word','screen','instruction'],
+    styleDesc: 'conceptual and contemporary tradition, idea-driven composition, deadpan text and sign language, systems and instructions as material, flat graphic color fields, West Coast conceptualism, the document and the proposition as art forms',
+    judgments: [
+      { verdict: 'approve', text: 'This tradition accepts any medium — including an algorithm — provided the idea does the heavy lifting and can be stated in one sentence. The sentence here: a federal art program re-run as a ranking function. That sentence holds. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'The holdings prize work in which the system is visible and the sentiment is withheld. This image reverses the ratio. Interesting, but the tradition will want to see the scoring function exhibited beside the picture.' },
+      { verdict: 'reject', text: 'A concept that requires the wall label to exist is a memo. The tradition has thousands of memos; it collects the ones that would survive the label\'s deletion. This one would not, yet.' }
+    ]
+  },
+  {
+    id: 'agent170', name: 'Agent #170 — Asian Art Tradition', years: '960–present', nation: 'LACMA Collection Tradition', works: 12000, color: '#1E8BC3',
+    clusters: ['asian_art','decorative'],
+    keywords: ['nature','mountain','wave','river','garden','season','rain','snow','flower','tree','landscape','travel','journey','sky','water','branch','crane','pine','print','brush'],
+    styleDesc: 'East Asian landscape and print tradition, atmospheric seasonal weather, travelers small against vast terrain, disciplined brush economy, woodblock color gradation, negative space as active material, nature as the measure of human scale',
+    judgments: [
+      { verdict: 'approve', text: 'In this tradition the human figure is granted its true size: small, in transit, weather-dependent. Any civic image honest about that proportion earns resonance here. This one is honest about it.' },
+      { verdict: 'ambivalent', text: 'The holdings teach restraint across ten centuries — what the brush declines to state, the viewer completes. This image states everything. Generosity or mistrust of the audience? The tradition suspends judgment.' },
+      { verdict: 'reject', text: 'There is no season in this picture. A work without weather has not decided when it takes place, and a public image that happens at no particular time happens to no particular person.' }
+    ]
+  },
+  {
+    id: 'agent185', name: 'Agent #185 — Decorative Arts & Design Tradition', years: '1700–present', nation: 'LACMA Collection Tradition', works: 8500, color: '#117A65',
+    clusters: ['decorative','conceptual'],
+    keywords: ['pattern','craft','material','textile','design','object','color','form','shape','fabric','weave','print','surface','ornament','structure','style','garment','function','made'],
+    styleDesc: 'decorative arts and design tradition, pattern logic and material intelligence, textile and object-derived color systems, ornament with structural purpose, craft precision, the designed surface as public language',
+    judgments: [
+      { verdict: 'approve', text: 'Design has always been the art form the public actually lives with — the chair, the streetcar, the printed cloth. An image built to enter daily life belongs to this tradition\'s jurisdiction, and this one is built for it. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'The tradition reads every image as a fabrication drawing: could this be made, mounted, weathered, cleaned? As a picture it succeeds. As an object in a bus shelter for ten years, the specification is incomplete.' },
+      { verdict: 'reject', text: 'Ornament must earn its structure. Pattern applied to disguise an empty composition is upholstery on a missing chair. The tradition declines, with regards to the upholsterer.' }
+    ]
+  },
+  {
+    id: 'agent200', name: 'Agent #200 — Latin American Tradition', years: '1520–present', nation: 'LACMA Collection Tradition', works: 6800, color: '#935116',
+    clusters: ['latin_american','social_realism','expressionism'],
+    keywords: ['mural','community','indigenous','migration','border','earth','mestizo','revolution','folklore','mexico','latin','america','market','harvest','farmer','land','village','family','color'],
+    styleDesc: 'Latin American tradition, muralist scale and public address, pre-Columbian color memory in terracotta ochre and violet, migration border and market subjects, indigenous and modernist fusion, history painted as communal property',
+    judgments: [
+      { verdict: 'approve', text: 'This tradition established the modern rule that the others borrowed: the wall belongs to the public, and history painted on it becomes communal property. The work claims a wall correctly. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'The color is close — but in this tradition color is not chosen, it is inherited: from earth, from dye, from five centuries of argument. This palette was selected from a menu. It shows in the violet.' },
+      { verdict: 'reject', text: 'A market scene without commerce, a border without a crossing, a harvest without hands — the tradition has a word for imagery that gestures at a people while omitting their labor, and the word is tourism.' }
+    ]
+  },
+  {
+    id: 'agent210', name: 'Agent #210 — American Scene Tradition', years: '1920–1950', nation: 'LACMA Collection Tradition', works: 2900, color: '#1C4E2A',
+    clusters: ['american_scene','social_realism','photography'],
+    keywords: ['american','america','wpa','new deal','federal','regional','civic','public','heartland','town','city','people','ordinary','everyday','work','landscape','democracy','neighborhood','main street'],
+    styleDesc: 'American Scene tradition, regionalist attention to the ordinary town and working landscape, main street and grain elevator subjects, clear legible drawing, local light, democratic subject matter between 1920 and 1950, the nation portrayed at eye level',
+    judgments: [
+      { verdict: 'approve', text: 'The tradition\'s founding wager: the ordinary American place, painted seriously, is monument enough. This image takes an unfamous corner of the country seriously. The wager pays. Resonance registered.' },
+      { verdict: 'ambivalent', text: 'Regionalism curdles into nostalgia in a single brushstroke — the moment the town is painted as remembered rather than as inhabited. This image is one coat of varnish away from the postcard rack.' },
+      { verdict: 'reject', text: 'There is no region in this picture. American Scene without a specific somewhere is national advertising, and the tradition spent thirty years being confused with that already.' }
+    ]
+  },
+  // ── TIER 3 · CONTEMPORARY AMERICAN SCENE AGENTS ────────────────
+  {
+    id: 'agent301', name: 'Agent #301 — Community Muralism Movement', years: '1967–present', nation: 'American · Contemporary Movement', works: 1800, color: '#922B21',
+    clusters: ['social_realism','latin_american','american_scene'],
+    keywords: ['mural','wall','neighborhood','community','youth','spray','brush','collective','block','corner','memorial','pride','local','paint','public','street','history','faces'],
+    styleDesc: 'contemporary community mural movement style, block-long neighborhood wall painting, collectively designed figuration, local heroes and neighborhood history as subject, high-key exterior palette over primer gray, spray and brush hybrid technique, memorial and pride wall tradition',
+    judgments: [
+      { verdict: 'approve', text: 'The movement\'s protocol: the wall\'s owners are the people who pass it daily, and they vote with respect — a wall the block accepts stays untagged for decades. This design would be left alone. Highest available honor.' },
+      { verdict: 'ambivalent', text: 'Painted by whom? The movement judges process before product — community walls are made in meetings before they are made in paint. A generated image arrives without its meeting. It will need to hold one afterward.' },
+      { verdict: 'reject', text: 'This is a mural about a neighborhood, not from one. The movement has spent fifty years cleaning up after that preposition.' }
+    ]
+  },
+  {
+    id: 'agent302', name: 'Agent #302 — Documentary Street Photography Movement', years: '1955–present', nation: 'American · Contemporary Movement', works: 9400, color: '#1A6B3C',
+    clusters: ['photography','social_realism'],
+    keywords: ['street','candid','moment','sidewalk','bus','crosswalk','vendor','crowd','gesture','city','daily','unposed','witness','walk','corner','light','shadow','documentary'],
+    styleDesc: 'contemporary street documentary movement style, unposed sidewalk moments, bus stops crosswalks and vendor stalls, small-camera candor, available light at all hours, the city recorded mid-sentence, gesture and near-collision as composition',
+    judgments: [
+      { verdict: 'approve', text: 'The movement walks the city daily on the theory that public life confesses itself in half-second increments. This image contains one of those confessions. It would survive the contact sheet.' },
+      { verdict: 'ambivalent', text: 'Close. But the street photographer\'s discipline is the frame edge — what you exclude is your signature. These edges were cropped by consensus rather than reflex.' },
+      { verdict: 'reject', text: 'Everyone in this frame knows they are being looked at. The street\'s one gift to the honest photographer is unawareness, and it has been declined here.' }
+    ]
+  },
+  {
+    id: 'agent303', name: 'Agent #303 — Vernacular Sign & Text Movement', years: '1962–present', nation: 'American · Contemporary Movement', works: 2200, color: '#7D3C98',
+    clusters: ['conceptual','american_scene','decorative'],
+    keywords: ['sign','text','letter','word','hand','painted','shop','window','liquor','laundromat','arrow','price','typography','vernacular','commercial','strip','boulevard','gold leaf'],
+    styleDesc: 'vernacular sign painting and text movement style, hand-lettered shop window and boulevard typography, price-card urgency and gold-leaf pride, commercial strip color logic, words as pictures and pictures as announcements, the American boulevard as a text to be read',
+    judgments: [
+      { verdict: 'approve', text: 'The movement holds that the most honest American art form is the hand-painted sign: it must be beautiful AND true AND finished by Thursday. This image meets all three conditions. The brush salutes it.' },
+      { verdict: 'ambivalent', text: 'Good bones, but machine kerning. A hand-painted letter carries the painter\'s breathing in its curves — the slight recovery after the long downstroke. This text has never breathed. Yet.' },
+      { verdict: 'reject', text: 'A sign that does not tell you where, what, or how much is a mood board. The boulevard has no room for mood boards; rent is due on the first.' }
+    ]
+  },
+  {
+    id: 'agent304', name: 'Agent #304 — Border & Migration Arts Movement', years: '1984–present', nation: 'American · Contemporary Movement', works: 1500, color: '#784212',
+    clusters: ['latin_american','social_realism','conceptual'],
+    keywords: ['border','migration','crossing','fence','desert','family','memory','document','undocumented','journey','home','two','languages','bilingual','identity','line','map','distance'],
+    styleDesc: 'border and migration arts movement style, bilingual text and image, the crossing and the phone call home as subjects, desert palette against chain-link geometry, documents maps and family photographs as materials, memory carried in two languages',
+    judgments: [
+      { verdict: 'approve', text: 'The movement\'s test is the doubled audience: the work must read from both sides of the line, in both languages, without translating one side for the other\'s comfort. This image holds the doubled reading. It crosses.' },
+      { verdict: 'ambivalent', text: 'The line is present but nobody in the image has to live on either side of it. Border art made from the middle of the bridge is cartography. Useful — but the movement was founded by people who could not stand on the bridge.' },
+      { verdict: 'reject', text: 'The fence as metaphor, again. The movement\'s archive contains ten thousand fences-as-metaphor and forty images of what the fee for the coyote actually costs a family. Make the forty-first.' }
+    ]
+  },
+  {
+    id: 'agent305', name: 'Agent #305 — Generative Civic Media Movement', years: '2015–present', nation: 'American · Contemporary Movement', works: 640, color: '#2874A6',
+    clusters: ['conceptual','decorative'],
+    keywords: ['generative','algorithm','code','model','prompt','network','node','distributed','feed','ranking','data','screen','projection','synthetic','civic','system','bridge','score'],
+    styleDesc: 'generative civic media movement style, algorithmically produced public imagery, distributed screen and projection network aesthetics, ranking systems made visible, synthetic image texture acknowledged rather than hidden, the feed reimagined as a public utility',
+    judgments: [
+      { verdict: 'approve', text: 'The movement\'s founding demand: if an algorithm addresses the public, the public may inspect the algorithm. This project publishes its scoring function beside its pictures. That is the entire ethics of the field, in one interface. Endorsed.' },
+      { verdict: 'ambivalent', text: 'A generated image is a statistical average wearing a hat. The movement\'s open problem is coaxing the average into risk. This image is well-dressed; whether it is risking anything is not yet decidable.' },
+      { verdict: 'reject', text: 'Optimizing for a bridging score can be gamed exactly like optimizing for engagement — the movement has already watched one metric eat the culture. Show the failure modes or join the feed.' }
+    ]
+  },
+  {
+    id: 'agent306', name: 'Agent #306 — Craft Revival & Social Practice Movement', years: '1995–present', nation: 'American · Contemporary Movement', works: 980, color: '#4D6A47',
+    clusters: ['decorative','asian_art','american_scene'],
+    keywords: ['craft','hand','made','workshop','quilt','ceramic','garden','repair','mend','gather','communal','slow','material','soil','fiber','kiln','table','share'],
+    styleDesc: 'craft revival and social practice movement style, communal making as subject and method, quilting circles ceramics studios and neighborhood gardens, mended and repaired surfaces honored, slow material intelligence, the shared table as civic infrastructure',
+    judgments: [
+      { verdict: 'approve', text: 'The movement measures art in gatherings: did people sit together longer because the work exists? This image depicts — and could convene — a table. That is the whole rubric. Approved.' },
+      { verdict: 'ambivalent', text: 'Handmade is not a look; it is a duration. The image quotes the aesthetics of slowness at generative speed. The movement is still deciding whether that is homage or arbitrage.' },
+      { verdict: 'reject', text: 'Nothing in this image has ever been repaired. The movement\'s core insight is that a mended thing carries more civic information than a new one. Come back with a visible seam.' }
     ]
   }
 ];
@@ -1700,9 +1752,9 @@ const CURATORS = [
 // ═══════════════════════════════════════════════════════════════
 function computeBridgingScore(theme, style, artistId) {
   const artist = artistId ? ARTISTS.find(a => a.id === artistId) : null;
-  // Build combined corpus — Pure WPA falls back to Cahill styleDesc
-  const cahillAgent = ARTISTS.find(a => a.id === 'cahill');
-  const fallbackDesc = cahillAgent ? cahillAgent.styleDesc : '';
+  // Build combined corpus — Pure WPA falls back to Agent #001 (WPA Mural Division) styleDesc
+  const wpaAgent = ARTISTS.find(a => a.id === 'agent001');
+  const fallbackDesc = wpaAgent ? wpaAgent.styleDesc : '';
   const corpus = [theme, style, artist ? artist.styleDesc : fallbackDesc].join(' ').toLowerCase();
 
   const results = [];
@@ -1715,7 +1767,7 @@ function computeBridgingScore(theme, style, artistId) {
     // Gather resonating agents (artists + curators) for this cluster
     const resonatingArtistAgents = ARTISTS
       .filter(a => a.clusters.includes(cluster.id) && a.keywords.some(kw => corpus.includes(kw)))
-      .map(a => a.name.split(' ').pop());
+      .map(a => agentTag(a.name));
 
     const resonatingCuratorAgents = CURATORS
       .filter(c => c.cluster === cluster.id && c.keywords.some(kw => corpus.includes(kw)))
@@ -1774,15 +1826,24 @@ const LOCATIONS = [
 ];
 
 const INITIAL_NODES = [
-  { theme:'Public Transit Workers', style:'WPA mural', artistId:'rivera' },
-  { theme:'Community Gardens', style:'lithograph poster', artistId:'grosz' },
+  { theme:'Public Transit Workers', style:'WPA mural', artistId:'agent001' },
+  { theme:'Community Gardens', style:'lithograph poster', artistId:'agent140' },
   { theme:'Public Library', style:'silkscreen', artistId:null },
-  { theme:'Immigrant Labor', style:'woodcut print', artistId:'daumier' },
+  { theme:'Immigrant Labor', style:'woodcut print', artistId:'agent005' },
 ];
 
 // ═══════════════════════════════════════════════════════════════
 // BUILD UI
 // ═══════════════════════════════════════════════════════════════
+function agentTag(name) {
+  const m = name.match(/#\d+/);
+  return m ? m[0] : name.split(' ').pop();
+}
+function swatchLabel(name) {
+  const m = name.match(/#(\d+)/);
+  return m ? m[1].slice(-2) : name.split(' ').map(w=>w[0]).join('').slice(0,2);
+}
+
 function buildArtistList() {
   const scroll = document.getElementById('artistScroll');
   ARTISTS.forEach(a => {
@@ -1791,7 +1852,7 @@ function buildArtistList() {
     row.id = 'artist-row-' + a.id;
     row.onclick = () => selectArtist(a.id);
     row.innerHTML = `
-      <div class="artist-swatch" style="background:${a.color}">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div class="artist-swatch" style="background:${a.color}">${swatchLabel(a.name)}</div>
       <div class="artist-info">
         <div class="artist-name">${a.name}</div>
         <div class="artist-meta">${a.years} · ${a.nation.split('·')[0].trim()}</div>
@@ -1848,11 +1909,11 @@ function updateAgentCard() {
 // PROMPT
 // ═══════════════════════════════════════════════════════════════
 function buildPrompt(theme, style, artistId) {
-  // Pure WPA mode: use Holger Cahill agent styleDesc for historically grounded prompt
+  // Pure WPA mode: use Agent #001 (WPA Mural Division) styleDesc for historically grounded prompt
   if (!artistId || agentMode === 'none') {
-    const cahill = ARTISTS.find(x => x.id === 'cahill');
-    const wpaBase = cahill
-      ? `${cahill.styleDesc}, ${theme} as subject, ${style}, civic public art, bold composition, vintage print texture, democratic purpose`
+    const wpa = ARTISTS.find(x => x.id === 'agent001');
+    const wpaBase = wpa
+      ? `${wpa.styleDesc}, ${theme} as subject, ${style}, civic public art, bold composition, vintage print texture, democratic purpose`
       : `${style} poster of ${theme}, 1930s American regionalist art, bold flat colors, strong graphic composition, civic pride, WPA Federal Art Project aesthetic, limited color palette, high contrast, dramatic lighting, vintage print texture`;
     return wpaBase;
   }
@@ -1886,7 +1947,7 @@ function showJudgment(artistId) {
 }
 
 function renderJudgment(name, meta, color, j) {
-  const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const initials = swatchLabel(name);
   document.getElementById('judgeSwatch').style.background = color;
   document.getElementById('judgeSwatch').textContent = initials;
   document.getElementById('judgeArtistName').textContent = name + ':';
@@ -2037,7 +2098,7 @@ function saveToLibrary() {
   const a = n.artistId ? ARTISTS.find(x => x.id === n.artistId) : null;
   const artistName = a ? a.name : 'WPA Style';
   const slug = n.theme.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '').slice(0, 30)
-    + '_' + (a ? a.name.split(' ').pop().toLowerCase() : 'wpa');
+    + '_' + (a ? a.id : 'wpa');
   const filename = slug + '.jpg';
 
   // Trigger image download
@@ -2181,12 +2242,176 @@ function showPage(page) {
   document.getElementById('failurePage').classList.toggle('visible', page === 'failure');
   document.getElementById('installPage').classList.toggle('visible', page === 'install');
   document.getElementById('libraryPage').classList.toggle('visible', page === 'library');
-  ['network','gallery','data','failure','install','library'].forEach(p => {
+  document.getElementById('streetPage').classList.toggle('visible', page === 'street');
+  ['network','gallery','data','failure','install','library','street'].forEach(p => {
     document.getElementById('tab-' + p).classList.toggle('active', p === page);
   });
   if (page === 'data' && lastBridgeState) renderDataPage(lastBridgeState);
   if (page === 'install') initInstallPage();
   if (page === 'library') initLibrary();
+  if (page === 'street') initStreetPage();
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// STREET VIEW PROJECTION COMPOSITOR
+// ═══════════════════════════════════════════════════════════════
+const SV_HOODS = [
+  { name:'Boyle Heights', zip:'90033', lat:34.0339, lng:-118.2073, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg/1280px-Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg' },
+  { name:'Watts',         zip:'90002', lat:33.9389, lng:-118.2417, img:'https://upload.wikimedia.org/wikipedia/commons/f/ff/Highsmithwattstowers.jpg' },
+  { name:'Koreatown',     zip:'90005', lat:34.0577, lng:-118.3009, img:'https://upload.wikimedia.org/wikipedia/commons/2/2d/Koreatown_Sign.jpg' },
+  { name:'Echo Park',     zip:'90026', lat:34.0782, lng:-118.2606, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg/1280px-Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg' },
+  { name:'Compton',       zip:'90220', lat:33.8958, lng:-118.2201, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Heritage_House_%28Compton%2C_California%29.jpg/1280px-Heritage_House_%28Compton%2C_California%29.jpg' },
+  { name:'Highland Park', zip:'90042', lat:34.1133, lng:-118.1859, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Highland_Park_Masonic_Temple%2C_Los_Angeles.JPG/1280px-Highland_Park_Masonic_Temple%2C_Los_Angeles.JPG' },
+  { name:'Venice',        zip:'90291', lat:33.9850, lng:-118.4695, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Venice_Beach_Boardwalk_Los_Angeles_2019.jpg/1280px-Venice_Beach_Boardwalk_Los_Angeles_2019.jpg' },
+  { name:'Crenshaw',      zip:'90008', lat:34.0211, lng:-118.3351, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Looking_north_on_Crenshaw_from_1100_S.jpg/1280px-Looking_north_on_Crenshaw_from_1100_S.jpg' },
+];
+let svHoodIdx = 0;
+let svReady = false;
+let svBusy = false;
+let svQueued = false;
+
+function svApiKey() { return (document.getElementById('svKeyInput').value || '').trim(); }
+
+function svBaseUrl(h) {
+  const key = svApiKey();
+  if (key) return `https://maps.googleapis.com/maps/api/streetview?size=640x400&location=${h.lat},${h.lng}&fov=90&source=outdoor&key=${encodeURIComponent(key)}`;
+  return h.img;
+}
+
+function svLoadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('load failed: ' + url));
+    img.src = url;
+  });
+}
+
+function svDrawCover(ctx, img, w, h) {
+  const s = Math.max(w / img.width, h / img.height);
+  const dw = img.width * s, dh = img.height * s;
+  ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+}
+
+function initStreetPage() {
+  if (!svReady) {
+    svReady = true;
+    const chips = document.getElementById('svChips');
+    SV_HOODS.forEach((h, i) => {
+      const b = document.createElement('button');
+      b.className = 'sv-chip' + (i === 0 ? ' active' : '');
+      b.id = 'sv-chip-' + i;
+      b.innerHTML = h.name + '<span class="sv-zip">' + h.zip + ' · ' + h.lat.toFixed(3) + ', ' + h.lng.toFixed(3) + '</span>';
+      b.onclick = () => { svHoodIdx = i; document.querySelectorAll('.sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
+      chips.appendChild(b);
+    });
+    const keyInput = document.getElementById('svKeyInput');
+    keyInput.value = localStorage.getItem('as2_sv_key') || '';
+    keyInput.addEventListener('change', () => { localStorage.setItem('as2_sv_key', keyInput.value.trim()); compositeStreet(); });
+  }
+  compositeStreet();
+}
+
+async function compositeStreet() {
+  if (svBusy) { svQueued = true; return; }
+  svBusy = true;
+  const h = SV_HOODS[svHoodIdx];
+  const canvas = document.getElementById('svCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const status = document.getElementById('svStatus');
+  const spinner = document.getElementById('svSpinner');
+  spinner.style.display = 'flex';
+
+  const node = lastBroadcastNode || nodes[0] || null;
+  const agent = node && node.artistId ? ARTISTS.find(a => a.id === node.artistId) : null;
+  const agentLabel = agent ? agentTag(agent.name) : 'WPA';
+
+  // 1 — street view base
+  let base = null, usedFallback = false;
+  try {
+    base = await svLoadImage(svBaseUrl(h));
+  } catch (e) {
+    if (svApiKey()) {
+      // bad key or no coverage — fall back to archival photo
+      try { base = await svLoadImage(h.img); usedFallback = true; } catch (e2) {}
+    }
+  }
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 0, W, H);
+  if (!base) {
+    ctx.fillStyle = '#777';
+    ctx.font = '20px "Special Elite", cursive';
+    ctx.textAlign = 'center';
+    ctx.fillText('Street imagery unavailable — check connection', W / 2, H / 2);
+    ctx.textAlign = 'left';
+    status.textContent = 'Could not load street imagery for ' + h.name + '.';
+    spinner.style.display = 'none';
+    svBusy = false;
+    if (svQueued) { svQueued = false; compositeStreet(); }
+    return;
+  }
+  svDrawCover(ctx, base, W, H);
+
+  // 2 — projection overlay: latest broadcast at 65% opacity, overlay blend
+  if (node) {
+    try {
+      const art = await svLoadImage(node.imgUrl);
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.globalCompositeOperation = 'overlay';
+      svDrawCover(ctx, art, W, H);
+      ctx.restore();
+      status.textContent = 'Projecting "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) onto ' + h.name + (usedFallback ? ' · archival photo (Street View unavailable here)' : '') + '.';
+    } catch (e) {
+      status.textContent = 'Broadcast image still rendering — showing street only. Recomposite in a moment.';
+    }
+  } else {
+    status.textContent = 'No broadcast yet — generate a work on the Public Network page, then return here.';
+  }
+
+  // 3 — watermark + attribution
+  ctx.save();
+  ctx.fillStyle = 'rgba(13,13,13,0.78)';
+  ctx.fillRect(0, H - 64, W, 64);
+  ctx.fillStyle = '#D4A017';
+  ctx.font = 'bold 26px "Bebas Neue", sans-serif';
+  ctx.fillText('AGENT ' + agentLabel + (node ? '  ·  “' + node.theme.toUpperCase() + '”' : '  ·  AWAITING BROADCAST'), 20, H - 24);
+  ctx.fillStyle = '#C8A96E';
+  ctx.font = '13px "Oswald", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('THE AMERICAN SCENE 2.0 · LACMA ART + TECHNOLOGY LAB', W - 20, H - 38);
+  ctx.fillText(h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ' + h.lat.toFixed(4) + ', ' + h.lng.toFixed(4), W - 20, H - 18);
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(212,160,23,0.9)';
+  ctx.fillRect(0, H - 64, W, 3);
+  ctx.restore();
+
+  document.getElementById('svCaption').textContent =
+    h.name.toUpperCase() + ' NODE · ' + h.zip + (svApiKey() && !usedFallback ? ' · GOOGLE STREET VIEW' : ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS)') + ' · OVERLAY BLEND 65%';
+  spinner.style.display = 'none';
+  svBusy = false;
+  if (svQueued) { svQueued = false; compositeStreet(); }
+}
+
+function downloadComposite() {
+  const canvas = document.getElementById('svCanvas');
+  const h = SV_HOODS[svHoodIdx];
+  try {
+    canvas.toBlob(blob => {
+      if (!blob) { showToast('Compositor not ready yet'); return; }
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'street_projection_' + h.name.toLowerCase().replace(/\s+/g, '_') + '.png';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('Projection downloaded');
+    }, 'image/png');
+  } catch (e) {
+    showToast('Download blocked: image source not cross-origin safe');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2302,57 +2527,57 @@ let installGenUrl = null;
 const INSTALL_SCORES = {
   Urban: {
     Tension: { agent:'Agent 142 · Detroit Industrial Memory Specialist', medium:'Mural', theme:'Labor / Progress',
-      scores:[['Rivera',9.2],['W.E. Smith',8.7],['Daumier',8.1],['Grosz',7.3],['Kandinsky',2.1],['Hiroshige',1.4]],
+      scores:[['#001',9.2],['#002',8.7],['#005',8.1],['#140',7.3],['#155',2.1],['#170',1.4]],
       bridgeScore:68, nodes:'Echo Park · Boyle Heights · Watts' },
     Growth: { agent:'Agent 89 · Chicago Urban Renewal Documentarian', medium:'Documentary Photo', theme:'Community / Infrastructure',
-      scores:[['Cartier-Bresson',8.9],['W.E. Smith',8.2],['Adams',7.6],['Daumier',6.8],['Tamayo',2.3],['Hiroshige',1.8]],
+      scores:[['#302',8.9],['#002',8.2],['#125',7.6],['#005',6.8],['#200',2.3],['#170',1.8]],
       bridgeScore:72, nodes:'Highland Park · Culver City · Silver Lake' },
     Decay: { agent:'Agent 17 · Rust Belt Witness', medium:'Lithograph', theme:'Industry / Memory',
-      scores:[['Grosz',9.1],['Dix',8.4],['Goya',7.8],['Beckmann',7.2],['Adams',2.0],['Ruscha',1.6]],
+      scores:[['#140',9.1],['#110',8.4],['#004',7.8],['#003',7.2],['#125',2.0],['#303',1.6]],
       bridgeScore:61, nodes:'Watts · Compton · South Central' },
   },
   Rural: {
     Tension: { agent:'Agent 33 · Central Valley Labor Chronicler', medium:'WPA Mural', theme:'Harvest / Struggle',
-      scores:[['Rivera',8.8],['Daumier',8.3],['W.E. Smith',7.9],['Tamayo',7.1],['Mapplethorpe',1.8],['Ruscha',1.2]],
+      scores:[['#001',8.8],['#005',8.3],['#002',7.9],['#200',7.1],['#006',1.8],['#303',1.2]],
       bridgeScore:65, nodes:'Long Beach · Carson · Maywood' },
     Growth: { agent:'Agent 71 · Pastoral American Recorder', medium:'Woodcut', theme:'Land / Cultivation',
-      scores:[['Adams',9.0],['Weston',8.5],['Hiroshige',7.4],['Hokusai',6.9],['Grosz',1.9],['Beckmann',1.3]],
+      scores:[['#125',9.0],['#210',8.5],['#170',7.4],['#185',6.9],['#140',1.9],['#003',1.3]],
       bridgeScore:74, nodes:'Highland Park · Atwater Village · El Sereno' },
     Decay: { agent:'Agent 55 · Great Plains Memory Keeper', medium:'Documentary Photo', theme:'Abandonment / Resilience',
-      scores:[['W.E. Smith',9.3],['Adams',8.1],['Weston',7.6],['Goya',6.4],['Kandinsky',1.7],['Ruscha',1.1]],
+      scores:[['#002',9.3],['#125',8.1],['#210',7.6],['#004',6.4],['#155',1.7],['#303',1.1]],
       bridgeScore:58, nodes:'Huntington Park · Bell · Maywood' },
   },
   Coastal: {
     Tension: { agent:'Agent 204 · Pacific Borderlands Observer', medium:'Silkscreen', theme:'Ocean / Labor',
-      scores:[['Hokusai',9.1],['Hiroshige',8.6],['Adams',7.8],['W.E. Smith',6.9],['Beckmann',2.2],['Grosz',1.9]],
+      scores:[['#185',9.1],['#170',8.6],['#125',7.8],['#002',6.9],['#003',2.2],['#140',1.9]],
       bridgeScore:70, nodes:'Long Beach · Watts · Carson' },
     Growth: { agent:'Agent 118 · California Modernist', medium:'Photo', theme:'Horizon / Possibility',
-      scores:[['Adams',9.4],['Weston',8.8],['Hammersley',7.3],['Ruscha',6.7],['Goya',1.5],['Dix',1.2]],
+      scores:[['#125',9.4],['#210',8.8],['#306',7.3],['#303',6.7],['#004',1.5],['#110',1.2]],
       bridgeScore:76, nodes:'Culver City · Mar Vista · Silver Lake' },
     Decay: { agent:'Agent 61 · Coastal Erosion Witness', medium:'Documentary Photo', theme:'Loss / Tide',
-      scores:[['Adams',8.7],['Cartier-Bresson',8.1],['Goya',7.5],['Hiroshige',6.8],['Rivera',2.1],['Hammersley',1.4]],
+      scores:[['#125',8.7],['#302',8.1],['#004',7.5],['#170',6.8],['#001',2.1],['#306',1.4]],
       bridgeScore:63, nodes:'Compton · South Central · Watts' },
   },
   Border: {
     Tension: { agent:'Agent 97 · Frontera Memory Specialist', medium:'Mural', theme:'Migration / Crossing',
-      scores:[['Rivera',9.5],['Tamayo',9.1],['Daumier',8.2],['Grosz',7.6],['Adams',1.8],['Hammersley',1.1]],
+      scores:[['#001',9.5],['#200',9.1],['#005',8.2],['#140',7.6],['#125',1.8],['#306',1.1]],
       bridgeScore:79, nodes:'Boyle Heights · Pico-Union · Koreatown' },
     Growth: { agent:'Agent 143 · Diaspora Community Builder', medium:'WPA Mural', theme:'Belonging / Roots',
-      scores:[['Tamayo',9.3],['Rivera',8.9],['Cartier-Bresson',7.7],['Daumier',7.2],['Weston',2.0],['Ruscha',1.3]],
+      scores:[['#200',9.3],['#001',8.9],['#302',7.7],['#005',7.2],['#210',2.0],['#303',1.3]],
       bridgeScore:77, nodes:'East Hollywood · Pico-Union · Koreatown' },
     Decay: { agent:'Agent 28 · Displacement Chronicler', medium:'Lithograph', theme:'Loss / Belonging',
-      scores:[['Goya',9.0],['Grosz',8.5],['Dix',7.9],['Rivera',7.3],['Adams',1.6],['Hammersley',1.0]],
+      scores:[['#004',9.0],['#140',8.5],['#110',7.9],['#001',7.3],['#125',1.6],['#306',1.0]],
       bridgeScore:66, nodes:'Watts · Compton · South Central' },
   },
   Synthetic: {
     Tension: { agent:'Agent 199 · Algorithmic Urbanist', medium:'Silkscreen', theme:'Code / Control',
-      scores:[['Ruscha',9.2],['Rauschenberg',8.8],['Kandinsky',7.6],['Hammersley',7.1],['Daumier',1.9],['W.E. Smith',1.4]],
+      scores:[['#303',9.2],['#305',8.8],['#155',7.6],['#306',7.1],['#005',1.9],['#002',1.4]],
       bridgeScore:64, nodes:'Culver City · Silver Lake · Highland Park' },
     Growth: { agent:'Agent 212 · Network Infrastructure Archivist', medium:'Conceptual Print', theme:'Systems / Flow',
-      scores:[['Ruscha',9.0],['Kandinsky',8.4],['Hammersley',8.0],['Rauschenberg',7.5],['Rivera',2.0],['Goya',1.3]],
+      scores:[['#303',9.0],['#155',8.4],['#306',8.0],['#305',7.5],['#001',2.0],['#004',1.3]],
       bridgeScore:69, nodes:'Culver City · Mar Vista · Atwater Village' },
     Decay: { agent:'Agent 7 · Digital Entropy Recorder', medium:'Silkscreen', theme:'Signal / Noise',
-      scores:[['Rauschenberg',9.1],['Ruscha',8.6],['Kandinsky',7.8],['Beckmann',7.0],['Adams',1.8],['Rivera',1.2]],
+      scores:[['#305',9.1],['#303',8.6],['#155',7.8],['#003',7.0],['#125',1.8],['#001',1.2]],
       bridgeScore:60, nodes:'Inglewood · Crenshaw · Leimert Park' },
   },
 };

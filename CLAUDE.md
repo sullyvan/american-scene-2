@@ -28,7 +28,7 @@ The core argument: the WPA put civic art in post offices, schools, and hospitals
 
 1. **AI Art Generation** — Pollinations.ai (free, no API key). Takes a civic theme + print style + artist agent and generates a WPA-aesthetic image.
 
-2. **Artist Agents** — 20 LACMA collection artists (Rivera, Grosz, Daumier, Goya, Dix, Picasso, Kandinsky, Adams, Cartier-Bresson, Mapplethorpe, Ruscha, etc.) act as either:
+2. **Numbered Agents** — 21 agents in three tiers, no named individuals: Tier 1 (#001–#007) WPA historical archive divisions from documented program mandates; Tier 2 (#110–#210) LACMA collection tradition agents matching the 8 bridging clusters; Tier 3 (#301–#306) contemporary American Scene movements. Each acts as either:
    - **Creator**: shifts the generation prompt to their stylistic vocabulary
    - **Judge**: delivers a characteristic voice critique of the generated work
 
@@ -61,7 +61,8 @@ In this app: a work that only appeals to German Expressionists scores ~20. A wor
 
 When working on `american_scene_2.html`:
 - It's a single-file app — all HTML, CSS, and JS live in one file
-- The ARTISTS array (~line 200) contains all artist agent data including keyword profiles
+- The ARTISTS array holds the 21-agent numbered registry (ids `agent001`…`agent306`); `agent001` (WPA Mural Division) is the default agent for pure-WPA mode
+- The Street View tab (`streetPage`, `compositeStreet()`) projects the latest broadcast onto LA streetscapes at 65% overlay blend — Google Street View Static API if a key is entered, Wikimedia Commons archival photos otherwise
 - The CURATORS array contains LACMA staff institutional voices
 - The CLUSTERS array (8 clusters) defines the bridging score computation
 - `computeBridgingScore()` is the core algorithm — keyword matching against corpus
