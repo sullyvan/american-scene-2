@@ -818,18 +818,21 @@
 
 <!-- ═══ STREET VIEW PROJECTION COMPOSITOR PAGE ═══ -->
 <div class="data-page" id="streetPage">
-  <div class="sv-title">Street View Projection Compositor</div>
+  <div class="sv-title">Street Flag Compositor</div>
   <div class="sv-sub">
-    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is projected onto an actual Los Angeles streetscape at 65% opacity. Select a neighborhood to preview how a bridging-ranked work reads at street level. Uses Google Street View when an API key is supplied; otherwise falls back to archival neighborhood photographs (Wikimedia Commons).
+    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles streetscape — the way civic banners have always occupied the city. Choose a neighborhood and a display method, then click anywhere on the photograph to re-hang the display. Uses Google Street View when an API key is supplied; otherwise falls back to archival neighborhood photographs (Wikimedia Commons).
   </div>
   <div class="sv-layout">
     <div class="sv-panel">
       <div class="sv-heading">1 — Neighborhood Node</div>
       <div class="sv-chips" id="svChips"></div>
-      <div class="sv-heading">2 — Street View Source</div>
+      <div class="sv-heading">2 — Display Method</div>
+      <div class="sv-chips" id="svModeChips"></div>
+      <div class="sv-note">Click the photograph to re-hang the display at that point on the building.</div>
+      <div class="sv-heading">3 — Street View Source</div>
       <input class="sv-key-input" id="svKeyInput" type="text" placeholder="Google Maps API key (optional)" autocomplete="off" />
       <div class="sv-note">No key? The compositor uses curated archival photographs of each neighborhood instead. A key enables live Street View at the exact node coordinates. Stored locally in your browser only.</div>
-      <div class="sv-heading">3 — Broadcast Overlay</div>
+      <div class="sv-heading">4 — Broadcast</div>
       <div class="sv-status" id="svStatus">No broadcast yet.</div>
       <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
       <button class="sv-btn gold" id="svDownloadBtn" onclick="downloadComposite()">⬇ Download Projection</button>
@@ -2254,7 +2257,10 @@ function showPage(page) {
 
 
 // ═══════════════════════════════════════════════════════════════
-// STREET VIEW PROJECTION COMPOSITOR
+// STREET FLAG COMPOSITOR
+// The latest broadcast rendered as a physical flag display in the
+// streetscape: facade drape, outrigger pole, balcony flags, or
+// cross-street bunting. Click the photo to re-hang.
 // ═══════════════════════════════════════════════════════════════
 const SV_HOODS = [
   { name:'Boyle Heights', zip:'90033', lat:34.0339, lng:-118.2073, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg/1280px-Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg' },
@@ -2266,12 +2272,30 @@ const SV_HOODS = [
   { name:'Venice',        zip:'90291', lat:33.9850, lng:-118.4695, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Venice_Beach_Boardwalk_Los_Angeles_2019.jpg/1280px-Venice_Beach_Boardwalk_Los_Angeles_2019.jpg' },
   { name:'Crenshaw',      zip:'90008', lat:34.0211, lng:-118.3351, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Looking_north_on_Crenshaw_from_1100_S.jpg/1280px-Looking_north_on_Crenshaw_from_1100_S.jpg' },
 ];
+const SV_MODES = [
+  { id:'drape',     label:'Facade Drape',     hint:'vertical banner flat against the building',   anchor:{x:0.18,y:0.06} },
+  { id:'outrigger', label:'Outrigger Pole',   hint:'flag on a 45° pole off the facade',           anchor:{x:0.16,y:0.30} },
+  { id:'balcony',   label:'Balcony Flags',    hint:'small flags over windows and balconies',      anchor:{x:0.50,y:0.34} },
+  { id:'bunting',   label:'Street Bunting',   hint:'pennants strung across the street',           anchor:{x:0.50,y:0.16} },
+];
 let svHoodIdx = 0;
+let svModeIdx = 0;
+let svAnchor = null;          // normalized {x,y}, null = mode default
 let svReady = false;
 let svBusy = false;
 let svQueued = false;
 
-function svApiKey() { return (document.getElementById('svKeyInput').value || '').trim(); }
+function svApiKey() {
+  const v = (document.getElementById('svKeyInput').value || '').trim();
+  // People paste Google Maps links here; a real Static API key is a bare
+  // token (e.g. AIza…) with no slashes or spaces. Ignore anything URL-shaped.
+  if (!v || /https?:|\/|\s/.test(v)) return '';
+  return v;
+}
+function svKeyLooksLikeUrl() {
+  const v = (document.getElementById('svKeyInput').value || '').trim();
+  return v && /https?:|\//.test(v);
+}
 
 function svBaseUrl(h) {
   const key = svApiKey();
@@ -2295,6 +2319,159 @@ function svDrawCover(ctx, img, w, h) {
   ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
 }
 
+// Offscreen canvas holding the artwork cover-cropped to the flag proportion
+function svArtCanvas(art, w, h) {
+  const c = document.createElement('canvas');
+  c.width = Math.max(2, Math.round(w));
+  c.height = Math.max(2, Math.round(h));
+  const cx = c.getContext('2d');
+  const s = Math.max(c.width / art.width, c.height / art.height);
+  cx.drawImage(art, (c.width - art.width * s) / 2, (c.height - art.height * s) / 2, art.width * s, art.height * s);
+  return c;
+}
+
+// A hanging cloth: vertical fold ripple + shading + header bar + shadow
+function svDrawCloth(ctx, artC, x, y, w, h, opts = {}) {
+  const amp = opts.amp ?? Math.max(3, w * 0.03);
+  const folds = opts.folds ?? 3;
+  const phase = opts.phase ?? 0.6;
+  // drop shadow behind the cloth
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = w * 0.09;
+  ctx.shadowOffsetX = w * 0.03;
+  ctx.shadowOffsetY = w * 0.05;
+  ctx.fillStyle = 'rgba(20,20,20,0.9)';
+  ctx.fillRect(x + 2, y + 2, w - 4, h - 4);
+  ctx.restore();
+  // cloth surface as vertical strips with a sine ripple on the hanging edge
+  const strips = Math.max(20, Math.round(w / 4));
+  const sw = w / strips;
+  for (let i = 0; i < strips; i++) {
+    const t = i / strips;
+    const ripple = Math.sin(t * Math.PI * folds + phase) * amp;
+    ctx.drawImage(artC, t * artC.width, 0, artC.width / strips, artC.height,
+                  x + i * sw, y + ripple * 0.25, sw + 0.75, h + ripple * 0.75);
+  }
+  // fold shading: alternating light/dark bands following the ripple
+  const g = ctx.createLinearGradient(x, 0, x + w, 0);
+  const stops = 28;
+  for (let i = 0; i <= stops; i++) {
+    const t = i / stops;
+    const s = Math.sin(t * Math.PI * folds + phase);
+    g.addColorStop(t, s > 0 ? `rgba(255,255,255,${s * 0.14})` : `rgba(0,0,0,${-s * 0.22})`);
+  }
+  ctx.fillStyle = g;
+  ctx.fillRect(x, y, w, h + amp);
+  // overall top-lit shading so the cloth sits in street light
+  const v = ctx.createLinearGradient(0, y, 0, y + h);
+  v.addColorStop(0, 'rgba(255,255,255,0.08)');
+  v.addColorStop(1, 'rgba(0,0,0,0.18)');
+  ctx.fillStyle = v;
+  ctx.fillRect(x, y, w, h + amp);
+  // header bar + grommet dots
+  ctx.fillStyle = '#1c1c1c';
+  ctx.fillRect(x - w * 0.03, y - h * 0.015, w * 1.06, Math.max(4, h * 0.018));
+  ctx.fillStyle = '#888';
+  for (let i = 0; i < 4; i++) {
+    ctx.beginPath();
+    ctx.arc(x + w * (0.08 + i * 0.28), y + h * 0.012, Math.max(1.5, w * 0.012), 0, 7);
+    ctx.fill();
+  }
+}
+
+function svDrawDisplay(ctx, art, W, H) {
+  const mode = SV_MODES[svModeIdx];
+  const a = svAnchor || mode.anchor;
+  const ax = a.x * W, ay = a.y * H;
+
+  if (mode.id === 'drape') {
+    // Vertical facade drape — large banner flat against the building
+    const w = W * 0.20, h = H * 0.62;
+    const x = Math.min(Math.max(ax - w / 2, W * 0.01), W * 0.99 - w);
+    const y = Math.min(Math.max(ay, H * 0.01), H * 0.95 - h);
+    svDrawCloth(ctx, svArtCanvas(art, w, h), x, y, w, h, { folds: 3 });
+
+  } else if (mode.id === 'outrigger') {
+    // Flag on a pole projecting ~45° from the facade
+    const fw = W * 0.21, fh = H * 0.20;
+    const px = Math.min(Math.max(ax, W * 0.03), W * 0.75);
+    const py = Math.min(Math.max(ay, H * 0.08), H * 0.75);
+    const poleLen = fw * 1.25;
+    const ang = -Math.PI / 4;
+    const tipX = px + Math.cos(ang) * poleLen, tipY = py + Math.sin(ang) * poleLen;
+    // wall mount + pole
+    ctx.save();
+    ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = Math.max(3, W * 0.006); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tipX, tipY); ctx.stroke();
+    ctx.fillStyle = '#D4A017';
+    ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(3, W * 0.006), 0, 7); ctx.fill();
+    ctx.restore();
+    // flag hangs from the pole: rotate context so cloth top edge lies along the pole
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.rotate(ang);
+    svDrawCloth(ctx, svArtCanvas(art, fw, fh), poleLen * 0.12, 0, poleLen * 0.82, fh, { folds: 2, amp: fh * 0.06, phase: 1.2 });
+    ctx.restore();
+
+  } else if (mode.id === 'balcony') {
+    // Three small flags over windows / balconies around the anchor
+    const w = W * 0.085, h = H * 0.19;
+    const spots = [
+      { x: ax - W * 0.24, y: ay - H * 0.05, s: 0.9 },
+      { x: ax,            y: ay,            s: 1.0 },
+      { x: ax + W * 0.26, y: ay - H * 0.09, s: 0.8 },
+    ];
+    spots.forEach((p, i) => {
+      const fw = w * p.s, fh = h * p.s;
+      const x = Math.min(Math.max(p.x - fw / 2, W * 0.01), W * 0.99 - fw);
+      const y = Math.min(Math.max(p.y, H * 0.02), H * 0.96 - fh);
+      svDrawCloth(ctx, svArtCanvas(art, fw, fh), x, y, fw, fh, { folds: 2, amp: fh * 0.05, phase: i * 1.7 });
+    });
+
+  } else if (mode.id === 'bunting') {
+    // Catenary string across the full street width, pennants alternating
+    // between the broadcast image and solid WPA inks
+    const y0 = Math.min(Math.max(ay, H * 0.06), H * 0.55);
+    const sag = H * 0.085;
+    const count = 15;
+    const inks = ['#8B1A1A', '#1A3A5C', '#D4A017'];
+    const artC = svArtCanvas(art, 90, 110);
+    const lineAt = t => y0 + sag * 4 * t * (1 - t);
+    // the wire
+    ctx.save();
+    ctx.strokeStyle = 'rgba(25,25,25,0.85)'; ctx.lineWidth = Math.max(2, W * 0.0025);
+    ctx.beginPath(); ctx.moveTo(0, lineAt(0));
+    for (let i = 1; i <= 40; i++) { const t = i / 40; ctx.lineTo(t * W, lineAt(t)); }
+    ctx.stroke();
+    ctx.restore();
+    // pennants
+    const pw = W / count * 0.72, ph = H * 0.085;
+    for (let i = 0; i < count; i++) {
+      const t = (i + 0.5) / count;
+      const cx = t * W, cy = lineAt(t);
+      const sway = Math.sin(i * 2.1) * pw * 0.10;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.4)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 4;
+      ctx.beginPath();
+      ctx.moveTo(cx - pw / 2, cy);
+      ctx.lineTo(cx + pw / 2, cy);
+      ctx.lineTo(cx + sway, cy + ph);
+      ctx.closePath();
+      if (i % 2 === 0) {
+        ctx.clip();
+        ctx.drawImage(artC, cx - pw / 2, cy, pw, ph);
+        ctx.fillStyle = 'rgba(0,0,0,0.10)';
+        ctx.fill();
+      } else {
+        ctx.fillStyle = inks[(i >> 1) % inks.length];
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+}
+
 function initStreetPage() {
   if (!svReady) {
     svReady = true;
@@ -2304,8 +2481,24 @@ function initStreetPage() {
       b.className = 'sv-chip' + (i === 0 ? ' active' : '');
       b.id = 'sv-chip-' + i;
       b.innerHTML = h.name + '<span class="sv-zip">' + h.zip + ' · ' + h.lat.toFixed(3) + ', ' + h.lng.toFixed(3) + '</span>';
-      b.onclick = () => { svHoodIdx = i; document.querySelectorAll('.sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
+      b.onclick = () => { svHoodIdx = i; document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
       chips.appendChild(b);
+    });
+    const modeChips = document.getElementById('svModeChips');
+    SV_MODES.forEach((m, i) => {
+      const b = document.createElement('button');
+      b.className = 'sv-chip' + (i === 0 ? ' active' : '');
+      b.id = 'sv-mode-' + i;
+      b.innerHTML = m.label + '<span class="sv-zip">' + m.hint + '</span>';
+      b.onclick = () => { svModeIdx = i; svAnchor = null; document.querySelectorAll('#svModeChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
+      modeChips.appendChild(b);
+    });
+    const canvas = document.getElementById('svCanvas');
+    canvas.style.cursor = 'crosshair';
+    canvas.addEventListener('click', e => {
+      const r = canvas.getBoundingClientRect();
+      svAnchor = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+      compositeStreet();
     });
     const keyInput = document.getElementById('svKeyInput');
     keyInput.value = localStorage.getItem('as2_sv_key') || '';
@@ -2318,6 +2511,7 @@ async function compositeStreet() {
   if (svBusy) { svQueued = true; return; }
   svBusy = true;
   const h = SV_HOODS[svHoodIdx];
+  const mode = SV_MODES[svModeIdx];
   const canvas = document.getElementById('svCanvas');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
@@ -2329,16 +2523,16 @@ async function compositeStreet() {
   const agent = node && node.artistId ? ARTISTS.find(a => a.id === node.artistId) : null;
   const agentLabel = agent ? agentTag(agent.name) : 'WPA';
 
-  // 1 — street view base
+  // 1 — street base
   let base = null, usedFallback = false;
   try {
     base = await svLoadImage(svBaseUrl(h));
   } catch (e) {
     if (svApiKey()) {
-      // bad key or no coverage — fall back to archival photo
       try { base = await svLoadImage(h.img); usedFallback = true; } catch (e2) {}
     }
   }
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = '#111';
   ctx.fillRect(0, 0, W, H);
   if (!base) {
@@ -2355,16 +2549,12 @@ async function compositeStreet() {
   }
   svDrawCover(ctx, base, W, H);
 
-  // 2 — projection overlay: latest broadcast at 65% opacity, overlay blend
+  // 2 — flag display: latest broadcast as physical banner(s)
   if (node) {
     try {
       const art = await svLoadImage(node.imgUrl);
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.globalCompositeOperation = 'overlay';
-      svDrawCover(ctx, art, W, H);
-      ctx.restore();
-      status.textContent = 'Projecting "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) onto ' + h.name + (usedFallback ? ' · archival photo (Street View unavailable here)' : '') + '.';
+      svDrawDisplay(ctx, art, W, H);
+      status.textContent = 'Hanging "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) on ' + h.name + ' — ' + mode.label.toLowerCase() + (usedFallback ? ' · archival photo (Street View unavailable here)' : '') + (svKeyLooksLikeUrl() ? ' · Note: that looks like a Maps link, not an API key — using archival photo' : '') + '. Click the photo to re-hang.';
     } catch (e) {
       status.textContent = 'Broadcast image still rendering — showing street only. Recomposite in a moment.';
     }
@@ -2378,7 +2568,7 @@ async function compositeStreet() {
   ctx.fillRect(0, H - 64, W, 64);
   ctx.fillStyle = '#D4A017';
   ctx.font = 'bold 26px "Bebas Neue", sans-serif';
-  ctx.fillText('AGENT ' + agentLabel + (node ? '  ·  “' + node.theme.toUpperCase() + '”' : '  ·  AWAITING BROADCAST'), 20, H - 24);
+  ctx.fillText('AGENT ' + agentLabel + (node ? '  ·  “' + node.theme.toUpperCase() + '”  ·  ' + mode.label.toUpperCase() : '  ·  AWAITING BROADCAST'), 20, H - 24);
   ctx.fillStyle = '#C8A96E';
   ctx.font = '13px "Oswald", sans-serif';
   ctx.textAlign = 'right';
@@ -2390,7 +2580,7 @@ async function compositeStreet() {
   ctx.restore();
 
   document.getElementById('svCaption').textContent =
-    h.name.toUpperCase() + ' NODE · ' + h.zip + (svApiKey() && !usedFallback ? ' · GOOGLE STREET VIEW' : ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS)') + ' · OVERLAY BLEND 65%';
+    h.name.toUpperCase() + ' NODE · ' + h.zip + (svApiKey() && !usedFallback ? ' · GOOGLE STREET VIEW' : ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS)') + ' · ' + mode.label.toUpperCase();
   spinner.style.display = 'none';
   svBusy = false;
   if (svQueued) { svQueued = false; compositeStreet(); }
@@ -2399,12 +2589,13 @@ async function compositeStreet() {
 function downloadComposite() {
   const canvas = document.getElementById('svCanvas');
   const h = SV_HOODS[svHoodIdx];
+  const mode = SV_MODES[svModeIdx];
   try {
     canvas.toBlob(blob => {
       if (!blob) { showToast('Compositor not ready yet'); return; }
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'street_projection_' + h.name.toLowerCase().replace(/\s+/g, '_') + '.png';
+      a.download = 'street_flag_' + mode.id + '_' + h.name.toLowerCase().replace(/\s+/g, '_') + '.png';
       a.click();
       URL.revokeObjectURL(a.href);
       showToast('Projection downloaded');
