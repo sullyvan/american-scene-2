@@ -820,7 +820,7 @@
 <div class="data-page" id="streetPage">
   <div class="sv-title">Street Flag Compositor</div>
   <div class="sv-sub">
-    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles streetscape — the way civic banners have always occupied the city. Choose a neighborhood and a display method, then click anywhere on the photograph to re-hang the display. Uses Google Street View when an API key is supplied; otherwise falls back to archival neighborhood photographs (Wikimedia Commons).
+    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles streetscape — the way civic banners have always occupied the city. Choose a neighborhood and a display method, then click anywhere on the photograph to re-hang the display. Or upload a photo of your own street — any wall in the county can be a node.
   </div>
   <div class="sv-layout">
     <div class="sv-panel">
@@ -829,9 +829,11 @@
       <div class="sv-heading">2 — Display Method</div>
       <div class="sv-chips" id="svModeChips"></div>
       <div class="sv-note">Click the photograph to re-hang the display at that point on the building.</div>
-      <div class="sv-heading">3 — Street View Source</div>
-      <input class="sv-key-input" id="svKeyInput" type="text" placeholder="Google Maps API key (optional)" autocomplete="off" />
-      <div class="sv-note">No key? The compositor uses curated archival photographs of each neighborhood instead. A key enables live Street View at the exact node coordinates. Stored locally in your browser only.</div>
+      <div class="sv-heading">3 — Your Own Street</div>
+      <input type="file" id="svUploadInput" accept="image/*" style="display:none" />
+      <button class="sv-btn" onclick="document.getElementById('svUploadInput').click()">📷 Upload a Street Photo</button>
+      <button class="sv-btn" id="svUploadClear" onclick="svClearCustomPhoto()" style="display:none">✕ Back to Neighborhood Photos</button>
+      <div class="sv-note">Optional — photograph any wall, storefront, or street and the broadcast hangs there instead. The photo never leaves your browser.</div>
       <div class="sv-heading">4 — Broadcast</div>
       <div class="sv-status" id="svStatus">No broadcast yet.</div>
       <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
@@ -2281,26 +2283,31 @@ const SV_MODES = [
 let svHoodIdx = 0;
 let svModeIdx = 0;
 let svAnchor = null;          // normalized {x,y}, null = mode default
+let svCustomImg = null;       // user-uploaded street photo (Image), else null
+let svCustomName = '';
 let svReady = false;
 let svBusy = false;
 let svQueued = false;
 
-function svApiKey() {
-  const v = (document.getElementById('svKeyInput').value || '').trim();
-  // People paste Google Maps links here; a real Static API key is a bare
-  // token (e.g. AIza…) with no slashes or spaces. Ignore anything URL-shaped.
-  if (!v || /https?:|\/|\s/.test(v)) return '';
-  return v;
-}
-function svKeyLooksLikeUrl() {
-  const v = (document.getElementById('svKeyInput').value || '').trim();
-  return v && /https?:|\//.test(v);
+function svSetCustomPhoto(url, label) {
+  const img = new Image();
+  img.onload = () => {
+    svCustomImg = img;
+    svCustomName = label || 'uploaded photo';
+    svAnchor = null;
+    document.getElementById('svUploadClear').style.display = '';
+    compositeStreet();
+  };
+  img.onerror = () => showToast('Could not read that image');
+  img.src = url;
 }
 
-function svBaseUrl(h) {
-  const key = svApiKey();
-  if (key) return `https://maps.googleapis.com/maps/api/streetview?size=640x400&location=${h.lat},${h.lng}&fov=90&source=outdoor&key=${encodeURIComponent(key)}`;
-  return h.img;
+function svClearCustomPhoto() {
+  svCustomImg = null;
+  svCustomName = '';
+  svAnchor = null;
+  document.getElementById('svUploadClear').style.display = 'none';
+  compositeStreet();
 }
 
 function svLoadImage(url) {
@@ -2481,7 +2488,7 @@ function initStreetPage() {
       b.className = 'sv-chip' + (i === 0 ? ' active' : '');
       b.id = 'sv-chip-' + i;
       b.innerHTML = h.name + '<span class="sv-zip">' + h.zip + ' · ' + h.lat.toFixed(3) + ', ' + h.lng.toFixed(3) + '</span>';
-      b.onclick = () => { svHoodIdx = i; document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
+      b.onclick = () => { svHoodIdx = i; svCustomImg = null; svCustomName = ''; document.getElementById('svUploadClear').style.display = 'none'; document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
       chips.appendChild(b);
     });
     const modeChips = document.getElementById('svModeChips');
@@ -2500,9 +2507,11 @@ function initStreetPage() {
       svAnchor = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
       compositeStreet();
     });
-    const keyInput = document.getElementById('svKeyInput');
-    keyInput.value = localStorage.getItem('as2_sv_key') || '';
-    keyInput.addEventListener('change', () => { localStorage.setItem('as2_sv_key', keyInput.value.trim()); compositeStreet(); });
+    const upload = document.getElementById('svUploadInput');
+    upload.addEventListener('change', () => {
+      const f = upload.files && upload.files[0];
+      if (f) svSetCustomPhoto(URL.createObjectURL(f), f.name);
+    });
   }
   compositeStreet();
 }
@@ -2523,14 +2532,10 @@ async function compositeStreet() {
   const agent = node && node.artistId ? ARTISTS.find(a => a.id === node.artistId) : null;
   const agentLabel = agent ? agentTag(agent.name) : 'WPA';
 
-  // 1 — street base
-  let base = null, usedFallback = false;
-  try {
-    base = await svLoadImage(svBaseUrl(h));
-  } catch (e) {
-    if (svApiKey()) {
-      try { base = await svLoadImage(h.img); usedFallback = true; } catch (e2) {}
-    }
+  // 1 — street base: uploaded photo wins, else the neighborhood archive photo
+  let base = svCustomImg;
+  if (!base) {
+    try { base = await svLoadImage(h.img); } catch (e) {}
   }
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = '#111';
@@ -2554,7 +2559,7 @@ async function compositeStreet() {
     try {
       const art = await svLoadImage(node.imgUrl);
       svDrawDisplay(ctx, art, W, H);
-      status.textContent = 'Hanging "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) on ' + h.name + ' — ' + mode.label.toLowerCase() + (usedFallback ? ' · archival photo (Street View unavailable here)' : '') + (svKeyLooksLikeUrl() ? ' · Note: that looks like a Maps link, not an API key — using archival photo' : '') + '. Click the photo to re-hang.';
+      status.textContent = 'Hanging "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) on ' + (svCustomImg ? 'your street' : h.name) + ' — ' + mode.label.toLowerCase() + '. Click the photo to re-hang.';
     } catch (e) {
       status.textContent = 'Broadcast image still rendering — showing street only. Recomposite in a moment.';
     }
@@ -2573,14 +2578,15 @@ async function compositeStreet() {
   ctx.font = '13px "Oswald", sans-serif';
   ctx.textAlign = 'right';
   ctx.fillText('THE AMERICAN SCENE 2.0 · LACMA ART + TECHNOLOGY LAB', W - 20, H - 38);
-  ctx.fillText(h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ' + h.lat.toFixed(4) + ', ' + h.lng.toFixed(4), W - 20, H - 18);
+  ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET' : h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ' + h.lat.toFixed(4) + ', ' + h.lng.toFixed(4), W - 20, H - 18);
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(212,160,23,0.9)';
   ctx.fillRect(0, H - 64, W, 3);
   ctx.restore();
 
-  document.getElementById('svCaption').textContent =
-    h.name.toUpperCase() + ' NODE · ' + h.zip + (svApiKey() && !usedFallback ? ' · GOOGLE STREET VIEW' : ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS)') + ' · ' + mode.label.toUpperCase();
+  document.getElementById('svCaption').textContent = svCustomImg
+    ? 'COMMUNITY NODE · UPLOADED PHOTO · ' + mode.label.toUpperCase()
+    : h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS) · ' + mode.label.toUpperCase();
   spinner.style.display = 'none';
   svBusy = false;
   if (svQueued) { svQueued = false; compositeStreet(); }
@@ -2595,7 +2601,7 @@ function downloadComposite() {
       if (!blob) { showToast('Compositor not ready yet'); return; }
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'street_flag_' + mode.id + '_' + h.name.toLowerCase().replace(/\s+/g, '_') + '.png';
+      a.download = 'street_flag_' + mode.id + '_' + (svCustomImg ? 'community_node' : h.name.toLowerCase().replace(/\s+/g, '_')) + '.png';
       a.click();
       URL.revokeObjectURL(a.href);
       showToast('Projection downloaded');

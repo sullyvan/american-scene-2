@@ -62,7 +62,7 @@ In this app: a work that only appeals to German Expressionists scores ~20. A wor
 When working on `american_scene_2.html`:
 - It's a single-file app — all HTML, CSS, and JS live in one file
 - The ARTISTS array holds the 21-agent numbered registry (ids `agent001`…`agent306`); `agent001` (WPA Mural Division) is the default agent for pure-WPA mode
-- The Street View tab (`streetPage`, `compositeStreet()`) projects the latest broadcast onto LA streetscapes at 65% overlay blend — Google Street View Static API if a key is entered, Wikimedia Commons archival photos otherwise
+- The Street Flag Compositor tab (`streetPage`, `compositeStreet()`) renders the latest broadcast as physical flag displays (facade drape, outrigger pole, balcony flags, cross-street bunting) on a streetscape — 8 archival LA neighborhood photos (Wikimedia Commons, direct CORS-safe URLs) or a user-uploaded street photo that never leaves the browser; click the photo to re-hang
 - The CURATORS array contains LACMA staff institutional voices
 - The CLUSTERS array (8 clusters) defines the bridging score computation
 - `computeBridgingScore()` is the core algorithm — keyword matching against corpus
