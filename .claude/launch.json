@@ -4,7 +4,7 @@
     {
       "name": "american-scene",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd '/private/tmp/claude-501/-Users-mikehibyeok-Desktop-Claude-repo/31fc1a72-e013-4d09-a7a6-ed4204d83fd4/scratchpad/as2' && python3 -m http.server 8765"],
+      "runtimeArgs": ["-c", "cd '/private/tmp/claude-501/-Users-mikehibyeok-Desktop-Claude-repo/16dd9824-28a1-4c08-a241-369f3cfbe9c0/scratchpad/ascene' && python3 -m http.server 8765"],
       "port": 8765
     },
     {

@@ -538,6 +538,54 @@
   .sv-canvas-caption { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #777; margin-top: 8px; }
   .sv-spinner-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(13,13,13,0.6); }
   @media (max-width: 900px) { .sv-layout { grid-template-columns: 1fr; } }
+
+  /* ─── COUNTY NETWORK PAGE ─── */
+  .county-layout { display: grid; grid-template-columns: minmax(0,1fr) 380px; gap: 22px; align-items: start; margin-bottom: 30px; }
+  .county-map-wrap { border: 2px solid #2a2a2a; background: #0d0d0d; padding: 10px; }
+  #countyMap { width: 100%; height: auto; display: block; }
+  .county-node { cursor: pointer; }
+  .county-node:focus { outline: none; }
+  .county-node:focus .cn-ring, .county-node.selected .cn-ring { stroke: var(--wpa-gold); opacity: 1; }
+  .county-map-caption { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-top: 8px; line-height: 1.7; }
+  .county-legend { display: flex; flex-wrap: wrap; gap: 12px 18px; margin-top: 10px; padding: 10px 14px; border: 1px solid #2a2a2a; background: #0d0d0d; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #999; }
+  .legend-sym { font-size: 14px; color: var(--wpa-gold); font-family: monospace; line-height: 1; }
+  .county-detail { background: #0d1a2b; border: 2px solid var(--wpa-gold); padding: 16px 18px; }
+  .cd-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--wpa-cream); line-height: 1.1; }
+  .cd-status { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-gold); margin: 4px 0 12px; }
+  .cd-field { margin-bottom: 9px; }
+  .cd-field-label { font-family: 'Oswald', sans-serif; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: #7aafdd; margin-bottom: 2px; }
+  .cd-field-val { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-cream); line-height: 1.5; }
+  .cd-access-row { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .cd-access-key { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+  .cd-access-val { font-family: 'Special Elite', cursive; font-size: 9px; color: var(--wpa-tan); text-align: right; }
+  .node-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; margin-bottom: 30px; }
+  .node-index-btn { min-height: 52px; text-align: left; padding: 9px 12px; background: #1a1a1a; border: 1px solid #333; color: var(--wpa-cream); cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; transition: border-color 0.15s; }
+  .node-index-btn:hover, .node-index-btn:focus-visible { border-color: var(--wpa-gold); outline: none; }
+  .node-index-btn.selected { border-color: var(--wpa-gold); background: #1a1a2a; }
+  .node-index-sym { color: var(--wpa-gold); margin-right: 6px; font-family: monospace; font-size: 12px; }
+  .node-index-region { display: block; font-family: 'Special Elite', cursive; font-size: 8px; color: #888; margin-top: 3px; text-transform: none; letter-spacing: 0; }
+  .coverage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .coverage-item { background: #0d0d0d; border: 1px solid #2a2a2a; padding: 10px 12px; }
+  .coverage-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--wpa-gold); line-height: 1; }
+  .coverage-label { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-top: 4px; line-height: 1.5; }
+  .flow-diagram { display: flex; flex-direction: column; max-width: 480px; margin-bottom: 12px; }
+  .flow-step { border: 1px solid #2a3a5a; background: #0d1a2b; padding: 8px 14px; font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--wpa-cream); }
+  .flow-step.required { border-color: var(--wpa-gold); color: var(--wpa-gold); }
+  .flow-step-note { font-family: 'Special Elite', cursive; font-size: 8px; color: #888; letter-spacing: 0; text-transform: none; display: block; margin-top: 2px; }
+  .flow-arrow { text-align: center; color: #555; font-size: 12px; line-height: 1.7; }
+  .limits-panel { background: #1a1200; border: 2px solid var(--wpa-gold); padding: 16px 20px; margin-bottom: 30px; }
+  .limits-list { list-style: none; }
+  .limits-list li { font-family: 'Special Elite', cursive; font-size: 11px; color: var(--wpa-tan); line-height: 1.8; padding-left: 16px; position: relative; }
+  .limits-list li::before { content: '—'; position: absolute; left: 0; color: var(--wpa-gold); }
+  .county-note { font-family: 'IM Fell English', serif; font-size: 12px; font-style: italic; color: var(--wpa-tan); line-height: 1.6; margin: 10px 0 28px; border-left: 3px solid var(--wpa-gold); padding-left: 12px; max-width: 660px; }
+  .install-combo-phrase { font-family: 'IM Fell English', serif; font-size: 13px; font-style: italic; color: var(--wpa-gold); margin-bottom: 14px; }
+  @media (max-width: 900px) { .county-layout { grid-template-columns: 1fr; } }
+
+  /* ─── REDUCED MOTION ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -575,9 +623,9 @@
   </div>
   <div class="header-badges">
     <div class="header-badge">
-      <div class="badge-top">Active Nodes</div>
+      <div class="badge-top">Demo Broadcasts</div>
       <div class="badge-num" id="nodeCount">0</div>
-      <div class="badge-bot">community displays</div>
+      <div class="badge-bot">simulated routing</div>
     </div>
     <div class="header-badge blue">
       <div class="badge-top">Avg Bridge</div>
@@ -593,6 +641,7 @@
 
 <nav class="page-nav">
   <button class="page-tab active" id="tab-network" onclick="showPage('network')">Public Network</button>
+  <button class="page-tab" id="tab-county" onclick="showPage('county')">County Network</button>
   <button class="page-tab" id="tab-gallery" onclick="showPage('gallery')">Gallery Archive</button>
   <button class="page-tab" id="tab-data" onclick="showPage('data')">Bridging Score Data</button>
   <button class="page-tab" id="tab-failure" onclick="showPage('failure')">Failure Modes &amp; Research Questions</button>
@@ -600,6 +649,84 @@
   <button class="page-tab" id="tab-library" onclick="showPage('library')">Image Library</button>
   <button class="page-tab" id="tab-street" onclick="showPage('street')">Street View</button>
 </nav>
+
+<!-- ═══ COUNTY NETWORK PAGE ═══ -->
+<div class="data-page" id="countyPage">
+
+  <div class="research-banner">
+    <div class="research-banner-icon">⚑ Demonstration Network</div>
+    <div class="research-banner-text"><strong>Hosted at LACMA. Defined through local nodes.</strong> These locations are demonstration research contexts, not confirmed community partnerships. Their inclusion does not imply that the system speaks for the communities represented.</div>
+  </div>
+
+  <div class="data-section-title">Los Angeles County Demonstration Network</div>
+  <div class="data-section-sub">Eight nodes · one host institution · zero confirmed community partners · schematic geography</div>
+
+  <div class="county-layout">
+    <div>
+      <div class="county-map-wrap">
+        <svg id="countyMap" viewBox="0 0 800 710" role="group" aria-label="Schematic map of the Los Angeles County demonstration network. Eight nodes across eight county regions. The same node details are available in the node index below the map."></svg>
+      </div>
+      <div class="county-legend" role="list" aria-label="Map legend">
+        <div class="legend-item" role="listitem"><span class="legend-sym" aria-hidden="true">●</span> Host institution</div>
+        <div class="legend-item" role="listitem"><span class="legend-sym" aria-hidden="true">○</span> Demonstration research node</div>
+        <div class="legend-item" role="listitem"><span class="legend-sym" aria-hidden="true">◌</span> Proposed partnership</div>
+        <div class="legend-item" role="listitem"><span class="legend-sym" aria-hidden="true">◆</span> Active community partner — none confirmed</div>
+      </div>
+      <div class="county-map-caption">Schematic — the county outline and node positions are approximate. Connecting lines mark the proposed host–node routing and feedback relationship; feedback moves in both directions. Community-defined boundaries are not drawn because they have not been researched with local partners.</div>
+    </div>
+    <div class="county-detail" id="countyDetail" aria-live="polite"></div>
+  </div>
+
+  <div class="data-section-title">Node Index</div>
+  <div class="data-section-sub">Works without the map · keyboard and touch accessible</div>
+  <div class="node-index" id="nodeIndex"></div>
+  <div class="county-note">Research contexts identify conditions for testing. They do not define the identity of a community.</div>
+
+  <div class="data-section-title">County Coverage</div>
+  <div class="data-section-sub">Calculated directly from the current node data — no live network exists</div>
+  <div class="coverage-grid" id="coverageGrid"></div>
+  <div class="county-note">This map records both reach and absence.</div>
+
+  <div class="data-section-title">System Flow</div>
+  <div class="data-section-sub">Local review and approval is a required step before any community display</div>
+  <div class="flow-diagram" aria-label="System flow: ten steps from local signals to geographic profile update">
+    <div class="flow-step">Local Signals</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Geographic and Community Context</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Analyze and Assign</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Generate</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Safety and Representation Review</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Provisional Routing<span class="flow-step-note">not activated — pending local review</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step required">Local Review and Approval<span class="flow-step-note">required gate — a community node can approve, reject, pause, or request changes</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Community Display</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Feedback</div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step">Geographic Profile Updated<span class="flow-step-note">feedback returns upstream — local nodes redefine the context the system starts from</span></div>
+  </div>
+  <div class="county-note">Hosted at LACMA. Defined through local nodes. Every community node can contribute local context, review proposed content, approve or reject routing, pause a display, request changes, update language and access requirements, and return feedback to the system.</div>
+
+  <div class="data-section-title">Current Limitations</div>
+  <div class="limits-panel">
+    <ul class="limits-list">
+      <li>These nodes are demonstration research contexts.</li>
+      <li>No community partnership is implied.</li>
+      <li>Language needs have not yet been established with local partners.</li>
+      <li>Community-defined boundaries have not yet been confirmed.</li>
+      <li>Node themes and review procedures require local participation.</li>
+      <li>Tribal and Indigenous geographic contexts require consultation and partnership before activation.</li>
+      <li>The current network does not represent all of Los Angeles County.</li>
+    </ul>
+    <div class="county-note" style="margin:14px 0 0;">An unrepresented area is not treated as an empty area. It is treated as a place where partnership has not yet occurred.</div>
+  </div>
+
+</div>
 
 <!-- ═══ INSTALLATION PAGE ═══ -->
 <div class="install-page" id="installPage">
@@ -668,14 +795,14 @@
         <div class="install-state-body">Visitor approaches. Presence captured. Depth camera resolves silhouette. Mic array samples ambient sound signature. Fiber optics pulse once — the mirror awakens.</div>
         <div class="install-data-block">
           <div class="install-data-label">Signals Captured</div>
-          <div class="install-data-row"><div class="install-data-key">Place</div><div class="install-data-val" id="detect-place">Urban</div></div>
-          <div class="install-data-row"><div class="install-data-key">Condition</div><div class="install-data-val" id="detect-condition">Tension detected</div></div>
+          <div class="install-data-row"><div class="install-data-key">Geographic Context</div><div class="install-data-val" id="detect-place">Museum district</div></div>
+          <div class="install-data-row"><div class="install-data-key">Place Condition</div><div class="install-data-val" id="detect-condition">Labor signals (simulated)</div></div>
           <div class="install-data-row"><div class="install-data-key">Silhouette</div><div class="install-data-val">Resolved — 1 visitor</div></div>
           <div class="install-data-row"><div class="install-data-key">Ambient</div><div class="install-data-val">Museum interior, low</div></div>
         </div>
         <div class="install-data-block" style="margin-top:8px;">
           <div class="install-data-label">Hand Controls Active</div>
-          <div class="install-state-body" style="font-size:9px;color:#666;padding:4px 0 0;">Adjust Place and Condition below to guide interpretation →</div>
+          <div class="install-state-body" style="font-size:9px;color:#666;padding:4px 0 0;">Adjust Geographic Context and Place Condition below to guide interpretation →</div>
         </div>
       </div>
 
@@ -687,12 +814,12 @@
         </div>
         <div class="install-state-body">Agent assigned. The bridging model scores your presence signals against 34 LACMA artist and curator agents. Highest resonance determines your assigned artist identity.</div>
         <div class="install-data-block">
-          <div class="install-data-label">Agent — <span id="analyze-agent-label">Agent 142 · Detroit Industrial Memory Specialist</span></div>
+          <div class="install-data-label">Agent — <span id="analyze-agent-label">Agent #001 — WPA Mural Division (provisional match — simulated)</span></div>
           <div class="install-data-row"><div class="install-data-key">Medium</div><div class="install-data-val" id="analyze-medium">Mural</div></div>
           <div class="install-data-row"><div class="install-data-key">Civic Theme</div><div class="install-data-val" id="analyze-theme">Labor / Progress</div></div>
         </div>
         <div class="install-data-block" style="margin-top:8px;">
-          <div class="install-data-label">Top Agent Resonance Scores</div>
+          <div class="install-data-label">Top Agent Resonance Scores — Simulated Demonstration Data</div>
           <div id="analyze-scores">
             <div class="install-agent-score-row"><div class="install-agent-name">#001</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:92%"></div></div><div class="install-agent-val">9.2</div></div>
             <div class="install-agent-score-row"><div class="install-agent-name">#002</div><div class="install-agent-bar"><div class="install-agent-bar-fill" style="width:87%"></div></div><div class="install-agent-val">8.7</div></div>
@@ -737,7 +864,7 @@
           <div class="install-state-num">State 05</div>
           <div class="install-state-headline">Output</div>
         </div>
-        <div class="install-state-body">Your American Scene appears inside the mirror. A QR code is generated. Scan to add this image to the civic display network — it will broadcast to community nodes across LA County, weighted by its bridging score.</div>
+        <div class="install-state-body">Your American Scene appears inside the mirror. A QR code is generated. Scan to submit this image to the review queue — provisional routing proposes possible research contexts across LA County, but nothing is displayed until local review and partner approval.</div>
         <div class="install-qr-block">
           <div class="install-qr-box">
             <svg width="44" height="44" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
@@ -757,16 +884,18 @@
               <rect x="4" y="4" width="1" height="1" fill="black"/>
             </svg>
           </div>
-          <div class="install-qr-text">QR code generated for this image. Scan to submit to the civic display network. Your work will be scored and routed to matching neighborhood nodes.</div>
+          <div class="install-qr-text">QR code generated for this image. Scan to submit to the review queue. Your work is scored and given provisional routing only — display requires local review and partner approval.</div>
         </div>
         <div class="install-data-block" style="margin-top:8px;">
-          <div class="install-data-label">Routing Preview</div>
+          <div class="install-data-label">Provisional Routing — Simulated</div>
           <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="output-score">68 / 100</div></div>
-          <div class="install-data-row"><div class="install-data-key">Matched Nodes</div><div class="install-data-val">Echo Park · Boyle Heights · Watts</div></div>
+          <div class="install-data-row"><div class="install-data-key">Potential research contexts</div><div class="install-data-val" id="output-routing">—</div></div>
           <div class="install-data-row"><div class="install-data-key">Clusters Active</div><div class="install-data-val">5 of 8</div></div>
+          <div class="install-data-row"><div class="install-data-key">Status</div><div class="install-data-val">Not activated · pending local review</div></div>
+          <div class="install-state-body" style="font-size:9px;color:#777;padding-top:7px;">Routing is not activated until local review and partner approval.</div>
         </div>
         <div class="install-callout">
-          <div class="install-callout-text">If this output tests poorly in zip code 90002, it triggers <em>Failure Mode 3: Geographic Polarization</em> — distribution suspended pending community review.</div>
+          <div class="install-callout-text">If this output scores 60 or higher overall but tests below 3/10 in three or more county regions, it triggers <em>Failure Mode 3: Geographic Polarization</em> — provisional routing suspended pending local review.</div>
           <button class="install-callout-link" onclick="showPage('failure')">See Failure Modes →</button>
         </div>
       </div>
@@ -777,26 +906,9 @@
   <!-- HAND CONTROLS -->
   <div class="install-controls">
     <div class="install-controls-title">Hand Controls</div>
-    <div class="install-ctrl-groups">
-      <div class="install-ctrl-group">
-        <div class="install-ctrl-label">Place</div>
-        <div class="install-ctrl-opts">
-          <button class="install-ctrl-btn selected" data-ctrl="place" data-val="Urban" onclick="setInstallCtrl('place','Urban',this)">Urban</button>
-          <button class="install-ctrl-btn" data-ctrl="place" data-val="Rural" onclick="setInstallCtrl('place','Rural',this)">Rural</button>
-          <button class="install-ctrl-btn" data-ctrl="place" data-val="Coastal" onclick="setInstallCtrl('place','Coastal',this)">Coastal</button>
-          <button class="install-ctrl-btn" data-ctrl="place" data-val="Border" onclick="setInstallCtrl('place','Border',this)">Border</button>
-          <button class="install-ctrl-btn" data-ctrl="place" data-val="Synthetic" onclick="setInstallCtrl('place','Synthetic',this)">Synthetic</button>
-        </div>
-      </div>
-      <div class="install-ctrl-group">
-        <div class="install-ctrl-label">Condition</div>
-        <div class="install-ctrl-opts">
-          <button class="install-ctrl-btn selected" data-ctrl="condition" data-val="Tension" onclick="setInstallCtrl('condition','Tension',this)">Tension</button>
-          <button class="install-ctrl-btn" data-ctrl="condition" data-val="Growth" onclick="setInstallCtrl('condition','Growth',this)">Growth</button>
-          <button class="install-ctrl-btn" data-ctrl="condition" data-val="Decay" onclick="setInstallCtrl('condition','Decay',this)">Decay</button>
-        </div>
-      </div>
-    </div>
+    <div class="install-combo-phrase" id="installComboPhrase">Museum district + labor</div>
+    <div class="install-ctrl-groups" id="installCtrlGroups"></div>
+    <p style="font-family:'Special Elite',cursive;font-size:9px;color:#666;margin-top:14px;line-height:1.5;font-style:italic;">These categories set testing conditions for the prototype. They do not replace local knowledge, and no category is permanently assigned to any community.</p>
   </div>
 
 </div><!-- /install-page -->
@@ -820,11 +932,11 @@
 <div class="data-page" id="streetPage">
   <div class="sv-title">Street Flag Compositor</div>
   <div class="sv-sub">
-    Prototype of the deployed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles streetscape — the way civic banners have always occupied the city. Choose a neighborhood and a display method, then click anywhere on the photograph to re-hang the display. Or upload a photo of your own street — any wall in the county can be a node.
+    Prototype of the proposed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles County streetscape — the way civic banners have always occupied the city. Choose a demonstration node and a display method, then click anywhere on the photograph to re-hang the display. Or upload a photo of your own street — any wall in the county can be a node. These locations are demonstration research contexts, not confirmed community partnerships; no display occurs without local review and partner approval.
   </div>
   <div class="sv-layout">
     <div class="sv-panel">
-      <div class="sv-heading">1 — Neighborhood Node</div>
+      <div class="sv-heading">1 — Demonstration Node</div>
       <div class="sv-chips" id="svChips"></div>
       <div class="sv-heading">2 — Display Method</div>
       <div class="sv-chips" id="svModeChips"></div>
@@ -878,7 +990,7 @@
           <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
           <div class="fcard-metric">
             <div class="fcard-metric-icon">✗ Fail if</div>
-            <div class="fcard-metric-text">&gt;60% of QR-scan users at community display nodes rate a high-bridge image (score ≥65) as <em>"confusing"</em> or <em>"dislike"</em> on the in-situ feedback prompt. Threshold measured across minimum 3 distinct neighborhood nodes and 40 scans per image before any result is reported.</div>
+            <div class="fcard-metric-text">&gt;60% of QR-scan users at community display nodes rate a high-bridge image (score ≥65) as <em>"confusing"</em> or <em>"dislike"</em> on the in-situ feedback prompt. Threshold measured across minimum 3 demonstration nodes in geographically distinct county regions and 40 scans per image before any result is reported.</div>
           </div>
         </div>
         <div class="fcard-section">
@@ -894,7 +1006,7 @@
             <div class="sim-bar-row"><div class="sim-bar-label">Neutral</div><div class="sim-bar-track"><div class="sim-bar-fill" style="width:22%"></div></div><div class="sim-bar-val">22%</div></div>
             <div class="sim-bar-row"><div class="sim-bar-label">Like</div><div class="sim-bar-track"><div class="sim-bar-fill ok" style="width:18%"></div></div><div class="sim-bar-val ok">18%</div></div>
             <div class="sim-bar-row"><div class="sim-bar-label">Strong like</div><div class="sim-bar-track"><div class="sim-bar-fill ok" style="width:9%"></div></div><div class="sim-bar-val ok">9%</div></div>
-            <div class="sim-warning">Simulated across 3 nodes · Echo Park, Boyle Heights, Koreatown · n=52 scans · Bridge score of test image: 71/100 · This result would trigger a full rubric review.</div>
+            <div class="sim-warning">Simulated demonstration data · 3 nodes in distinct county regions · Boyle Heights, Watts, Pomona · n=52 scans · Bridge score of test image: 71/100 · This result would trigger a full rubric review.</div>
           </div>
         </div>
         <div class="fcard-section" style="margin-bottom:0;">
@@ -962,20 +1074,20 @@
         <div class="fcard-num">3</div>
         <div class="fcard-head-text">
           <div class="fcard-hypothesis">Geographic Polarization</div>
-          <div class="fcard-tagline">A work can bridge art traditions without bridging neighborhoods — the score may be blind to spatial inequality</div>
+          <div class="fcard-tagline">A work can bridge art traditions without bridging county regions — the score may be blind to spatial inequality</div>
         </div>
         <div class="fcard-chevron">▼</div>
       </div>
       <div class="fcard-body">
         <div class="fcard-section">
           <div class="fcard-section-label">The Hypothesis</div>
-          <div class="fcard-prose">The bridging score operates on semantic keyword matching against 8 art-tradition clusters. It has no geographic awareness. A work could score 75 across the agent network while landing as deeply irrelevant in Watts, Koreatown, and Boyle Heights simultaneously — three of the communities the network is explicitly designed to serve. A bridging score without spatial disaggregation is an aggregate abstraction that may mask exactly the kind of neighborhood-level polarization the WPA model was meant to overcome. The distribution algorithm needs to distinguish between broad semantic bridging and actual community reach.</div>
+          <div class="fcard-prose">The bridging score operates on semantic keyword matching against 8 art-tradition clusters. It has no geographic awareness. A work could score 75 across the agent network while landing as deeply irrelevant in Wilmington, Pacoima, and Lancaster simultaneously — harbor, valley, and high-desert research contexts the county network is explicitly designed to test. A bridging score without spatial disaggregation is an aggregate abstraction that may mask exactly the kind of region-level polarization the WPA model was meant to overcome. The test therefore compares geographic difference across county regions — not only distance between ZIP codes — and must distinguish broad semantic bridging from actual countywide reach.</div>
         </div>
         <div class="fcard-section">
           <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
           <div class="fcard-metric">
             <div class="fcard-metric-icon">✗ Fail if</div>
-            <div class="fcard-metric-text">An image scores ≥60 overall on the bridging rubric but receives <em>a node-level resonance score below 3/10 in 3 or more zip codes</em> when community feedback is disaggregated by display node location. Node-level scores derived from QR-scan ratings, dwell time at node, and repeat-scan rate. Requires minimum 20 nodes active across ≥8 zip codes to run the comparison.</div>
+            <div class="fcard-metric-text">An image scores ≥60 overall on the bridging rubric but receives <em>a node-level resonance score below 3/10 in three or more geographically distinct county regions</em>, with at least one low-scoring node outside the Central Los Angeles region. Also flagged as failure: all strong responses come from geographically adjacent, museum-connected, or culturally similar nodes. Node-level scores derived from QR-scan ratings, dwell time, and repeat-scan rate. The comparison runs on regional difference across the county — not only ZIP-code distance — using the eight-node demonstration network.</div>
           </div>
         </div>
         <div class="fcard-section">
@@ -985,26 +1097,26 @@
             <div class="sim-toggle-label">Show simulated failure result</div>
           </button>
           <div class="sim-data" id="sim-data-3">
-            <div class="sim-data-label">⚠ Simulated result — what failure looks like · Overall bridge score: 72/100</div>
+            <div class="sim-data-label">⚠ Simulated demonstration data — what failure looks like · Overall bridge score: 72/100</div>
             <table class="sim-table">
-              <thead><tr><th>Node Location</th><th>Zip</th><th>Node Score /10</th><th>Scans</th><th>Status</th></tr></thead>
+              <thead><tr><th>Node</th><th>County Region</th><th>Node Score /10</th><th>Scans</th><th>Status</th></tr></thead>
               <tbody>
-                <tr><td>Echo Park</td><td>90026</td><td class="ok">7.2</td><td>31</td><td class="ok">✓ Resonant</td></tr>
-                <tr><td>Silver Lake</td><td>90039</td><td class="ok">6.8</td><td>28</td><td class="ok">✓ Resonant</td></tr>
-                <tr><td>Highland Park</td><td>90042</td><td>4.1</td><td>19</td><td>— Neutral</td></tr>
-                <tr><td>Boyle Heights</td><td>90033</td><td class="alert">2.3</td><td>14</td><td class="alert">✗ Polarized</td></tr>
-                <tr><td>Watts</td><td>90002</td><td class="alert">1.8</td><td>11</td><td class="alert">✗ Polarized</td></tr>
-                <tr><td>Koreatown</td><td>90010</td><td class="alert">2.1</td><td>16</td><td class="alert">✗ Polarized</td></tr>
-                <tr><td>Compton</td><td>90220</td><td class="alert">1.5</td><td>9</td><td class="alert">✗ Polarized</td></tr>
-                <tr><td>Culver City</td><td>90232</td><td class="ok">6.4</td><td>22</td><td class="ok">✓ Resonant</td></tr>
+                <tr><td>LACMA / Wilshire</td><td>Central</td><td class="ok">7.4</td><td>34</td><td class="ok">✓ Resonant</td></tr>
+                <tr><td>Boyle Heights</td><td>Eastside</td><td class="ok">6.2</td><td>26</td><td class="ok">✓ Resonant</td></tr>
+                <tr><td>Watts</td><td>South Los Angeles</td><td>3.4</td><td>18</td><td>— Neutral</td></tr>
+                <tr><td>Altadena</td><td>Foothills / Unincorporated</td><td>4.0</td><td>15</td><td>— Neutral</td></tr>
+                <tr><td>Pacoima</td><td>San Fernando Valley</td><td class="alert">2.8</td><td>13</td><td class="alert">✗ Low resonance</td></tr>
+                <tr><td>Wilmington</td><td>Harbor</td><td class="alert">2.4</td><td>12</td><td class="alert">✗ Low resonance</td></tr>
+                <tr><td>Pomona</td><td>East County / Inland</td><td class="alert">2.7</td><td>11</td><td class="alert">✗ Low resonance</td></tr>
+                <tr><td>Lancaster</td><td>Antelope Valley / High Desert</td><td class="alert">1.9</td><td>9</td><td class="alert">✗ Low resonance</td></tr>
               </tbody>
             </table>
-            <div class="sim-warning">Overall score: 72 · Polarized nodes: 4 of 8 · Condition triggered at 3+ zip codes · This result would suspend distribution to polarized nodes and flag for community co-design review.</div>
+            <div class="sim-warning">Simulated demonstration data · Overall score: 72 · Low-resonance regions: 4 (Valley, Harbor, East County, Antelope Valley) — all outside Central, condition triggered at 3+ distinct regions · Strong responses concentrated in the museum-connected Central and Eastside nodes, triggering the adjacency flag · This result would suspend provisional routing pending local review.</div>
           </div>
         </div>
         <div class="fcard-section" style="margin-bottom:0;">
           <div class="fcard-section-label">Research Response if Confirmed</div>
-          <div class="fcard-prose">Introduce a spatial disaggregation layer: the distribution score becomes a composite of the semantic bridging score (current model) and a geographic equity weight based on node-level feedback. Works that score high semantically but low in specific communities are flagged for community co-design — a resident artist in that zip code is invited to modify the civic theme or artist agent before rebroadcast. The failure mode becomes a design prompt rather than a distribution veto.</div>
+          <div class="fcard-prose">Introduce a spatial disaggregation layer: the distribution score becomes a composite of the semantic bridging score (current model) and a geographic equity weight based on node-level feedback. Works that score high semantically but low in specific county regions are flagged for community co-design — a resident artist in that research context is invited to modify the civic theme or artist agent before rebroadcast. The failure mode becomes a design prompt rather than a distribution veto.</div>
         </div>
       </div>
     </div>
@@ -1139,7 +1251,22 @@ bridgingScore = min(100,
         <button class="theme-btn" onclick="setTheme('Public Housing')">Public Housing</button>
         <button class="theme-btn" onclick="setTheme('Night Shift Nurses')">Night Nurses</button>
         <button class="theme-btn" onclick="setTheme('Farmers Market')">Local Harvest</button>
+        <button class="theme-btn" onclick="setTheme('Harbor Labor')">Harbor Labor</button>
+        <button class="theme-btn" onclick="setTheme('Heat and Shade')">Heat &amp; Shade</button>
+        <button class="theme-btn" onclick="setTheme('Wildfire Recovery')">Wildfire Recovery</button>
+        <button class="theme-btn" onclick="setTheme('Aerospace Work')">Aerospace Work</button>
+        <button class="theme-btn" onclick="setTheme('Foothill Communities')">Foothill Life</button>
+        <button class="theme-btn" onclick="setTheme('Water Infrastructure')">Water Systems</button>
+        <button class="theme-btn" onclick="setTheme('Freight and Logistics')">Freight &amp; Logistics</button>
+        <button class="theme-btn" onclick="setTheme('Youth Transit')">Youth Transit</button>
+        <button class="theme-btn" onclick="setTheme('Housing Displacement')">Housing Displacement</button>
+        <button class="theme-btn" onclick="setTheme('Air Quality')">Air Quality</button>
+        <button class="theme-btn" onclick="setTheme('Street Vending')">Street Vending</button>
+        <button class="theme-btn" onclick="setTheme('Desert Growth')">Desert Growth</button>
+        <button class="theme-btn" onclick="setTheme('Coastal Access')">Coastal Access</button>
+        <button class="theme-btn" onclick="setTheme('Public Health Infrastructure')">Public Health</button>
       </div>
+      <p style="font-family:'Special Elite',cursive;font-size:8px;color:#888;margin-top:7px;line-height:1.5;font-style:italic;">Themes connect to possible research contexts across the county. No theme is permanently assigned to any community.</p>
     </div>
 
     <!-- 2: STYLE -->
@@ -1206,7 +1333,7 @@ bridgingScore = min(100,
         </div>
         <div class="featured-meta">
           <div class="meta-item"><div class="meta-key">Artist Agent</div><div class="meta-val" id="featuredArtist">—</div></div>
-          <div class="meta-item"><div class="meta-key">Node</div><div class="meta-val" id="featuredLocation">—</div></div>
+          <div class="meta-item"><div class="meta-key">Provisional Node</div><div class="meta-val" id="featuredLocation">—</div></div>
           <div class="meta-item"><div class="meta-key">Time</div><div class="meta-val" id="featuredTime">—</div></div>
           <div class="meta-item"><div class="meta-key">Bridge Score</div><div class="meta-val" id="featuredBridgeScore">—</div></div>
         </div>
@@ -1237,6 +1364,7 @@ bridgingScore = min(100,
       </div>
       <div class="bridging-clusters" id="bridgeClusters"></div>
       <div id="bridgeSummary" style="font-family:'IM Fell English',serif;font-size:11px;font-style:italic;color:var(--wpa-tan);margin-top:12px;line-height:1.5;padding-top:10px;border-top:1px solid #333;"></div>
+      <div id="bridgeRouting" style="font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#7aafdd;margin-top:10px;line-height:1.8;"></div>
     </div>
 
     <!-- JUDGE PANEL -->
@@ -1258,7 +1386,7 @@ bridgingScore = min(100,
     </div>
 
     <!-- NODE GRID -->
-    <div class="nodes-label">Community Display Nodes</div>
+    <div class="nodes-label">Provisional Routing — Demonstration Nodes (Simulated)</div>
     <div class="node-grid" id="nodeGrid"></div>
 
     <div class="about-strip">
@@ -1271,8 +1399,8 @@ bridgingScore = min(100,
         <p>21 numbered agents — seven WPA historical archive divisions, eight LACMA collection traditions, six contemporary American Scene movements — and 14 LACMA curators serve as resonance agents, each with a keyword profile drawn from program records, collection-level data, and departmental expertise. The bridging score is their collective response.</p>
       </div>
       <div class="about-col">
-        <h3>The Scale Argument</h3>
-        <p>At 50,000 nodes, a high bridging score means the work reaches across zip codes, languages, and art traditions simultaneously. That is what a Federal Art Project does. That is what an engagement algorithm cannot do by design.</p>
+        <h3>Long-Term Scale Hypothesis</h3>
+        <p>At countywide or national scale, bridging would need to be demonstrated across regions, languages, local histories, environmental conditions, and forms of access — not inferred from a single aggregate score. The current eight-node network is a demonstration, not a deployment.</p>
       </div>
     </div>
 
@@ -1805,9 +1933,9 @@ function computeBridgingScore(theme, style, artistId) {
 
 function getBridgeSummary(score, resonatingClusters, theme) {
   if (score >= 80) return `"${theme}" resonates across ${resonatingClusters} of 8 art-tradition clusters — a rare breadth that marks this as a true bridging work. Both collection artists and curatorial departments register significant resonance.`;
-  if (score >= 60) return `Solid bridging reach: "${theme}" activates ${resonatingClusters} clusters, crossing the divide between at least two major art traditions in the LACMA agent network. Strong candidate for multi-neighborhood distribution.`;
+  if (score >= 60) return `Solid bridging reach: "${theme}" activates ${resonatingClusters} clusters, crossing the divide between at least two major art traditions in the LACMA agent network. Strong candidate for provisional multi-region routing — pending local review.`;
   if (score >= 40) return `Moderate bridging: "${theme}" connects ${resonatingClusters} clusters. The work speaks clearly to certain traditions while leaving others unmoved. Consider broadening the civic scope to reach across more of the network.`;
-  return `Narrow resonance: "${theme}" activates only ${resonatingClusters} cluster(s). Strong within its tradition but low bridging potential. Effective for targeted deployment; insufficient for citywide distribution at full scale.`;
+  return `Narrow resonance: "${theme}" activates only ${resonatingClusters} cluster(s). Strong within its tradition but low bridging potential. Effective for targeted testing; a countywide claim would require demonstrated resonance across regions.`;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1821,14 +1949,134 @@ let agentMode = 'creator';
 let activeNodeId = null;
 let allBridgeScores = [];
 
-const LOCATIONS = [
-  'Echo Park, LA','Boyle Heights, LA','Compton, CA','Long Beach, CA',
-  'East Hollywood, LA','Watts, CA','Koreatown, LA','Inglewood, CA',
-  'Highland Park, LA','South Central, LA','Pico-Union, LA','Van Nuys, CA',
-  'Huntington Park, CA','Culver City, CA','Leimert Park, LA','Crenshaw, LA',
-  'Mar Vista, LA','Silver Lake, LA','Atwater Village, LA','El Sereno, LA',
-  'Monterey Park, CA','Bell, CA','Maywood, CA','Carson, CA',
+// ═══════════════════════════════════════════════════════════════
+// COUNTY DEMONSTRATION NETWORK — 8 nodes · data-driven
+// Hosted at LACMA. Defined through local nodes.
+// These are demonstration research contexts, NOT confirmed community
+// partnerships. Inclusion does not imply the system speaks for the
+// communities represented. Research contexts identify conditions for
+// testing; they do not define the identity of a community.
+// status: 'host' | 'demonstration' | 'proposed' | 'partner'
+// ═══════════════════════════════════════════════════════════════
+const TBE = 'To be established with local partners';
+function nodeAccessDefaults() {
+  return {
+    languagesCommonlyUsed: TBE,
+    audioDescription: TBE,
+    captioning: TBE,
+    highContrastMode: TBE,
+    largeTextMode: TBE,
+    wheelchairInteractionHeight: TBE,
+    qrFreeParticipation: TBE,
+    lowBandwidthParticipation: TBE,
+    typicalViewingDistance: TBE,
+    transitProximity: TBE,
+    localReviewStatus: 'Not established',
+    consentStatus: 'Not established'
+  };
+}
+const COMMUNITY_NODES = [
+  {
+    id: 'lacma-wilshire', name: 'LACMA / Wilshire', region: 'Central', status: 'host',
+    researchContext: 'Museum and central institutional context',
+    municipalityType: 'City of Los Angeles', confirmedPartner: false, languages: [],
+    geographicConditions: ['museum district', 'central institutional'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '90036', lat: 34.0639, lng: -118.3592,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Lacma%2C_ingresso.JPG/1280px-Lacma%2C_ingresso.JPG',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'boyle-heights', name: 'Boyle Heights', region: 'Eastside', status: 'demonstration',
+    researchContext: 'Eastside cultural and neighborhood context',
+    municipalityType: 'City of Los Angeles', confirmedPartner: false, languages: [],
+    geographicConditions: ['neighborhood', 'transit corridor'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '90033', lat: 34.0339, lng: -118.2073,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg/1280px-Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'watts', name: 'Watts', region: 'South Los Angeles', status: 'demonstration',
+    researchContext: 'South Los Angeles civic and community-art context',
+    municipalityType: 'City of Los Angeles', confirmedPartner: false, languages: [],
+    geographicConditions: ['neighborhood', 'civic corridor'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '90002', lat: 33.9389, lng: -118.2417,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Highsmithwattstowers.jpg',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'wilmington', name: 'Wilmington', region: 'Harbor', status: 'demonstration',
+    researchContext: 'Harbor, industrial, labor, and environmental context',
+    municipalityType: 'City of Los Angeles', confirmedPartner: false, languages: [],
+    geographicConditions: ['harbor community', 'industrial corridor'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '90744', lat: 33.7797, lng: -118.2646,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Banning_House%2C_Wilmington%2C_California.jpg/1280px-Banning_House%2C_Wilmington%2C_California.jpg',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'pacoima', name: 'Pacoima', region: 'San Fernando Valley', status: 'demonstration',
+    researchContext: 'Northeast San Fernando Valley context',
+    municipalityType: 'City of Los Angeles', confirmedPartner: false, languages: [],
+    geographicConditions: ['valley community', 'industrial corridor'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '91331', lat: 34.2728, lng: -118.4260,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/San_Fernando_Gardens_Apartments.JPG/1280px-San_Fernando_Gardens_Apartments.JPG',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'pomona', name: 'Pomona', region: 'East County / Inland', status: 'demonstration',
+    researchContext: 'Eastern Los Angeles County and inland civic context',
+    municipalityType: 'City of Pomona', confirmedPartner: false, languages: [],
+    geographicConditions: ['inland city'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '91766', lat: 34.0553, lng: -117.7523,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Pomona_Fox_Theater_Marquee.jpg/1280px-Pomona_Fox_Theater_Marquee.jpg',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'lancaster', name: 'Lancaster', region: 'Antelope Valley / High Desert', status: 'demonstration',
+    researchContext: 'Antelope Valley and high-desert context',
+    municipalityType: 'City of Lancaster', confirmedPartner: false, languages: [],
+    geographicConditions: ['high-desert community'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '93534', lat: 34.6868, lng: -118.1542,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Lancaster_California_BLVD_Construction_%289451567755%29.jpg/1280px-Lancaster_California_BLVD_Construction_%289451567755%29.jpg',
+    access: nodeAccessDefaults()
+  },
+  {
+    id: 'altadena', name: 'Altadena', region: 'Foothills / Unincorporated', status: 'demonstration',
+    researchContext: 'Foothill and unincorporated county context',
+    municipalityType: 'Unincorporated Los Angeles County', confirmedPartner: false, languages: [],
+    geographicConditions: ['foothill community', 'unincorporated community'],
+    accessibilityStatus: 'prototype', reviewStatus: 'not established', consentStatus: 'not established',
+    zip: '91001', lat: 34.1897, lng: -118.1312,
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Lake_Avenue_Altadena.jpg/1280px-Lake_Avenue_Altadena.jpg',
+    access: nodeAccessDefaults()
+  }
 ];
+const LOCATIONS = COMMUNITY_NODES.map(n => n.name);
+
+function strHash(s) {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h;
+}
+// Deterministic provisional-routing pick: 3 possible research contexts.
+// Routing is not activated until local review and partner approval.
+function provisionalRouting(seedStr, count = 3) {
+  const pool = COMMUNITY_NODES.filter(n => n.status !== 'host');
+  const h = strHash(seedStr);
+  const step = 1 + (h % (pool.length - 1));
+  const out = [];
+  for (let i = 0; out.length < count && i < pool.length * 2; i++) {
+    const cand = pool[(h + i * step) % pool.length];
+    if (!out.includes(cand)) out.push(cand);
+  }
+  return out;
+}
 
 const INITIAL_NODES = [
   { theme:'Public Transit Workers', style:'WPA mural', artistId:'agent001' },
@@ -2040,6 +2288,13 @@ function showBridgingPanel(bridgeResult, theme, style, artistId) {
 
   document.getElementById('bridgeSummary').textContent = getBridgeSummary(bridgeResult.score, bridgeResult.resonatingClusters, theme);
 
+  // Provisional routing — possible research contexts only, never activation
+  const routed = provisionalRouting(theme + '|' + style);
+  document.getElementById('bridgeRouting').innerHTML =
+    'Provisional Routing — potential research contexts: <span style="color:var(--wpa-gold)">' +
+    routed.map(n => n.name).join(' · ') +
+    '</span><br><span style="color:#666">Routing is not activated until local review and partner approval.</span>';
+
   // Update featured panel
   document.getElementById('featuredBridgeScore').textContent = bridgeResult.score + ' / 100';
 }
@@ -2219,8 +2474,8 @@ function focusNode(id) {
   const a = node.artistId ? ARTISTS.find(x => x.id === node.artistId) : null;
   document.getElementById('featuredTitle').textContent = node.theme.toUpperCase();
   document.getElementById('featuredSub').textContent = a
-    ? `"${node.theme}" — generated in the style of ${a.name} (${a.years}), broadcast to ${node.location}.`
-    : `"${node.theme}" — WPA civic style, broadcast to the ${node.location} community display node at ${node.time}.`;
+    ? `"${node.theme}" — generated in the style of ${a.name} (${a.years}). Provisional routing to the ${node.location} demonstration node — pending local review.`
+    : `"${node.theme}" — WPA civic style. Provisional routing to the ${node.location} demonstration node at ${node.time} — pending local review.`;
   document.getElementById('featuredArtist').textContent = a ? a.name : 'WPA Style';
   document.getElementById('featuredLocation').textContent = node.location;
   document.getElementById('featuredTime').textContent = node.time;
@@ -2242,19 +2497,186 @@ function focusNode(id) {
 // ═══════════════════════════════════════════════════════════════
 function showPage(page) {
   document.getElementById('networkPage').style.display = page === 'network' ? '' : 'none';
+  document.getElementById('countyPage').classList.toggle('visible', page === 'county');
   document.getElementById('galleryPage').classList.toggle('visible', page === 'gallery');
   document.getElementById('dataPage').classList.toggle('visible', page === 'data');
   document.getElementById('failurePage').classList.toggle('visible', page === 'failure');
   document.getElementById('installPage').classList.toggle('visible', page === 'install');
   document.getElementById('libraryPage').classList.toggle('visible', page === 'library');
   document.getElementById('streetPage').classList.toggle('visible', page === 'street');
-  ['network','gallery','data','failure','install','library','street'].forEach(p => {
+  ['network','county','gallery','data','failure','install','library','street'].forEach(p => {
     document.getElementById('tab-' + p).classList.toggle('active', p === page);
   });
   if (page === 'data' && lastBridgeState) renderDataPage(lastBridgeState);
+  if (page === 'county') initCountyPage();
   if (page === 'install') initInstallPage();
   if (page === 'library') initLibrary();
   if (page === 'street') initStreetPage();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// COUNTY NETWORK PAGE — map, node index, detail, coverage
+// All rendered from COMMUNITY_NODES; the SVG map is schematic.
+// ═══════════════════════════════════════════════════════════════
+let countyReady = false;
+let selectedCountyNodeId = null;
+
+function nodeSymbol(n) { return { host: '●', demonstration: '○', proposed: '◌', partner: '◆' }[n.status] || '○'; }
+function nodeStatusLabel(n) {
+  return { host: 'Host institution', demonstration: 'Demonstration research node', proposed: 'Proposed partnership', partner: 'Active community partner' }[n.status] || n.status;
+}
+function countyXY(n) {
+  const x = Math.min(700, (n.lng + 118.95) / 1.30 * 760 + 20);
+  const y = (34.85 - n.lat) / 1.15 * 640 + 30;
+  return { x: Math.round(x), y: Math.round(y) };
+}
+
+function initCountyPage() {
+  if (countyReady) return;
+  countyReady = true;
+  buildCountyMap();
+  buildNodeIndex();
+  buildCoverage();
+  selectCountyNode(COMMUNITY_NODES[0].id);
+}
+
+function buildCountyMap() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('countyMap');
+  const el = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  };
+
+  // Schematic county outline — approximate by design, labeled as such
+  el('path', {
+    d: 'M 120,470 L 55,395 L 40,330 L 75,100 L 690,70 L 755,300 L 745,500 L 660,560 L 520,600 L 470,645 L 445,690 L 400,655 L 350,600 L 240,540 Z',
+    fill: 'rgba(26,58,92,0.18)', stroke: '#2a3a5a', 'stroke-width': 2, 'stroke-linejoin': 'round'
+  });
+  const schemLabel = el('text', { x: 60, y: 668, fill: '#555', 'font-size': 11, 'letter-spacing': 3, style: "font-family:'Oswald',sans-serif;text-transform:uppercase;" });
+  schemLabel.textContent = 'SCHEMATIC — POSITIONS APPROXIMATE';
+
+  // Double-headed arrow marker for the bidirectional host–node relationship
+  const defs = el('defs', {});
+  const marker = el('marker', { id: 'cnArrow', viewBox: '0 0 8 8', refX: 7, refY: 4, markerWidth: 6, markerHeight: 6, orient: 'auto-start-reverse' }, defs);
+  el('path', { d: 'M 0,0 L 8,4 L 0,8 z', fill: '#33507a' }, marker);
+
+  const host = COMMUNITY_NODES.find(n => n.status === 'host');
+  const hp = countyXY(host);
+
+  // Host–node routing/feedback lines (both directions)
+  COMMUNITY_NODES.filter(n => n.status !== 'host').forEach(n => {
+    const p = countyXY(n);
+    const dx = p.x - hp.x, dy = p.y - hp.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const off = 20;
+    el('line', {
+      x1: hp.x + dx / len * off, y1: hp.y + dy / len * off,
+      x2: p.x - dx / len * off, y2: p.y - dy / len * off,
+      stroke: '#33507a', 'stroke-width': 1.2, 'stroke-dasharray': '4 5',
+      'marker-start': 'url(#cnArrow)', 'marker-end': 'url(#cnArrow)', opacity: 0.7
+    });
+  });
+
+  // Nodes
+  COMMUNITY_NODES.forEach(n => {
+    const p = countyXY(n);
+    const g = el('g', { class: 'county-node', tabindex: 0, role: 'button', 'data-node': n.id,
+      'aria-label': n.name + ' — ' + nodeStatusLabel(n) + ', ' + n.region + ' region. ' + n.researchContext + '.' });
+    el('circle', { cx: p.x, cy: p.y, r: 22, fill: 'transparent' }, g); // touch target
+    el('circle', { class: 'cn-ring', cx: p.x, cy: p.y, r: 15, fill: 'none', stroke: 'transparent', 'stroke-width': 2.5 }, g);
+    if (n.status === 'host') {
+      el('circle', { cx: p.x, cy: p.y, r: 9, fill: '#D4A017' }, g);
+    } else {
+      el('circle', { cx: p.x, cy: p.y, r: 8, fill: 'none', stroke: '#F5EDD6', 'stroke-width': 2, opacity: 0.85 }, g);
+    }
+    const right = p.x < 620;
+    const name = el('text', { x: right ? p.x + 16 : p.x - 16, y: p.y + 4, fill: '#F5EDD6', 'font-size': 13,
+      'text-anchor': right ? 'start' : 'end', style: "font-family:'Oswald',sans-serif;" }, g);
+    name.textContent = nodeSymbol(n) + ' ' + n.name;
+    const reg = el('text', { x: right ? p.x + 16 : p.x - 16, y: p.y + 18, fill: '#888', 'font-size': 9, 'letter-spacing': 1,
+      'text-anchor': right ? 'start' : 'end', style: "font-family:'Oswald',sans-serif;text-transform:uppercase;" }, g);
+    reg.textContent = n.region;
+    const activate = () => selectCountyNode(n.id);
+    g.addEventListener('click', activate);
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+  });
+}
+
+function buildNodeIndex() {
+  const wrap = document.getElementById('nodeIndex');
+  wrap.innerHTML = '';
+  COMMUNITY_NODES.forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'node-index-btn';
+    b.dataset.node = n.id;
+    b.innerHTML = `<span class="node-index-sym" aria-hidden="true">${nodeSymbol(n)}</span>${n.name}` +
+      `<span class="node-index-region">${nodeStatusLabel(n)} · ${n.region} · ${n.researchContext}</span>`;
+    b.onclick = () => selectCountyNode(n.id);
+    wrap.appendChild(b);
+  });
+}
+
+function selectCountyNode(id) {
+  selectedCountyNodeId = id;
+  document.querySelectorAll('#countyMap .county-node').forEach(g => g.classList.toggle('selected', g.dataset.node === id));
+  document.querySelectorAll('.node-index-btn').forEach(b => b.classList.toggle('selected', b.dataset.node === id));
+  const n = COMMUNITY_NODES.find(x => x.id === id);
+  if (!n) return;
+  const acc = n.access;
+  const accRows = [
+    ['Languages commonly used', acc.languagesCommonlyUsed],
+    ['Audio description', acc.audioDescription],
+    ['Captioning', acc.captioning],
+    ['High-contrast mode', acc.highContrastMode],
+    ['Large-text mode', acc.largeTextMode],
+    ['Wheelchair-accessible interaction height', acc.wheelchairInteractionHeight],
+    ['QR-code-free participation', acc.qrFreeParticipation],
+    ['Low-bandwidth participation', acc.lowBandwidthParticipation],
+    ['Typical viewing distance', acc.typicalViewingDistance],
+    ['Transit proximity', acc.transitProximity],
+    ['Local review status', acc.localReviewStatus],
+    ['Consent status', acc.consentStatus],
+  ].map(([k, v]) => `<div class="cd-access-row"><div class="cd-access-key">${k}</div><div class="cd-access-val">${v}</div></div>`).join('');
+  document.getElementById('countyDetail').innerHTML = `
+    <div class="cd-name">${n.name}</div>
+    <div class="cd-status"><span aria-hidden="true">${nodeSymbol(n)}</span> ${nodeStatusLabel(n)} · ${n.region}</div>
+    <div class="cd-field">
+      <div class="cd-field-label">Research Context</div>
+      <div class="cd-field-val">${n.researchContext}. <em style="color:#888;">Research contexts identify conditions for testing — they do not define the identity of a community.</em></div>
+    </div>
+    <div class="cd-field"><div class="cd-field-label">Municipality</div><div class="cd-field-val">${n.municipalityType}</div></div>
+    <div class="cd-field"><div class="cd-field-label">Geographic Conditions</div><div class="cd-field-val">${n.geographicConditions.join(' · ')}</div></div>
+    <div class="cd-field"><div class="cd-field-label">Confirmed Community Partner</div><div class="cd-field-val">${n.confirmedPartner ? 'Yes' : 'No — none confirmed'}</div></div>
+    <div class="cd-field"><div class="cd-field-label">Accessibility Status</div><div class="cd-field-val">${n.accessibilityStatus}</div></div>
+    <div class="cd-field">
+      <div class="cd-field-label">Language &amp; Access — display design and participation, not aesthetic scoring</div>
+      ${accRows}
+    </div>
+  `;
+}
+
+function buildCoverage() {
+  const N = COMMUNITY_NODES;
+  const condCount = c => N.filter(n => n.geographicConditions.some(g => g.includes(c))).length;
+  const items = [
+    [new Set(N.map(n => n.region)).size, 'Regions represented'],
+    [N.filter(n => n.status === 'demonstration').length, 'Demonstration research nodes'],
+    [N.filter(n => n.status === 'host').length, 'Host institutions'],
+    [N.filter(n => n.confirmedPartner).length, 'Confirmed active partners'],
+    [new Set(N.map(n => n.municipalityType).filter(m => !/unincorporated/i.test(m))).size, 'Municipalities represented'],
+    [N.filter(n => /unincorporated/i.test(n.municipalityType)).length, 'Unincorporated contexts represented'],
+    [condCount('harbor'), 'Harbor contexts represented'],
+    [condCount('high-desert'), 'High-desert contexts represented'],
+    [condCount('foothill'), 'Foothill contexts represented'],
+    [new Set(N.flatMap(n => n.geographicConditions)).size, 'Environmental / geographic conditions in test set'],
+    [new Set(N.flatMap(n => n.languages)).size, 'Languages confirmed — needs to be established with local partners'],
+  ];
+  document.getElementById('coverageGrid').innerHTML = items.map(([num, label]) =>
+    `<div class="coverage-item"><div class="coverage-num">${num}</div><div class="coverage-label">${label}</div></div>`
+  ).join('');
 }
 
 
@@ -2264,16 +2686,9 @@ function showPage(page) {
 // streetscape: facade drape, outrigger pole, balcony flags, or
 // cross-street bunting. Click the photo to re-hang.
 // ═══════════════════════════════════════════════════════════════
-const SV_HOODS = [
-  { name:'Boyle Heights', zip:'90033', lat:34.0339, lng:-118.2073, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg/1280px-Boyle_Heights%2C_Los_Angeles%2C_CA%2C_USA_-_panoramio.jpg' },
-  { name:'Watts',         zip:'90002', lat:33.9389, lng:-118.2417, img:'https://upload.wikimedia.org/wikipedia/commons/f/ff/Highsmithwattstowers.jpg' },
-  { name:'Koreatown',     zip:'90005', lat:34.0577, lng:-118.3009, img:'https://upload.wikimedia.org/wikipedia/commons/2/2d/Koreatown_Sign.jpg' },
-  { name:'Echo Park',     zip:'90026', lat:34.0782, lng:-118.2606, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg/1280px-Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg' },
-  { name:'Compton',       zip:'90220', lat:33.8958, lng:-118.2201, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Heritage_House_%28Compton%2C_California%29.jpg/1280px-Heritage_House_%28Compton%2C_California%29.jpg' },
-  { name:'Highland Park', zip:'90042', lat:34.1133, lng:-118.1859, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Highland_Park_Masonic_Temple%2C_Los_Angeles.JPG/1280px-Highland_Park_Masonic_Temple%2C_Los_Angeles.JPG' },
-  { name:'Venice',        zip:'90291', lat:33.9850, lng:-118.4695, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Venice_Beach_Boardwalk_Los_Angeles_2019.jpg/1280px-Venice_Beach_Boardwalk_Los_Angeles_2019.jpg' },
-  { name:'Crenshaw',      zip:'90008', lat:34.0211, lng:-118.3351, img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Looking_north_on_Crenshaw_from_1100_S.jpg/1280px-Looking_north_on_Crenshaw_from_1100_S.jpg' },
-];
+// Street nodes come straight from the county demonstration network —
+// one data structure feeds the map, selectors, routing, and this page.
+const SV_HOODS = COMMUNITY_NODES;
 const SV_MODES = [
   { id:'drape',     label:'Facade Drape',     hint:'vertical banner flat against the building',   anchor:{x:0.18,y:0.06} },
   { id:'outrigger', label:'Outrigger Pole',   hint:'flag on a 45° pole off the facade',           anchor:{x:0.16,y:0.30} },
@@ -2487,7 +2902,8 @@ function initStreetPage() {
       const b = document.createElement('button');
       b.className = 'sv-chip' + (i === 0 ? ' active' : '');
       b.id = 'sv-chip-' + i;
-      b.innerHTML = h.name + '<span class="sv-zip">' + h.zip + ' · ' + h.lat.toFixed(3) + ', ' + h.lng.toFixed(3) + '</span>';
+      b.innerHTML = (h.status === 'host' ? '● ' : '○ ') + h.name + '<span class="sv-zip">' + h.region + ' · ' + h.zip + '</span>';
+      b.setAttribute('aria-label', h.name + ' — ' + (h.status === 'host' ? 'host institution' : 'demonstration research node') + ', ' + h.region + ' region');
       b.onclick = () => { svHoodIdx = i; svCustomImg = null; svCustomName = ''; document.getElementById('svUploadClear').style.display = 'none'; document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
       chips.appendChild(b);
     });
@@ -2578,7 +2994,7 @@ async function compositeStreet() {
   ctx.font = '13px "Oswald", sans-serif';
   ctx.textAlign = 'right';
   ctx.fillText('THE AMERICAN SCENE 2.0 · LACMA ART + TECHNOLOGY LAB', W - 20, H - 38);
-  ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET' : h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ' + h.lat.toFixed(4) + ', ' + h.lng.toFixed(4), W - 20, H - 18);
+  ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET' : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + h.region.toUpperCase() + ' · ' + h.zip, W - 20, H - 18);
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(212,160,23,0.9)';
   ctx.fillRect(0, H - 64, W, 3);
@@ -2586,7 +3002,7 @@ async function compositeStreet() {
 
   document.getElementById('svCaption').textContent = svCustomImg
     ? 'COMMUNITY NODE · UPLOADED PHOTO · ' + mode.label.toUpperCase()
-    : h.name.toUpperCase() + ' NODE · ' + h.zip + ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS) · ' + mode.label.toUpperCase();
+    : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + h.zip + ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS) · ' + mode.label.toUpperCase();
   spinner.style.display = 'none';
   svBusy = false;
   if (svQueued) { svQueued = false; compositeStreet(); }
@@ -2715,69 +3131,43 @@ async function initLibrary() {
 // ═══════════════════════════════════════════════════════════════
 let installState = 1;
 const INSTALL_STATES = 5;
-let installPlace = 'Urban';
-let installCondition = 'Tension';
+let installPlace = 'Museum district';
+let installCondition = 'Labor';
 let installPageReady = false;
 let installGenUrl = null;
 
-// Agent scores keyed by [place][condition]
-const INSTALL_SCORES = {
-  Urban: {
-    Tension: { agent:'Agent 142 · Detroit Industrial Memory Specialist', medium:'Mural', theme:'Labor / Progress',
-      scores:[['#001',9.2],['#002',8.7],['#005',8.1],['#140',7.3],['#155',2.1],['#170',1.4]],
-      bridgeScore:68, nodes:'Echo Park · Boyle Heights · Watts' },
-    Growth: { agent:'Agent 89 · Chicago Urban Renewal Documentarian', medium:'Documentary Photo', theme:'Community / Infrastructure',
-      scores:[['#302',8.9],['#002',8.2],['#125',7.6],['#005',6.8],['#200',2.3],['#170',1.8]],
-      bridgeScore:72, nodes:'Highland Park · Culver City · Silver Lake' },
-    Decay: { agent:'Agent 17 · Rust Belt Witness', medium:'Lithograph', theme:'Industry / Memory',
-      scores:[['#140',9.1],['#110',8.4],['#004',7.8],['#003',7.2],['#125',2.0],['#303',1.6]],
-      bridgeScore:61, nodes:'Watts · Compton · South Central' },
-  },
-  Rural: {
-    Tension: { agent:'Agent 33 · Central Valley Labor Chronicler', medium:'WPA Mural', theme:'Harvest / Struggle',
-      scores:[['#001',8.8],['#005',8.3],['#002',7.9],['#200',7.1],['#006',1.8],['#303',1.2]],
-      bridgeScore:65, nodes:'Long Beach · Carson · Maywood' },
-    Growth: { agent:'Agent 71 · Pastoral American Recorder', medium:'Woodcut', theme:'Land / Cultivation',
-      scores:[['#125',9.0],['#210',8.5],['#170',7.4],['#185',6.9],['#140',1.9],['#003',1.3]],
-      bridgeScore:74, nodes:'Highland Park · Atwater Village · El Sereno' },
-    Decay: { agent:'Agent 55 · Great Plains Memory Keeper', medium:'Documentary Photo', theme:'Abandonment / Resilience',
-      scores:[['#002',9.3],['#125',8.1],['#210',7.6],['#004',6.4],['#155',1.7],['#303',1.1]],
-      bridgeScore:58, nodes:'Huntington Park · Bell · Maywood' },
-  },
-  Coastal: {
-    Tension: { agent:'Agent 204 · Pacific Borderlands Observer', medium:'Silkscreen', theme:'Ocean / Labor',
-      scores:[['#185',9.1],['#170',8.6],['#125',7.8],['#002',6.9],['#003',2.2],['#140',1.9]],
-      bridgeScore:70, nodes:'Long Beach · Watts · Carson' },
-    Growth: { agent:'Agent 118 · California Modernist', medium:'Photo', theme:'Horizon / Possibility',
-      scores:[['#125',9.4],['#210',8.8],['#306',7.3],['#303',6.7],['#004',1.5],['#110',1.2]],
-      bridgeScore:76, nodes:'Culver City · Mar Vista · Silver Lake' },
-    Decay: { agent:'Agent 61 · Coastal Erosion Witness', medium:'Documentary Photo', theme:'Loss / Tide',
-      scores:[['#125',8.7],['#302',8.1],['#004',7.5],['#170',6.8],['#001',2.1],['#306',1.4]],
-      bridgeScore:63, nodes:'Compton · South Central · Watts' },
-  },
-  Border: {
-    Tension: { agent:'Agent 97 · Frontera Memory Specialist', medium:'Mural', theme:'Migration / Crossing',
-      scores:[['#001',9.5],['#200',9.1],['#005',8.2],['#140',7.6],['#125',1.8],['#306',1.1]],
-      bridgeScore:79, nodes:'Boyle Heights · Pico-Union · Koreatown' },
-    Growth: { agent:'Agent 143 · Diaspora Community Builder', medium:'WPA Mural', theme:'Belonging / Roots',
-      scores:[['#200',9.3],['#001',8.9],['#302',7.7],['#005',7.2],['#210',2.0],['#303',1.3]],
-      bridgeScore:77, nodes:'East Hollywood · Pico-Union · Koreatown' },
-    Decay: { agent:'Agent 28 · Displacement Chronicler', medium:'Lithograph', theme:'Loss / Belonging',
-      scores:[['#004',9.0],['#140',8.5],['#110',7.9],['#001',7.3],['#125',1.6],['#306',1.0]],
-      bridgeScore:66, nodes:'Watts · Compton · South Central' },
-  },
-  Synthetic: {
-    Tension: { agent:'Agent 199 · Algorithmic Urbanist', medium:'Silkscreen', theme:'Code / Control',
-      scores:[['#303',9.2],['#305',8.8],['#155',7.6],['#306',7.1],['#005',1.9],['#002',1.4]],
-      bridgeScore:64, nodes:'Culver City · Silver Lake · Highland Park' },
-    Growth: { agent:'Agent 212 · Network Infrastructure Archivist', medium:'Conceptual Print', theme:'Systems / Flow',
-      scores:[['#303',9.0],['#155',8.4],['#306',8.0],['#305',7.5],['#001',2.0],['#004',1.3]],
-      bridgeScore:69, nodes:'Culver City · Mar Vista · Atwater Village' },
-    Decay: { agent:'Agent 7 · Digital Entropy Recorder', medium:'Silkscreen', theme:'Signal / Noise',
-      scores:[['#305',9.1],['#303',8.6],['#155',7.8],['#003',7.0],['#125',1.8],['#001',1.2]],
-      bridgeScore:60, nodes:'Inglewood · Crenshaw · Leimert Park' },
-  },
+// Two-part geographic input: context (where) + condition (what the place
+// is negotiating). Categories set testing conditions for the prototype —
+// they do not replace local knowledge, and no category is permanently
+// assigned to any community. All resulting scores are SIMULATED
+// demonstration data, generated deterministically per combination.
+const INSTALL_CONTEXTS = {
+  'Museum district':          { medium: 'Mural',             routing: ['LACMA / Wilshire', 'Boyle Heights', 'Watts'] },
+  'Neighborhood':             { medium: 'Mural',             routing: ['Boyle Heights', 'Watts', 'Pacoima'] },
+  'Industrial corridor':      { medium: 'Lithograph',        routing: ['Wilmington', 'Pacoima', 'Pomona'] },
+  'Harbor community':         { medium: 'Documentary Photo', routing: ['Wilmington', 'Watts', 'Boyle Heights'] },
+  'Valley community':         { medium: 'Silkscreen',        routing: ['Pacoima', 'Pomona', 'Lancaster'] },
+  'Inland city':              { medium: 'Easel Painting',    routing: ['Pomona', 'Lancaster', 'Pacoima'] },
+  'High-desert community':    { medium: 'Documentary Photo', routing: ['Lancaster', 'Altadena', 'Pacoima'] },
+  'Foothill community':       { medium: 'Woodcut',           routing: ['Altadena', 'Lancaster', 'Pomona'] },
+  'Unincorporated community': { medium: 'Easel Painting',    routing: ['Altadena', 'Lancaster', 'Pomona'] },
+  'Transit corridor':         { medium: 'Poster',            routing: ['Boyle Heights', 'Watts', 'Wilmington'] },
 };
+const INSTALL_CONDITIONS = {
+  'Labor':                 'Labor / Dignity of Work',
+  'Migration':             'Migration / Arrival',
+  'Recovery':              'Recovery / Rebuilding',
+  'Environmental stress':  'Environment / Stewardship',
+  'Cultural continuity':   'Continuity / Memory',
+  'Housing pressure':      'Housing / Home',
+  'Public gathering':      'Gathering / Commons',
+  'Infrastructure change': 'Infrastructure / Transition',
+  'Heat':                  'Heat / Shade',
+  'Air quality':           'Air / Breath',
+  'Displacement':          'Displacement / Belonging',
+  'Growth':                'Growth / Stewardship',
+};
+const INSTALL_AGENT_IDS = ['#001','#002','#003','#004','#005','#006','#007','#110','#125','#140','#155','#170','#185','#200','#210','#301','#302','#303','#304','#305','#306'];
 
 function initInstallPage() {
   if (installPageReady) return;
@@ -2793,7 +3183,36 @@ function initInstallPage() {
     dotsEl.appendChild(d);
   }
 
+  // Build the two-part geographic input controls from data
+  const groups = document.getElementById('installCtrlGroups');
+  const mkGroup = (label, ctrl, vals, selected) => {
+    const g = document.createElement('div');
+    g.className = 'install-ctrl-group';
+    g.innerHTML = `<div class="install-ctrl-label">${label}</div>`;
+    const opts = document.createElement('div');
+    opts.className = 'install-ctrl-opts';
+    vals.forEach(v => {
+      const b = document.createElement('button');
+      b.className = 'install-ctrl-btn' + (v === selected ? ' selected' : '');
+      b.dataset.ctrl = ctrl;
+      b.dataset.val = v;
+      b.textContent = v;
+      b.onclick = () => setInstallCtrl(ctrl, v, b);
+      opts.appendChild(b);
+    });
+    g.appendChild(opts);
+    groups.appendChild(g);
+  };
+  mkGroup('Geographic Context', 'place', Object.keys(INSTALL_CONTEXTS), installPlace);
+  mkGroup('Place Condition', 'condition', Object.keys(INSTALL_CONDITIONS), installCondition);
+  updateComboPhrase();
+
   goToInstallState(1);
+}
+
+function updateComboPhrase() {
+  const el = document.getElementById('installComboPhrase');
+  if (el) el.textContent = installPlace + ' + ' + installCondition.toLowerCase();
 }
 
 const INSTALL_STATE_OVERLAY = ['','s1','s2','s3','s4','s5'];
@@ -2871,13 +3290,36 @@ function goToInstallState(n) {
   if (n === 5) updateOutputState();
 }
 
+// Simulated demonstration data, deterministic per context+condition combo.
 function currentInstallData() {
-  return (INSTALL_SCORES[installPlace] || INSTALL_SCORES.Urban)[installCondition] || INSTALL_SCORES.Urban.Tension;
+  const ctx = INSTALL_CONTEXTS[installPlace] || INSTALL_CONTEXTS['Museum district'];
+  const h = strHash(installPlace + '|' + installCondition);
+  const steps = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20]; // coprime to 21 → full cycle
+  const step = steps[h % steps.length];
+  const pick = [];
+  for (let i = 0; pick.length < 6 && i < 60; i++) {
+    const cand = INSTALL_AGENT_IDS[(h + i * step) % INSTALL_AGENT_IDS.length];
+    if (!pick.includes(cand)) pick.push(cand);
+  }
+  const scores = pick.map((id, i) => [
+    id,
+    i < 4 ? +(9.4 - i * 0.8 - (h % 5) * 0.06).toFixed(1)
+          : +(2.4 - (i - 4) * 0.9 + (h % 3) * 0.1).toFixed(1)
+  ]);
+  const top = ARTISTS.find(a => a.name.includes(pick[0]));
+  return {
+    agent: top ? top.name + ' (provisional match — simulated)' : 'Agent ' + pick[0],
+    medium: ctx.medium,
+    theme: INSTALL_CONDITIONS[installCondition] || installCondition,
+    scores,
+    bridgeScore: 58 + (h % 22),
+    routing: ctx.routing
+  };
 }
 
 function updateDetectState() {
   document.getElementById('detect-place').textContent = installPlace;
-  document.getElementById('detect-condition').textContent = installCondition + ' detected';
+  document.getElementById('detect-condition').textContent = installCondition + ' signals (simulated)';
 }
 
 function updateAnalyzeState() {
@@ -2938,6 +3380,7 @@ function updateGenerateState() {
 function updateOutputState() {
   const d = currentInstallData();
   document.getElementById('output-score').textContent = d.bridgeScore + ' / 100';
+  document.getElementById('output-routing').textContent = d.routing.join(' · ');
 }
 
 function setInstallCtrl(ctrl, val, btn) {
@@ -2947,6 +3390,7 @@ function setInstallCtrl(ctrl, val, btn) {
 
   if (ctrl === 'place') installPlace = val;
   if (ctrl === 'condition') installCondition = val;
+  updateComboPhrase();
 
   // Refresh current state if it's 2-5
   if (installState === 2) updateDetectState();
@@ -2957,7 +3401,7 @@ function setInstallCtrl(ctrl, val, btn) {
   // If on state 1, jump to state 2 to show the effect
   if (installState === 1) goToInstallState(2);
 
-  showToast(ctrl.charAt(0).toUpperCase() + ctrl.slice(1) + ': ' + val + ' · Agent reassigning…');
+  showToast((ctrl === 'place' ? 'Context' : 'Condition') + ': ' + val + ' · Agent reassigning…');
 }
 
 function toggleFcard(n) {
