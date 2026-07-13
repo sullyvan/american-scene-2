@@ -821,7 +821,7 @@
           <div class="install-state-num">State 03</div>
           <div class="install-state-headline">Analyze</div>
         </div>
-        <div class="install-state-body">Agent assigned. The bridging model scores your presence signals against 34 LACMA artist and curator agents. Highest resonance determines your assigned artist identity.</div>
+        <div class="install-state-body">Agent assigned. The bridging model scores your presence signals against 35 evaluative profiles — 21 tradition agents and 14 departmental response agents. Highest resonance determines your assigned tradition agent identity.</div>
         <div class="install-data-block">
           <div class="install-data-label">Agent — <span id="analyze-agent-label">Agent #001 — WPA Mural Division (provisional match — simulated)</span></div>
           <div class="install-data-row"><div class="install-data-key">Medium</div><div class="install-data-val" id="analyze-medium">Mural</div></div>
@@ -839,7 +839,7 @@
           </div>
         </div>
         <div class="install-callout">
-          <div class="install-callout-text">Full 34-agent breakdown with keyword analysis and scoring rubric</div>
+          <div class="install-callout-text">Full 35-profile breakdown — 21 tradition agents + 14 departmental response agents</div>
           <button class="install-callout-link" onclick="showPage('data')">See Bridging Score Data →</button>
         </div>
       </div>
@@ -1046,7 +1046,7 @@
       <div class="fcard-body">
         <div class="fcard-section">
           <div class="fcard-section-label">The Hypothesis</div>
-          <div class="fcard-prose">LACMA's curatorial structure reflects its acquisition history — which, like most encyclopedic museums, over-represents European modernism and abstract traditions relative to Social Realism, Latin American muralism, and community documentary. If the 14 curator agents carry this institutional bias in their keyword profiles, they will systematically reward works in the museum's collecting comfort zone and penalize the civic, labor-oriented, immigrant-community subjects that are most relevant to an LA County distribution network. The bridging score becomes a soft proxy for institutional prestige rather than genuine community resonance.</div>
+          <div class="fcard-prose">LACMA's departmental structure reflects its acquisition history — which, like most encyclopedic museums, over-represents European modernism and abstract traditions relative to Social Realism, Latin American muralism, and community documentary. If the 14 departmental response agents carry this institutional bias in their keyword profiles, they will systematically reward works in the museum's collecting comfort zone and penalize the civic, labor-oriented, immigrant-community subjects most relevant to an LA County distribution network. The bridging score becomes a soft proxy for institutional prestige rather than genuine community resonance.</div>
         </div>
         <div class="fcard-section">
           <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
@@ -1064,23 +1064,23 @@
           <div class="sim-data" id="sim-data-2">
             <div class="sim-data-label">⚠ Simulated result — what failure looks like</div>
             <table class="sim-table">
-              <thead><tr><th>Curator</th><th>Avg score: WPA/Social Realism</th><th>Avg score: Abstract/Conceptual</th><th>Δ</th></tr></thead>
+              <thead><tr><th>Departmental Response Agent</th><th>Avg score: WPA/Social Realism</th><th>Avg score: Abstract/Conceptual</th><th>Δ</th></tr></thead>
               <tbody>
-                <tr><td>Carol Eliel (Modern Art)</td><td class="alert">2.1</td><td class="ok">6.8</td><td class="alert">−4.7</td></tr>
-                <tr><td>Eve Schillo (Contemporary)</td><td class="alert">1.8</td><td class="ok">7.2</td><td class="alert">−5.4</td></tr>
-                <tr><td>Bobbye Tigerman (Decorative)</td><td class="alert">1.4</td><td class="ok">5.9</td><td class="alert">−4.5</td></tr>
-                <tr><td>Naima J. Keith (VP)</td><td class="ok">5.9</td><td>4.4</td><td class="ok">+1.5</td></tr>
-                <tr><td>Rachel Kaplan (Latin Am.)</td><td class="ok">6.3</td><td class="alert">2.1</td><td class="ok">+4.2</td></tr>
-                <tr><td>Shannon Vittoria (Am. Art)</td><td class="ok">5.7</td><td>3.8</td><td class="ok">+1.9</td></tr>
-                <tr><td style="font-weight:bold;color:var(--wpa-cream)">Mean across 14 curators</td><td class="alert" style="font-weight:bold">2.9</td><td class="ok" style="font-weight:bold">5.4</td><td class="alert" style="font-weight:bold">−2.5 ✗</td></tr>
+                <tr><td>Modern Art Dept. Agent</td><td class="alert">2.1</td><td class="ok">6.8</td><td class="alert">−4.7</td></tr>
+                <tr><td>Contemporary Art Dept. Agent</td><td class="alert">1.8</td><td class="ok">7.2</td><td class="alert">−5.4</td></tr>
+                <tr><td>Decorative Arts Dept. Agent</td><td class="alert">1.4</td><td class="ok">5.9</td><td class="alert">−4.5</td></tr>
+                <tr><td>Equity &amp; Public Access Agent</td><td class="ok">5.9</td><td>4.4</td><td class="ok">+1.5</td></tr>
+                <tr><td>Latin American Art Dept. Agent</td><td class="ok">6.3</td><td class="alert">2.1</td><td class="ok">+4.2</td></tr>
+                <tr><td>American Art Dept. Agent</td><td class="ok">5.7</td><td>3.8</td><td class="ok">+1.9</td></tr>
+                <tr><td style="font-weight:bold;color:var(--wpa-cream)">Mean across 14 departmental agents</td><td class="alert" style="font-weight:bold">2.9</td><td class="ok" style="font-weight:bold">5.4</td><td class="alert" style="font-weight:bold">−2.5 ✗</td></tr>
               </tbody>
             </table>
-            <div class="sim-warning">Simulated across 20 images · 10 WPA/Social Realism · 10 Abstract/Conceptual · Mean gap of −2.5 exceeds the −2.0 falsification threshold · This result would trigger curator profile reweighting.</div>
+            <div class="sim-warning">Simulated across 20 images · 10 WPA/Social Realism · 10 Abstract/Conceptual · Mean gap of −2.5 exceeds the −2.0 falsification threshold · This result would trigger departmental response agent profile reweighting.</div>
           </div>
         </div>
         <div class="fcard-section" style="margin-bottom:0;">
           <div class="fcard-section-label">Research Response if Confirmed</div>
-          <div class="fcard-prose">Rebalance curator profiles by supplementing keyword sets with terms drawn from each curator's published writings and public statements rather than departmental categorization alone. Naima Keith's VP role, for instance, gives her an equity-and-access vocabulary that may be more predictive than a departmental cluster assignment. Also consider adding community advisor agents (LA neighborhood arts organizations) as a counterweight to institutional curation.</div>
+          <div class="fcard-prose">Rebalance departmental response agent profiles by supplementing keyword sets with terms drawn from published departmental statements and community engagement records rather than collection categorization alone. The Equity and Public Access Agent, for instance, may carry an access-and-distribution vocabulary that is more predictive of civic resonance than a collection-cluster assignment. Also consider adding community advisor agents drawn from LA neighborhood arts organizations as a structural counterweight to institutional departmental profiles.</div>
         </div>
       </div>
     </div>
@@ -1322,7 +1322,7 @@ bridgingScore = min(100,
       <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Broadcast</button>
       <button class="generate-btn" id="saveLibBtn" onclick="saveToLibrary()" style="background:var(--wpa-green);margin-top:6px;font-size:14px;display:none;">⬇ Save to Library</button>
       <p style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:8px;line-height:1.4;font-style:italic;">
-        Bridging score is computed live by matching the work's content against 8 art-tradition clusters represented by numbered tradition agents and LACMA curators.
+        Bridging score is computed live against 8 tradition clusters. 21 numbered tradition agents shape generation; 14 departmental response agents evaluate the result. 35 evaluative profiles total.
       </p>
     </div>
 
@@ -1413,7 +1413,7 @@ bridgingScore = min(100,
       </div>
       <div class="about-col">
         <h3>The Agent Network</h3>
-        <p>21 numbered agents — seven WPA historical archive divisions, eight LACMA collection traditions, six contemporary American Scene movements — and 14 LACMA curators serve as resonance agents, each with a keyword profile drawn from program records, collection-level data, and departmental expertise. The bridging score is their collective response.</p>
+        <p>35 evaluative profiles in two tiers: 21 numbered tradition agents (seven WPA historical archive divisions, eight LACMA collection traditions, six contemporary American Scene movements) that shape generation in Creator mode and evaluate in Judge mode; and 14 anonymized departmental response agents representing LACMA institutional departments, who function as evaluators only. The bridging score is their collective response.</p>
       </div>
       <div class="about-col">
         <h3>Long-Term Scale Hypothesis</h3>
@@ -1750,31 +1750,28 @@ const ARTISTS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// LACMA DEPARTMENT AGENTS — Institutional voice agents
-// Anonymized departmental perspectives, no individual profiles.
+// DEPARTMENTAL RESPONSE AGENTS — 14 anonymized LACMA departments
+// Evaluator role only. No named individuals.
 // ═══════════════════════════════════════════════════════════════
 const CURATORS = [
   {
     id: 'modern_art', name: 'Modern Art Department Agent', color: '#4A235A',
     title: 'LACMA · Modern Art Department',
     cluster: 'expressionism',
-    keywords: ['modern','twentieth','century','abstract','expressionist','formal','avant','garde','tradition','historical','survey','movement','style','woodcut','print','weimar','darkness','social','satire','political','graphic','angular','distorted','lithograph','etching','silkscreen','paper','graphic','edition','press','ink','linework','mark'],
+    keywords: ['modern','twentieth','century','abstract','expressionist','formal','avant','garde','tradition','historical','survey','movement','style','woodcut','print','weimar','darkness','social','satire','political','graphic','angular','distorted'],
     voice: [
       { verdict: 'ambivalent', text: 'Modern Art has spent decades establishing the historical boundaries of modernism. Work like this asks us to reconsider whether those boundaries are descriptive or prescriptive. That is a productive question, even if it is an uncomfortable one for the department.' },
-      { verdict: 'approve', text: 'The formal concerns here are recognizably modern in the meaningful sense — not the chronological one. There is a serious engagement with the question of what civic representation requires. Worth pursuing.' },
-      { verdict: 'approve', text: 'The mass-reproducible image is the democratic image. The idea that the same work can appear in every neighborhood simultaneously is precisely what print made possible — and what this project extends.' },
-      { verdict: 'ambivalent', text: 'The department would want to examine the output at actual print scale before full assessment. So much depends on how the image holds up at the resolution at which it would actually be displayed.' }
+      { verdict: 'approve', text: 'The formal concerns here are recognizably modern in the meaningful sense — not the chronological one. There is a serious engagement with the question of what civic representation requires. Worth pursuing.' }
     ]
   },
   {
     id: 'contemporary_art', name: 'Contemporary Art Department Agent', color: '#7D3C98',
     title: 'LACMA · Contemporary Art Department',
     cluster: 'conceptual',
-    keywords: ['contemporary','concept','system','network','digital','process','idea','current','now','practice','media','social','text','language','modern','twentieth','abstract','formal','avant','tradition','historical'],
+    keywords: ['contemporary','concept','system','network','digital','process','idea','current','now','practice','media','social','text','language'],
     voice: [
       { verdict: 'ambivalent', text: 'Contemporary Art would situate this within the broader discourse on algorithmic image-making — which is a serious and contested field right now. The question is whether the work has a position within that discourse, or whether it is the discourse.' },
-      { verdict: 'approve', text: 'The conceptual framework is genuinely interesting — using the Federal Art Project as a precedent for thinking about algorithmic distribution is exactly the kind of historical pivot that contemporary practice needs more of.' },
-      { verdict: 'ambivalent', text: 'The department would want to understand whether this is commentary on the WPA or an extension of it. Those are very different arguments, and we would need to be clear before any institutional positioning.' }
+      { verdict: 'approve', text: 'The conceptual framework is genuinely interesting — using the Federal Art Project as a precedent for thinking about algorithmic distribution is exactly the kind of historical pivot that contemporary practice needs more of.' }
     ]
   },
   {
@@ -1784,43 +1781,117 @@ const CURATORS = [
     keywords: ['design','craft','material','object','textile','pattern','surface','form','color','applied','decorative','functional','print','typography','furniture','glass','ceramic','industrial'],
     voice: [
       { verdict: 'ambivalent', text: 'Decorative Arts and Design approaches this from the perspective of material culture and applied aesthetics. The question we would ask is: does this function as an object in the world, or does it remain in the register of fine art? The answer determines a lot.' },
-      { verdict: 'approve', text: 'The design sensibility is evident and the relationship to applied print traditions — WPA poster design specifically — is well within the department\'s collecting scope. This is worth a conversation.' },
-      { verdict: 'approve', text: 'Design has always understood that the boundary between art and utility is a political choice, not an aesthetic one. This project refuses that boundary, which puts it squarely in the design tradition.' },
-      { verdict: 'ambivalent', text: 'The department would want to think carefully about the output formats. A work of public art is also a designed object — its materiality, its mounting, its relationship to the site all matter.' }
+      { verdict: 'approve', text: 'The design sensibility and relationship to applied print traditions — WPA poster design specifically — is well within the department\'s collecting scope. This is worth a conversation.' }
     ]
   },
   {
     id: 'latin_american_art', name: 'Latin American Art Department Agent', color: '#935116',
     title: 'LACMA · Latin American Art Department',
     cluster: 'latin_american',
-    keywords: ['mural','community','latin','mexico','indigenous','labor','worker','immigrant','harvest','earth','color','border','south','migration','folk','family','school','education','children','youth','program','public','access','civic','neighborhood'],
+    keywords: ['mural','community','latin','mexico','indigenous','labor','worker','immigrant','harvest','earth','color','border','south','migration','folk'],
     voice: [
       { verdict: 'approve', text: 'Latin American Art has been making this argument for a century — that public space is political space, and that civic art is always a negotiation of cultural memory. This work enters that conversation.' },
-      { verdict: 'ambivalent', text: 'The department would want to understand the sourcing of the aesthetic references more clearly. Muralism is a specific political tradition, not simply a visual style, and that distinction matters to us.' },
-      { verdict: 'approve', text: 'The pedagogical dimension is important: how communities engage with this work in their own neighborhoods rather than traveling to an institution is the right question. Distribution is curriculum.' }
+      { verdict: 'ambivalent', text: 'The department would want to understand the sourcing of the aesthetic references more clearly. Muralism is a specific political tradition, not simply a visual style, and that distinction matters to us.' }
     ]
   },
   {
     id: 'american_art', name: 'American Art Department Agent', color: '#1C4E2A',
     title: 'LACMA · American Art Department',
     cluster: 'american_scene',
-    keywords: ['american','european','painting','sculpture','landscape','civic','public','regional','tradition','formal','history','collection','period','wpa','federal','community','worker','democracy','heartland','ordinary','everyday'],
+    keywords: ['american','painting','sculpture','landscape','civic','public','regional','tradition','formal','history','collection','period','wpa','federal','community','worker','democracy','heartland','ordinary','everyday'],
     voice: [
       { verdict: 'approve', text: 'American Art sees this as a direct continuation of the WPA tradition — which, it should be noted, was the last time the federal government took civic art seriously as public infrastructure. This work makes that argument clearly.' },
-      { verdict: 'ambivalent', text: 'The department would need to consider how this work situates itself within the existing collection. There are clear historical precedents in the American Scene movement, and we would want to be thoughtful about the relationship.' },
-      { verdict: 'approve', text: 'The department sees value in works that extend the regionalist tradition into contemporary practice. The civic subject matter is consistent with our collecting priorities.' }
+      { verdict: 'ambivalent', text: 'The department would need to consider how this work situates itself within the existing collection. There are clear historical precedents in the American Scene movement, and we would want to be thoughtful about the relationship.' }
     ]
   },
   {
     id: 'equity_access', name: 'Equity and Public Access Agent', color: '#1C2833',
     title: 'LACMA · Equity and Public Access',
     cluster: 'social_realism',
-    keywords: ['community','equity','access','public','contemporary','diverse','representation','civic','people','los angeles','county','neighborhood','culture','local','accessible','education'],
+    keywords: ['community','equity','access','public','diverse','representation','civic','people','los angeles','county','neighborhood','culture','local','accessible','education'],
     voice: [
       { verdict: 'approve', text: 'The institutional question is always: does this expand access to art, or does it replicate the existing patterns of exclusion with new tools? This proposal appears to take that question seriously. We would want to see the distribution data.' },
-      { verdict: 'ambivalent', text: 'LACMA\'s commitment to the communities of Los Angeles County means we ask hard questions about who benefits. A bridging-based distribution model is the right framework. The implementation details will determine whether it delivers.' },
-      { verdict: 'approve', text: 'The most important thing about this work is that it is for people who do not already go to museums. That is the gap in every collection strategy we have seen, and a distributed network addresses it directly.' },
-      { verdict: 'ambivalent', text: 'The history of public art in Los Angeles includes many works made about communities rather than with them. That distinction matters. We would want to understand the community input process before drawing conclusions.' }
+      { verdict: 'ambivalent', text: 'LACMA\'s commitment to the communities of Los Angeles County means we ask hard questions about who benefits. A bridging-based distribution model is the right framework. The implementation details will determine whether it delivers.' }
+    ]
+  },
+  {
+    id: 'photography', name: 'Photography Department Agent', color: '#2C3E50',
+    title: 'LACMA · Wallis Annenberg Photography Department',
+    cluster: 'photography',
+    keywords: ['photograph','photo','documentary','light','shadow','portrait','street','image','lens','film','camera','moment','exposure','candid','darkroom'],
+    voice: [
+      { verdict: 'ambivalent', text: 'The Photography Department would want to examine the relationship between the generative process and photographic truth-claims. The work raises questions about indexicality that would need to be addressed in any acquisition conversation.' },
+      { verdict: 'approve', text: 'This engages the documentary tradition in ways consistent with our collecting mandate. The formal qualities hold up to scrutiny. We would want to see a series before drawing conclusions.' }
+    ]
+  },
+  {
+    id: 'prints_drawings', name: 'Prints and Drawings Department Agent', color: '#6C3483',
+    title: 'LACMA · Prints and Drawings Department',
+    cluster: 'expressionism',
+    keywords: ['print','drawing','lithograph','etching','woodcut','silkscreen','paper','graphic','edition','press','ink','linework','mark','relief','intaglio'],
+    voice: [
+      { verdict: 'approve', text: 'Prints and Drawings has always understood that the mass-reproducible image is the democratic image. The idea that the same image can hang in every neighborhood simultaneously is precisely what print made possible for the first time.' },
+      { verdict: 'ambivalent', text: 'The department would want to examine the output at actual print scale before assessment. So much depends on how the image holds up at the resolution at which it would actually be displayed.' }
+    ]
+  },
+  {
+    id: 'european_art', name: 'European Art Department Agent', color: '#5D4037',
+    title: 'LACMA · European Painting and Sculpture Department',
+    cluster: 'expressionism',
+    keywords: ['european','painting','sculpture','oil','canvas','academic','salon','baroque','renaissance','neoclassical','romantic','realist','impressionist','french','dutch','italian','spanish'],
+    voice: [
+      { verdict: 'ambivalent', text: 'European Painting and Sculpture would need to consider how this work situates itself within the existing collection. The historical precedents in civic allegory and history painting are complex, and we would want to be thoughtful about the relationship.' },
+      { verdict: 'approve', text: 'The department sees continuity between this project and the long European tradition of civic commission — art in service of a public rather than a patron. That argument is worth making.' }
+    ]
+  },
+  {
+    id: 'south_asian_art', name: 'South and Southeast Asian Art Department Agent', color: '#1565C0',
+    title: 'LACMA · South and Southeast Asian Art Department',
+    cluster: 'asian_art',
+    keywords: ['asian','south','southeast','india','buddhist','temple','nature','landscape','tradition','craft','textile','painting','miniature','regional','monsoon','deity','narrative'],
+    voice: [
+      { verdict: 'ambivalent', text: 'South and Southeast Asian Art would note that the tradition of civic art as a distributed, community-embedded practice is several thousand years old in the regions we cover. The innovation here is the algorithm, not the concept. That context is worth acknowledging.' },
+      { verdict: 'approve', text: 'The department sees resonance between this distribution model and the tradition of temple art that served entire communities rather than individual collectors. The shift from private to public is a return, not a departure.' }
+    ]
+  },
+  {
+    id: 'east_asian_art', name: 'East Asian Art Department Agent', color: '#1E8BC3',
+    title: 'LACMA · East Asian Art Department',
+    cluster: 'asian_art',
+    keywords: ['japan','china','korea','woodblock','scroll','ink','brush','ceramic','lacquer','wave','mountain','pine','bamboo','crane','season','nature','garden','ukiyo'],
+    voice: [
+      { verdict: 'approve', text: 'The woodblock tradition understood that the multiple — the edition of a hundred or a thousand — was not a degradation of the original but the work itself. This project extends that logic into civic distribution.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand the relationship between the generative image and the tradition of skilled mark-making. The algorithm produces an image; the woodblock carver produced a matrix. These are different things.' }
+    ]
+  },
+  {
+    id: 'african_art', name: 'African Art Department Agent', color: '#7B241C',
+    title: 'LACMA · Art of Africa Department',
+    cluster: 'social_realism',
+    keywords: ['africa','mask','figure','ritual','community','ceremony','textile','pattern','symbol','power','ancestor','tradition','craft','object','material','identity','diaspora'],
+    voice: [
+      { verdict: 'approve', text: 'African art has always understood that objects circulate through communities rather than hanging on walls for individual contemplation. A distributed network model returns art to its functional context. That is not a concession — it is a recovery.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand how the work addresses community rather than simply representing it. That distinction — made from outside versus made in relationship — determines whether this is civic art or civic decoration.' }
+    ]
+  },
+  {
+    id: 'ancient_art', name: 'Ancient and Medieval Art Department Agent', color: '#2E4053',
+    title: 'LACMA · Ancient and Medieval Art Department',
+    cluster: 'conceptual',
+    keywords: ['ancient','medieval','classical','greek','roman','egyptian','bronze','marble','relief','column','temple','mosaic','illuminated','manuscript','icon','coin','vessel','ritual'],
+    voice: [
+      { verdict: 'approve', text: 'The department takes the long view: every civic art program in the historical record eventually became the archive that scholars study. What survives is rarely what was most popular — it is what was distributed most widely. This project has the right instinct.' },
+      { verdict: 'ambivalent', text: 'Ancient and Medieval Art would ask: what is the material object? The image is not the work. Every tradition we study understood this. The question of what physical form this takes is not secondary — it is central.' }
+    ]
+  },
+  {
+    id: 'education_programs', name: 'Education and Public Programs Agent', color: '#1B5E20',
+    title: 'LACMA · Education and Public Programs',
+    cluster: 'american_scene',
+    keywords: ['education','program','school','family','children','youth','learning','teacher','classroom','community','tour','workshop','public','outreach','neighborhood','access','los angeles'],
+    voice: [
+      { verdict: 'approve', text: 'Education and Public Programs has been working for years to bring art to the neighborhoods where our communities live, rather than expecting them to travel to Wilshire. A distributed network model would change the institutional conversation entirely.' },
+      { verdict: 'ambivalent', text: 'The pedagogical question is real: how do families and students engage with algorithmically generated art in a way that builds genuine visual literacy? An education component needs to be designed in from the start, not retrofitted.' }
     ]
   }
 ];
