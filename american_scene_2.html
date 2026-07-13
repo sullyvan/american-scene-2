@@ -632,7 +632,7 @@
   </div>
   <div class="header-badges">
     <div class="header-badge">
-      <div class="badge-top">Demo Broadcasts</div>
+      <div class="badge-top">Submitted for Review</div>
       <div class="badge-num" id="nodeCount">0</div>
       <div class="badge-bot">simulated routing</div>
     </div>
@@ -941,7 +941,7 @@
 <div class="data-page" id="streetPage">
   <div class="sv-title">Public Display Prototyper</div>
   <div class="sv-sub">
-    Site-planning prototype for the proposed network node: the most recent broadcast from the Public Display Network is fitted into predefined installation zones on real Los Angeles County streetscapes — architectural surfaces, kiosks, poles, and windows, each with its own display system, dimensions, and site restrictions. Every install shown is temporary and reversible. These locations are demonstration research contexts, not confirmed community partnerships; no physical installation occurs without local review and partner approval.
+    Site-planning prototype for the proposed network node: the most recent submission to the review queue is fitted into predefined installation zones on real Los Angeles County streetscapes — architectural surfaces, kiosks, poles, and windows, each with its own display system, dimensions, and site restrictions. Every install shown is temporary and reversible. These locations are demonstration research contexts, not confirmed community partnerships; no physical installation occurs without local review and partner approval.
   </div>
   <div class="sv-layout">
     <div class="sv-panel">
@@ -962,8 +962,8 @@
       <button class="sv-btn" onclick="document.getElementById('svUploadInput').click()">📷 Upload a Street Photo</button>
       <button class="sv-btn" id="svUploadClear" onclick="svClearCustomPhoto()" style="display:none">✕ Back to Node Photos</button>
       <div class="sv-note">Optional — uploaded photos get generic installation zones. The photo never leaves your browser.</div>
-      <div class="sv-heading">Broadcast</div>
-      <div class="sv-status" id="svStatus">No broadcast yet.</div>
+      <div class="sv-heading">Submission Preview</div>
+      <div class="sv-status" id="svStatus">No submission yet.</div>
       <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
       <button class="sv-btn gold" id="svDownloadBtn" onclick="downloadComposite()">⬇ Download Preview</button>
     </div>
@@ -1052,7 +1052,7 @@
           <div class="fcard-section-label">If We're Wrong — Falsification Metric</div>
           <div class="fcard-metric">
             <div class="fcard-metric-icon">✗ Fail if</div>
-            <div class="fcard-metric-text">Curator agents collectively score works in WPA / Social Realism traditions <em>more than 2 points lower (on the 0–10 agent resonance scale)</em> than works in abstract / conceptual / decorative traditions, averaged across a minimum of 20 broadcast images spanning both categories. Measured at Month 3 when the dataset is large enough to run the comparison.</div>
+            <div class="fcard-metric-text">Curator agents collectively score works in WPA / Social Realism traditions <em>more than 2 points lower (on the 0–10 agent resonance scale)</em> than works in abstract / conceptual / decorative traditions, averaged across a minimum of 20 submitted images spanning both categories. Measured at Month 3 when the dataset is large enough to run the comparison.</div>
           </div>
         </div>
         <div class="fcard-section">
@@ -1133,7 +1133,7 @@
         </div>
         <div class="fcard-section" style="margin-bottom:0;">
           <div class="fcard-section-label">Research Response if Confirmed</div>
-          <div class="fcard-prose">Introduce a spatial disaggregation layer: the distribution score becomes a composite of the semantic bridging score (current model) and a geographic equity weight based on node-level feedback. Works that score high semantically but low in specific county regions are flagged for community co-design — a resident artist in that research context is invited to modify the civic theme or artist agent before rebroadcast. The failure mode becomes a design prompt rather than a distribution veto.</div>
+          <div class="fcard-prose">Introduce a spatial disaggregation layer: the distribution score becomes a composite of the semantic bridging score (current model) and a geographic equity weight based on node-level feedback. Works that score high semantically but low in specific county regions are flagged for community co-design — a resident artist in that research context is invited to modify the civic theme or artist agent before resubmission. The failure mode becomes a design prompt rather than a distribution veto.</div>
         </div>
       </div>
     </div>
@@ -1146,7 +1146,7 @@
 
   <div class="research-banner">
     <div class="research-banner-icon">⚑ Research Preview</div>
-    <div class="research-banner-text">Agent profiles & scoring rubric will be published as open dataset Month 3 of Lab residency per LACMA A+T proposal. Data shown reflects the current broadcast image.</div>
+    <div class="research-banner-text">Agent profiles & scoring rubric will be published as open dataset Month 3 of Lab residency per LACMA A+T proposal. Data shown reflects the current submission.</div>
   </div>
 
   <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:4px;">
@@ -1244,7 +1244,7 @@ bridgingScore = min(100,
     <div class="gallery-title">Gallery Archive</div>
     <div class="gallery-count" id="galleryCount">0 works generated</div>
   </div>
-  <div class="gallery-empty" id="galleryEmpty">No works yet. Generate your first broadcast from the Public Network.</div>
+  <div class="gallery-empty" id="galleryEmpty">No works yet. Generate and submit your first work for review from the Public Network.</div>
   <div class="gallery-grid" id="galleryGrid"></div>
 </div>
 
@@ -1319,7 +1319,7 @@ bridgingScore = min(100,
 
     <!-- 4: GENERATE -->
     <div class="gen-section" style="border-bottom:none;">
-      <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Broadcast</button>
+      <button class="generate-btn" id="genBtn" onclick="generateArt()">▶ Generate &amp; Submit for Review</button>
       <button class="generate-btn" id="saveLibBtn" onclick="saveToLibrary()" style="background:var(--wpa-green);margin-top:6px;font-size:14px;display:none;">⬇ Save to Library</button>
       <p style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:8px;line-height:1.4;font-style:italic;">
         Bridging score is computed live against 8 tradition clusters. 21 numbered tradition agents shape generation; 14 departmental response agents evaluate the result. 35 evaluative profiles total.
@@ -1335,7 +1335,7 @@ bridgingScore = min(100,
       <div class="network-title">Public Display Network</div>
       <div class="network-stats">
         <div class="stat"><div class="stat-num" id="genCount">0</div><div class="stat-label">Generated</div></div>
-        <div class="stat"><div class="stat-num" id="broadcastCount">0</div><div class="stat-label">Broadcast</div></div>
+        <div class="stat"><div class="stat-num" id="broadcastCount">0</div><div class="stat-label">Submitted</div></div>
         <div class="stat"><div class="stat-num" id="viewCount">0</div><div class="stat-label">Views</div></div>
       </div>
     </div>
@@ -1344,7 +1344,7 @@ bridgingScore = min(100,
     <div class="featured" id="featuredCard">
       <div class="featured-content">
         <div>
-          <div class="featured-eyebrow">Now Broadcasting</div>
+          <div class="featured-eyebrow">Submitted for Review</div>
           <div class="featured-art-title" id="featuredTitle">Awaiting First Transmission</div>
           <div class="featured-art-sub" id="featuredSub">Select an artist agent, enter a civic theme, and generate. The bridging score will show how broadly the work resonates across the LACMA agent network.</div>
         </div>
@@ -2364,7 +2364,7 @@ async function generateArt() {
   showToast(`Bridge score: ${bridgeResult.score}/100 · ${bridgeResult.resonatingClusters} clusters`);
 
   btn.disabled = false;
-  btn.textContent = '▶ Generate & Broadcast';
+  btn.textContent = '▶ Generate & Submit for Review';
   document.getElementById('saveLibBtn').style.display = '';
 }
 
