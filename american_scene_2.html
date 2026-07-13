@@ -637,7 +637,7 @@
       <div class="badge-bot">simulated routing</div>
     </div>
     <div class="header-badge blue">
-      <div class="badge-top">Avg Bridge</div>
+      <div class="badge-top">Avg Semantic Score</div>
       <div class="badge-num" id="avgBridge">—</div>
       <div class="badge-bot">score /100</div>
     </div>
@@ -861,7 +861,7 @@
           <div class="install-data-label">Generation Parameters</div>
           <div class="install-data-row"><div class="install-data-key">Civic Theme</div><div class="install-data-val" id="gen-theme">Labor / Progress</div></div>
           <div class="install-data-row"><div class="install-data-key">Artist Agent</div><div class="install-data-val" id="gen-agent">#001 · WPA Mural</div></div>
-          <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="gen-score">68 / 100</div></div>
+          <div class="install-data-row"><div class="install-data-key">Provisional Semantic Score</div><div class="install-data-val" id="gen-score">68 / 100</div></div>
           <div class="install-data-row"><div class="install-data-key">Generation</div><div class="install-data-val">Current demo: remote API (Pollinations.ai) · Lab research: evaluate local, edge, and hosted options</div></div>
         </div>
         <div class="install-data-block" style="margin-top:8px;">
@@ -903,7 +903,7 @@
         </div>
         <div class="install-data-block" style="margin-top:8px;">
           <div class="install-data-label">Provisional Routing — Simulated</div>
-          <div class="install-data-row"><div class="install-data-key">Bridge Score</div><div class="install-data-val" id="output-score">68 / 100</div></div>
+          <div class="install-data-row"><div class="install-data-key">Provisional Semantic Score</div><div class="install-data-val" id="output-score">68 / 100</div></div>
           <div class="install-data-row"><div class="install-data-key">Potential research contexts</div><div class="install-data-val" id="output-routing">—</div></div>
           <div class="install-data-row"><div class="install-data-key">Clusters Active</div><div class="install-data-val">5 of 8</div></div>
           <div class="install-data-row"><div class="install-data-key">Status</div><div class="install-data-val">Not activated · pending local review</div></div>
@@ -1352,13 +1352,13 @@ bridgingScore = min(100,
         <div>
           <div class="featured-eyebrow">Submitted for Review</div>
           <div class="featured-art-title" id="featuredTitle">Awaiting First Transmission</div>
-          <div class="featured-art-sub" id="featuredSub">Select an artist agent, enter a civic theme, and generate. The bridging score will show how broadly the work resonates across the LACMA agent network.</div>
+          <div class="featured-art-sub" id="featuredSub">Select an artist agent, enter a civic theme, and generate. The provisional semantic score will show how broadly the prompt activates cross-tradition vocabularies — not yet a measure of public response or geographic reach.</div>
         </div>
         <div class="featured-meta">
           <div class="meta-item"><div class="meta-key">Artist Agent</div><div class="meta-val" id="featuredArtist">—</div></div>
           <div class="meta-item"><div class="meta-key">Provisional Node</div><div class="meta-val" id="featuredLocation">—</div></div>
           <div class="meta-item"><div class="meta-key">Time</div><div class="meta-val" id="featuredTime">—</div></div>
-          <div class="meta-item"><div class="meta-key">Bridge Score</div><div class="meta-val" id="featuredBridgeScore">—</div></div>
+          <div class="meta-item"><div class="meta-key">Provisional Semantic Score</div><div class="meta-val" id="featuredBridgeScore">—</div></div>
         </div>
       </div>
       <div class="featured-image-container">
@@ -1374,8 +1374,9 @@ bridgingScore = min(100,
     <div class="bridging-panel" id="bridgingPanel">
       <div class="bridging-header">
         <div>
-          <div class="bridging-title">Bridging Score Analysis</div>
-          <div style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:2px;">Resonance across LACMA art-tradition clusters</div>
+          <div class="bridging-title">Provisional Semantic Bridging Score</div>
+          <div style="font-family:'Special Elite',cursive;font-size:9px;color:#888;margin-top:2px;">Measures cross-tradition vocabulary activation across 8 clusters</div>
+          <div style="font-family:'Special Elite',cursive;font-size:9px;color:#666;margin-top:2px;font-style:italic;">Does not yet measure public response or geographic reach</div>
         </div>
         <div style="text-align:right;">
           <div class="bridging-score-big" id="bridgeScoreBig">—</div>
@@ -1954,10 +1955,10 @@ function computeBridgingScore(theme, style, artistId) {
 }
 
 function getBridgeSummary(score, resonatingClusters, theme) {
-  if (score >= 80) return `"${theme}" resonates across ${resonatingClusters} of 8 art-tradition clusters — a rare breadth that marks this as a true bridging work. Both collection artists and curatorial departments register significant resonance.`;
-  if (score >= 60) return `Solid bridging reach: "${theme}" activates ${resonatingClusters} clusters, crossing the divide between at least two major art traditions in the LACMA agent network. Strong candidate for provisional multi-region routing — pending local review.`;
-  if (score >= 40) return `Moderate bridging: "${theme}" connects ${resonatingClusters} clusters. The work speaks clearly to certain traditions while leaving others unmoved. Consider broadening the civic scope to reach across more of the network.`;
-  return `Narrow resonance: "${theme}" activates only ${resonatingClusters} cluster(s). Strong within its tradition but low bridging potential. Effective for targeted testing; a countywide claim would require demonstrated resonance across regions.`;
+  if (score >= 80) return `"${theme}" activates ${resonatingClusters} of 8 tradition clusters — wide semantic vocabulary range. This score reflects prompt-level cross-tradition coverage, not public response. Whether it constitutes genuine bridging requires testing with actual audiences across county regions.`;
+  if (score >= 60) return `"${theme}" activates ${resonatingClusters} clusters — moderate-to-broad semantic range across tradition vocabularies. A provisional score for routing consideration, pending local review. Public response and geographic reach are not yet measured.`;
+  if (score >= 40) return `"${theme}" activates ${resonatingClusters} clusters — limited semantic range. The prompt draws on certain tradition vocabularies while leaving others unaddressed. Score reflects vocabulary activation only, not reception.`;
+  return `"${theme}" activates only ${resonatingClusters} cluster(s) — narrow semantic vocabulary range. Useful for tradition-specific contexts. A countywide claim would require demonstrated resonance across regions with actual audiences — this score cannot establish that.`;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3551,7 +3552,7 @@ async function initLibrary() {
         <img class="lib-img" style="opacity:0;" alt="${item.title}" />
         <div class="lib-score-badge">
           <div class="lib-score-num" style="color:${scoreColor}">${item.score}</div>
-          <div class="lib-score-label">Bridge Score</div>
+          <div class="lib-score-label">Semantic Score</div>
         </div>
       </div>
       <div class="lib-data">
@@ -4039,7 +4040,7 @@ function addToGallery(node) {
       <img id="gimg-${node.id}" src="" alt="${node.theme}" style="opacity:0;" />
       <div class="gallery-score-badge">
         <div class="gallery-score-num">${node.bridgeScore ?? '—'}</div>
-        <div class="gallery-score-label">Bridge Score</div>
+        <div class="gallery-score-label">Semantic Score</div>
       </div>
     </div>
     <div class="gallery-body">
