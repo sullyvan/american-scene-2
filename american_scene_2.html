@@ -742,7 +742,7 @@
 
   <div class="install-banner">
     <div class="install-banner-icon">⚑ Proposed Installation</div>
-    <div class="install-banner-text"><strong>Physical installation proposed for LACMA A+T Lab Year 2, pending Year 1 research.</strong> Current demo simulates UI only. Hardware spec: depth camera · mic array · edge-lit display · haptic toggles · fiber optics · solar assist.</div>
+    <div class="install-banner-text"><strong>Physical installation proposed for LACMA A+T Lab Year 2, pending Year 1 research.</strong> Current demo simulates UI only. Proposed hardware research: edge-lit display · haptic toggles · fiber optics · solar assist · optional presence sensing (privacy-preserving, no recording). Sensing is not required for participation.</div>
   </div>
 
   <div class="install-body">
@@ -801,17 +801,23 @@
           <div class="install-state-num">State 02</div>
           <div class="install-state-headline">Detect</div>
         </div>
-        <div class="install-state-body">Visitor approaches. Presence captured. Depth camera resolves silhouette. Mic array samples ambient sound signature. Fiber optics pulse once — the mirror awakens.</div>
+        <div class="install-state-body">Visitor approaches. Presence detected locally. Fiber optics pulse once — the mirror awakens.</div>
         <div class="install-data-block">
-          <div class="install-data-label">Signals Captured</div>
+          <div class="install-data-label">Privacy Commitments</div>
+          <div class="install-data-row"><div class="install-data-key">Face identification</div><div class="install-data-val" style="color:#2ecc71;">None</div></div>
+          <div class="install-data-row"><div class="install-data-key">Image recording</div><div class="install-data-val" style="color:#2ecc71;">None</div></div>
+          <div class="install-data-row"><div class="install-data-key">Voice transcription</div><div class="install-data-val" style="color:#2ecc71;">None</div></div>
+          <div class="install-data-row"><div class="install-data-key">Biometric profile</div><div class="install-data-val" style="color:#2ecc71;">None</div></div>
+          <div class="install-data-row"><div class="install-data-key">Sensor data</div><div class="install-data-val" style="color:#2ecc71;">Discarded immediately · not stored</div></div>
+        </div>
+        <div class="install-data-block" style="margin-top:8px;border-color:var(--wpa-gold);">
+          <div class="install-data-label" style="color:var(--wpa-gold);">Context Signals (simulated)</div>
           <div class="install-data-row"><div class="install-data-key">Geographic Context</div><div class="install-data-val" id="detect-place">Museum district</div></div>
           <div class="install-data-row"><div class="install-data-key">Place Condition</div><div class="install-data-val" id="detect-condition">Labor signals (simulated)</div></div>
-          <div class="install-data-row"><div class="install-data-key">Silhouette</div><div class="install-data-val">Resolved — 1 visitor</div></div>
-          <div class="install-data-row"><div class="install-data-key">Ambient</div><div class="install-data-val">Museum interior, low</div></div>
         </div>
-        <div class="install-data-block" style="margin-top:8px;">
-          <div class="install-data-label">Hand Controls Active</div>
-          <div class="install-state-body" style="font-size:9px;color:#666;padding:4px 0 0;">Adjust Geographic Context and Place Condition below to guide interpretation →</div>
+        <div class="install-data-block" style="margin-top:8px;background:#0a1a0a;border-color:#2ecc71;">
+          <div class="install-data-label" style="color:#2ecc71;">Manual Participation Always Available</div>
+          <div class="install-state-body" style="font-size:9px;color:#5a9a5a;padding:4px 0 2px;">The mirror does not require sensing to participate. Visitors may use hand controls directly — no camera or microphone needed. Adjust Geographic Context and Place Condition below to guide the work.</div>
         </div>
       </div>
 
@@ -3688,7 +3694,7 @@ function updateComboPhrase() {
 }
 
 const INSTALL_STATE_OVERLAY = ['','s1','s2','s3','s4','s5'];
-const INSTALL_STATE_BADGE   = ['','Idle · Sculptural Standby','Detect · Presence Captured','Analyze · Agent Assigned','Generate · Rendering','Output · Ready to Broadcast'];
+const INSTALL_STATE_BADGE   = ['','Idle · Sculptural Standby','Detect · Presence Detected Locally','Analyze · Agent Assigned','Generate · Rendering','Output · Ready for Review'];
 
 // Load ONE hero image using the proven imageUrl() path; switch overlays per state
 let installHeroLoaded = false;
