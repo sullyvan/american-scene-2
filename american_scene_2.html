@@ -541,7 +541,8 @@
   .sv-preset-btn { display: block; width: 100%; margin-bottom: 5px; padding: 8px 10px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; text-align: left; background: white; border: 2px solid var(--wpa-gold); color: var(--wpa-dark); cursor: pointer; }
   .sv-preset-btn:hover { background: var(--wpa-gold); }
   .sv-analysis { margin-top: 12px; background: #0d1a2b; border: 2px solid #2a3a5a; padding: 12px 16px; }
-  .sv-analysis-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 8px; }
+  .sv-analysis-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 6px; }
+  .sv-analysis-disclaimer { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; color: var(--wpa-red); border: 1px solid var(--wpa-red); padding: 5px 8px; margin-bottom: 10px; text-transform: uppercase; }
   .sv-analysis-row { display: flex; justify-content: space-between; gap: 14px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
   .sv-analysis-row:last-child { border-bottom: none; }
   .sv-analysis-key { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #7aafdd; white-space: nowrap; padding-top: 2px; }
@@ -656,7 +657,7 @@
   <button class="page-tab" id="tab-failure" onclick="showPage('failure')">Failure Modes &amp; Research Questions</button>
   <button class="page-tab" id="tab-install" onclick="showPage('install')">Museum Installation</button>
   <button class="page-tab" id="tab-library" onclick="showPage('library')">Image Library</button>
-  <button class="page-tab" id="tab-street" onclick="showPage('street')">Street View</button>
+  <button class="page-tab" id="tab-street" onclick="showPage('street')">Display Prototyper</button>
 </nav>
 
 <!-- ═══ COUNTY NETWORK PAGE ═══ -->
@@ -963,11 +964,11 @@
       <div class="sv-chips sv-chips-3" id="svTimeChips"></div>
       <div class="sv-heading">Presets — Theater Node</div>
       <div id="svPresets"></div>
-      <div class="sv-heading">Your Own Street</div>
+      <div class="sv-heading">Upload a Site Photo — Study Only</div>
       <input type="file" id="svUploadInput" accept="image/*" style="display:none" />
-      <button class="sv-btn" onclick="document.getElementById('svUploadInput').click()">📷 Upload a Street Photo</button>
+      <button class="sv-btn" onclick="document.getElementById('svUploadInput').click()">📷 Upload a Site Photo</button>
       <button class="sv-btn" id="svUploadClear" onclick="svClearCustomPhoto()" style="display:none">✕ Back to Node Photos</button>
-      <div class="sv-note">Optional — uploaded photos get generic installation zones. The photo never leaves your browser.</div>
+      <div class="sv-note">Concept study only — for research and design exploration. Uploading a photo does not establish any right to display at that location. Site access, ownership, permits, local review, and safety are not addressed by this tool. The photo never leaves your browser.</div>
       <div class="sv-heading">Submission Preview</div>
       <div class="sv-status" id="svStatus">No submission yet.</div>
       <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
@@ -2704,10 +2705,10 @@ function buildCoverage() {
 
 
 // ═══════════════════════════════════════════════════════════════
-// STREET FLAG COMPOSITOR
-// The latest broadcast rendered as a physical flag display in the
-// streetscape: facade drape, outrigger pole, balcony flags, or
-// cross-street bunting. Click the photo to re-hang.
+// PUBLIC DISPLAY PROTOTYPER
+// Site-study simulator: fits the latest submission into predefined
+// installation zones on county streetscape photos. Concept study only —
+// no deployment, no authorization, no physical installation implied.
 // ═══════════════════════════════════════════════════════════════
 // Street nodes come straight from the county demonstration network —
 // one data structure feeds the map, selectors, routing, and this page.
@@ -3293,14 +3294,16 @@ function svUpdateAnalysis(zone) {
   const typeInfo = SV_ZONE_TYPES[zone.type] || { label: zone.type, rec: 'mesh' };
   const rec = SV_DISPLAYS.find(d => d.id === typeInfo.rec) || SV_DISPLAYS[0];
   document.getElementById('svAnalysis').innerHTML = `
-    <div class="sv-analysis-title">Site Analysis — Prototype Estimates</div>
+    <div class="sv-analysis-title">Site Study — Prototype Estimates</div>
+    <div class="sv-analysis-disclaimer">Concept study only. Site access, local review, ownership, permits and safety not established.</div>
     <div class="sv-analysis-row"><div class="sv-analysis-key">Selected surface</div><div class="sv-analysis-val">${zone.label} (${typeInfo.label.toLowerCase()})</div></div>
     <div class="sv-analysis-row"><div class="sv-analysis-key">Recommended display</div><div class="sv-analysis-val">${rec.label}</div></div>
     <div class="sv-analysis-row"><div class="sv-analysis-key">Approx. dimensions</div><div class="sv-analysis-val">${zone.dims}</div></div>
     <div class="sv-analysis-row"><div class="sv-analysis-key">Visibility range</div><div class="sv-analysis-val">${zone.vis}</div></div>
-    <div class="sv-analysis-row"><div class="sv-analysis-key">Site restrictions</div><div class="sv-analysis-val">${zone.restr}</div></div>
-    <div class="sv-analysis-row"><div class="sv-analysis-key">Temporary &amp; reversible</div><div class="sv-analysis-val">Yes — all prototyped installs are non-permanent and fully removable</div></div>
-    <div class="sv-analysis-row"><div class="sv-analysis-key">Status</div><div class="sv-analysis-val">Demonstration preview — site survey and local review required</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Site restrictions noted</div><div class="sv-analysis-val">${zone.restr}</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Property authorization</div><div class="sv-analysis-val">Not established — required before any physical installation</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Local review</div><div class="sv-analysis-val">Not established — required gate</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Status</div><div class="sv-analysis-val">Design research only — no installation implied or authorized</div></div>
   `;
 }
 
@@ -3470,7 +3473,7 @@ async function compositeStreet() {
   ctx.fillStyle = '#C8A96E';
   ctx.font = '13px "Oswald", sans-serif';
   ctx.textAlign = 'right';
-  ctx.fillText('PUBLIC DISPLAY PROTOTYPER · TEMPORARY & REVERSIBLE · PENDING LOCAL REVIEW', W - 20, H - 38);
+  ctx.fillText('CONCEPT STUDY ONLY · SITE ACCESS, LOCAL REVIEW, OWNERSHIP, PERMITS & SAFETY NOT ESTABLISHED', W - 20, H - 38);
   ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET · ' + zone.label.toUpperCase() : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + zone.label.toUpperCase() + ' · ' + svTime.toUpperCase(), W - 20, H - 18);
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(212,160,23,0.9)';
