@@ -1449,56 +1449,56 @@ const CLUSTERS = [
     name: 'Social Realism',
     color: '#C0392B',
     keywords: ['worker','labor','workers','transit','union','strike','immigrant','poor','housing','wages','factory','toil','struggle','civic','community','public','service','nurse','nurses','teacher','farmers','harvest'],
-    agents: ['#001','#005','#110','#301','Naima J. Keith','Rachel Kaplan']
+    agents: ['#001','#005','#110','#301','Equity & Public Access Agent','Latin American Art Dept. Agent']
   },
   {
     id: 'photography',
     name: 'Photography',
     color: '#2C3E50',
     keywords: ['photograph','photo','documentary','light','shadow','portrait','street','candid','film','exposure','darkroom','image','lens','camera','moment','documentary','capture'],
-    agents: ['#002','#125','#302','Rebecca Morse']
+    agents: ['#002','#125','#302','Modern Art Dept. Agent']
   },
   {
     id: 'expressionism',
     name: 'Expressionism',
     color: '#6C3483',
     keywords: ['dark','darkness','anger','fear','protest','political','grotesque','anxiety','urban','crowd','satire','war','violence','power','resist','shadow','horror','suffering','desperate'],
-    agents: ['#004','#005','#140','#200','Timothy Benson']
+    agents: ['#004','#005','#140','#200','Modern Art Dept. Agent']
   },
   {
     id: 'conceptual',
     name: 'Conceptual / Contemporary',
     color: '#1A5276',
     keywords: ['system','network','data','digital','concept','text','language','process','idea','sign','code','algorithm','information','media','print','type','word','letter','screen'],
-    agents: ['#003','#155','#303','#305','Eve Schillo','Carol Eliel']
+    agents: ['#003','#155','#303','#305','Contemporary Art Dept. Agent']
   },
   {
     id: 'asian_art',
     name: 'Asian Art',
     color: '#1E8BC3',
     keywords: ['nature','mountain','wave','river','garden','season','rain','snow','flower','tree','landscape','travel','journey','sky','earth','water','leaf','branch','fish','crane','pine'],
-    agents: ['#170','#306','Stephen M.']
+    agents: ['#170','#306']
   },
   {
     id: 'decorative',
     name: 'Decorative Arts & Design',
     color: '#117A65',
     keywords: ['pattern','craft','material','textile','design','object','color','form','shape','fabric','weave','print','surface','ornament','structure','style','fashion','garment','dress'],
-    agents: ['#006','#185','#306','Bobbye Tigerman','Staci Steinberger','Michaela Hansen']
+    agents: ['#006','#185','#306','Decorative Arts Dept. Agent']
   },
   {
     id: 'latin_american',
     name: 'Latin American Art',
     color: '#935116',
     keywords: ['mural','community','indigenous','migration','border','earth','mestizo','revolution','folklore','mexico','latin','south','america','color','market','harvest','farmer','land','village','family'],
-    agents: ['#200','#301','#304','Rachel Kaplan','Erin Branham']
+    agents: ['#200','#301','#304','Latin American Art Dept. Agent']
   },
   {
     id: 'american_scene',
     name: 'American Scene',
     color: '#1C4E2A',
     keywords: ['american','america','wpa','new deal','federal','regional','civic','public','heartland','town','city','people','ordinary','everyday','work','landscape','democracy','freedom','nation','community','neighborhood'],
-    agents: ['#001','#007','#210','Leah Lehmbeck','Shannon Vittoria','Erin Sullivan Maynes']
+    agents: ['#001','#007','#210','American Art Dept. Agent']
   }
 ];
 
@@ -1750,149 +1750,77 @@ const ARTISTS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// LACMA CURATORS — Institutional voice agents
-// Based on real LACMA staff LinkedIn data.
-// Voices are DEPARTMENTAL responses, not personal opinions.
+// LACMA DEPARTMENT AGENTS — Institutional voice agents
+// Anonymized departmental perspectives, no individual profiles.
 // ═══════════════════════════════════════════════════════════════
 const CURATORS = [
   {
-    id: 'morse', name: 'Rebecca Morse', color: '#2C3E50',
-    title: 'Curator, Wallis Annenberg Photography Dept.',
-    cluster: 'photography',
-    keywords: ['photograph','photo','documentary','light','shadow','portrait','street','image','lens','film','camera','moment','exposure'],
-    voice: [
-      { verdict: 'ambivalent', text: 'The Photography Department would want to examine the relationship between the generative process and photographic truth-claims. The work raises questions about indexicality that we\'d need to address in any acquisition conversation.' },
-      { verdict: 'approve', text: 'From the department\'s perspective, this engages the documentary tradition in ways consistent with our collecting mandate. The formal qualities hold up to scrutiny. We would want to see a series before drawing conclusions.' }
-    ]
-  },
-  {
-    id: 'benson', name: 'Timothy Benson', color: '#4A235A',
-    title: 'Curator, Robert Gore Rifkind Center for German Expressionist Studies',
+    id: 'modern_art', name: 'Modern Art Department Agent', color: '#4A235A',
+    title: 'LACMA · Modern Art Department',
     cluster: 'expressionism',
-    keywords: ['expressionist','german','woodcut','print','weimar','darkness','social','satire','political','graphic','angular','distorted'],
-    voice: [
-      { verdict: 'approve', text: 'The Rifkind Center\'s mandate is precisely to maintain the critical tradition of German Expressionism within a civic context. This work is consistent with that tradition\'s engagement with social subject matter.' },
-      { verdict: 'ambivalent', text: 'We\'d want to understand the relationship to the graphic tradition more fully before making any institutional statement. Expressionism is a specific historical category, and we\'re careful about the terminology.' }
-    ]
-  },
-  {
-    id: 'kaplan', name: 'Rachel Kaplan', color: '#935116',
-    title: 'Associate Curator, Latin American Art',
-    cluster: 'latin_american',
-    keywords: ['mural','community','latin','mexico','indigenous','labor','worker','immigrant','harvest','earth','color','border','south','migration','folk'],
-    voice: [
-      { verdict: 'approve', text: 'Latin American Art has been making this argument for a century — that public space is political space, and that civic art is always a negotiation of cultural memory. This work enters that conversation.' },
-      { verdict: 'ambivalent', text: 'The department would want to understand the sourcing of the aesthetic references more clearly. Muralism is a specific political tradition, not simply a visual style, and that distinction matters to us.' }
-    ]
-  },
-  {
-    id: 'lehmbeck', name: 'Leah Lehmbeck', color: '#1C4E2A',
-    title: 'Department Head, European Painting & Sculpture and American Art',
-    cluster: 'american_scene',
-    keywords: ['american','european','painting','sculpture','landscape','civic','public','regional','tradition','formal','history','collection','period'],
-    voice: [
-      { verdict: 'ambivalent', text: 'European Painting and American Art would need to consider how this work situates itself within the existing collection. There are clear historical precedents in the American Scene movement, and we\'d want to be thoughtful about the relationship.' },
-      { verdict: 'approve', text: 'The department sees value in works that extend the regionalist tradition into contemporary practice. This does that, and the civic subject matter is consistent with our American Art collecting priorities.' }
-    ]
-  },
-  {
-    id: 'tigerman', name: 'Bobbye Tigerman', color: '#117A65',
-    title: 'Marilyn B. & Calvin B. Gross Curator, Decorative Arts and Design',
-    cluster: 'decorative',
-    keywords: ['design','craft','material','object','textile','pattern','surface','form','color','applied','decorative','functional','print','typography'],
-    voice: [
-      { verdict: 'ambivalent', text: 'Decorative Arts and Design would approach this from the perspective of material culture and applied aesthetics. The question we\'d ask is: does this function as an object in the world, or does it remain in the register of fine art? The answer determines a lot.' },
-      { verdict: 'approve', text: 'The design sensibility is evident and the relationship to applied print traditions — WPA poster design specifically — is well within the department\'s collecting scope. This is worth a conversation.' }
-    ]
-  },
-  {
-    id: 'vittoria', name: 'Shannon Vittoria', color: '#1C4E2A',
-    title: 'Associate Curator, American Art',
-    cluster: 'american_scene',
-    keywords: ['american','civic','public','wpa','regional','federal','community','worker','democracy','heartland','landscape','ordinary','everyday'],
-    voice: [
-      { verdict: 'approve', text: 'American Art sees this as a direct continuation of the WPA tradition — which, it should be noted, was the last time the federal government took civic art seriously as public infrastructure. This work makes that argument clearly.' },
-      { verdict: 'ambivalent', text: 'The department would want to understand whether this is a commentary on the WPA or an extension of it. Those are very different arguments, and we\'d need to be clear before any institutional positioning.' }
-    ]
-  },
-  {
-    id: 'eliel', name: 'Carol Eliel', color: '#1A5276',
-    title: 'Senior Curator Emerita, Modern Art',
-    cluster: 'conceptual',
-    keywords: ['modern','twentieth','century','abstract','expressionist','formal','avant','garde','tradition','historical','survey','movement','style'],
+    keywords: ['modern','twentieth','century','abstract','expressionist','formal','avant','garde','tradition','historical','survey','movement','style','woodcut','print','weimar','darkness','social','satire','political','graphic','angular','distorted','lithograph','etching','silkscreen','paper','graphic','edition','press','ink','linework','mark'],
     voice: [
       { verdict: 'ambivalent', text: 'Modern Art has spent decades establishing the historical boundaries of modernism. Work like this asks us to reconsider whether those boundaries are descriptive or prescriptive. That is a productive question, even if it is an uncomfortable one for the department.' },
-      { verdict: 'approve', text: 'The formal concerns here are recognizably modern in the meaningful sense — not the chronological one. There\'s a serious engagement with the question of what civic representation requires. Worth pursuing.' }
+      { verdict: 'approve', text: 'The formal concerns here are recognizably modern in the meaningful sense — not the chronological one. There is a serious engagement with the question of what civic representation requires. Worth pursuing.' },
+      { verdict: 'approve', text: 'The mass-reproducible image is the democratic image. The idea that the same work can appear in every neighborhood simultaneously is precisely what print made possible — and what this project extends.' },
+      { verdict: 'ambivalent', text: 'The department would want to examine the output at actual print scale before full assessment. So much depends on how the image holds up at the resolution at which it would actually be displayed.' }
     ]
   },
   {
-    id: 'maynes', name: 'Erin Sullivan Maynes', color: '#6C3483',
-    title: 'Associate Curator, Prints & Drawings',
-    cluster: 'expressionism',
-    keywords: ['print','drawing','lithograph','etching','woodcut','silkscreen','paper','works','graphic','edition','press','ink','linework','mark'],
-    voice: [
-      { verdict: 'approve', text: 'Prints and Drawings has always understood that the mass-reproducible image is the democratic image. This work is in that tradition — the idea that the same image can hang in every neighborhood simultaneously is precisely what print made possible for the first time.' },
-      { verdict: 'ambivalent', text: 'The department would want to examine the output at actual print scale before assessment. So much depends on how the image holds up at the resolution at which it would actually be displayed. We\'d need physical outputs.' }
-    ]
-  },
-  {
-    id: 'keith', name: 'Naima J. Keith', color: '#1C2833',
-    title: 'Vice President, Los Angeles County Museum of Art',
-    cluster: 'social_realism',
-    keywords: ['community','equity','access','public','contemporary','diverse','representation','civic','people','los angeles','county','neighborhood','culture'],
-    voice: [
-      { verdict: 'approve', text: 'From the Vice President\'s office, the institutional question is always: does this expand access to art, or does it replicate the existing patterns of exclusion with new tools? This proposal appears to take that question seriously. We\'d want to see the distribution data.' },
-      { verdict: 'ambivalent', text: 'LACMA\'s commitment to the communities of Los Angeles County means we ask hard questions about who benefits. A bridging-based distribution model is the right framework. The implementation details will determine whether it delivers.' }
-    ]
-  },
-  {
-    id: 'schill', name: 'Eve Schillo', color: '#7D3C98',
-    title: 'Associate Curator, Contemporary Art',
+    id: 'contemporary_art', name: 'Contemporary Art Department Agent', color: '#7D3C98',
+    title: 'LACMA · Contemporary Art Department',
     cluster: 'conceptual',
-    keywords: ['contemporary','concept','system','network','digital','process','idea','current','now','practice','media','social','text','language'],
+    keywords: ['contemporary','concept','system','network','digital','process','idea','current','now','practice','media','social','text','language','modern','twentieth','abstract','formal','avant','tradition','historical'],
     voice: [
       { verdict: 'ambivalent', text: 'Contemporary Art would situate this within the broader discourse on algorithmic image-making — which is a serious and contested field right now. The question is whether the work has a position within that discourse, or whether it is the discourse.' },
-      { verdict: 'approve', text: 'The conceptual framework is genuinely interesting — using the Federal Art Project as a precedent for thinking about algorithmic distribution is exactly the kind of historical pivot that contemporary practice needs more of.' }
+      { verdict: 'approve', text: 'The conceptual framework is genuinely interesting — using the Federal Art Project as a precedent for thinking about algorithmic distribution is exactly the kind of historical pivot that contemporary practice needs more of.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand whether this is commentary on the WPA or an extension of it. Those are very different arguments, and we would need to be clear before any institutional positioning.' }
     ]
   },
   {
-    id: 'flores', name: 'Hope Flores', color: '#2E7D32',
-    title: 'Curatorial Assistant, LACMA',
-    cluster: 'american_scene',
-    keywords: ['community','civic','public','art','los angeles','local','accessible','people','neighborhood','culture','education'],
-    voice: [
-      { verdict: 'approve', text: 'From the curatorial assistant\'s perspective — which means I\'ve read every acquisition memo for three years — the most important thing about this work is that it\'s for people who don\'t already go to museums. That\'s the gap in every collection I\'ve seen.' },
-      { verdict: 'ambivalent', text: 'I\'d want to know more about the community input process. The history of public art in Los Angeles includes a lot of murals that were made about communities rather than with them. That\'s a crucial difference.' }
-    ]
-  },
-  {
-    id: 'bransham', name: 'Erin Branham', color: '#1B5E20',
-    title: 'Asst. Vice-President, School & Family Programs',
-    cluster: 'latin_american',
-    keywords: ['family','school','education','children','youth','learning','community','program','public','access','civic','neighborhood','los angeles'],
-    voice: [
-      { verdict: 'approve', text: 'School and Family Programs has been fighting for years to get art into the neighborhoods where our students actually live, rather than expecting them to come to Wilshire. A distributed network model would change the conversation entirely.' },
-      { verdict: 'ambivalent', text: 'The pedagogical question is real: how do families and students engage with algorithmically generated art in a way that builds genuine visual literacy? We\'d need an education component designed in from the start, not retrofitted.' }
-    ]
-  },
-  {
-    id: 'stephen', name: 'Stephen M.', color: '#1565C0',
-    title: 'Senior Research Curator, South & Southeast Asian Art',
-    cluster: 'asian_art',
-    keywords: ['asian','south','southeast','india','japan','china','buddhist','temple','nature','landscape','tradition','craft','textile','painting','miniature','regional'],
-    voice: [
-      { verdict: 'ambivalent', text: 'South and Southeast Asian Art would note that the tradition of civic art as a distributed, community-embedded practice is several thousand years old in the regions we cover. The innovation here is the algorithm, not the concept. That context is worth acknowledging.' },
-      { verdict: 'approve', text: 'The department sees resonance between this distribution model and the tradition of temple art that served entire communities rather than individual collectors. The shift from private to public is a return, not a departure.' }
-    ]
-  },
-  {
-    id: 'steinberger', name: 'Staci Steinberger', color: '#00695C',
-    title: 'Curator, Decorative Art and Design',
+    id: 'decorative_arts', name: 'Decorative Arts Department Agent', color: '#117A65',
+    title: 'LACMA · Decorative Arts and Design Department',
     cluster: 'decorative',
-    keywords: ['design','craft','pattern','object','surface','textile','color','form','material','furniture','glass','ceramic','applied','functional','industrial'],
+    keywords: ['design','craft','material','object','textile','pattern','surface','form','color','applied','decorative','functional','print','typography','furniture','glass','ceramic','industrial'],
     voice: [
-      { verdict: 'approve', text: 'Design has always understood that the boundary between art and utility is a political choice, not an aesthetic one. This project refuses that boundary, which puts it squarely in the design tradition even if it doesn\'t look like what we typically collect.' },
-      { verdict: 'ambivalent', text: 'The department would want to think carefully about the output formats. A work of public art is also a designed object — its materiality, its mounting, its relationship to the site all matter. Right now we only have the image.' }
+      { verdict: 'ambivalent', text: 'Decorative Arts and Design approaches this from the perspective of material culture and applied aesthetics. The question we would ask is: does this function as an object in the world, or does it remain in the register of fine art? The answer determines a lot.' },
+      { verdict: 'approve', text: 'The design sensibility is evident and the relationship to applied print traditions — WPA poster design specifically — is well within the department\'s collecting scope. This is worth a conversation.' },
+      { verdict: 'approve', text: 'Design has always understood that the boundary between art and utility is a political choice, not an aesthetic one. This project refuses that boundary, which puts it squarely in the design tradition.' },
+      { verdict: 'ambivalent', text: 'The department would want to think carefully about the output formats. A work of public art is also a designed object — its materiality, its mounting, its relationship to the site all matter.' }
+    ]
+  },
+  {
+    id: 'latin_american_art', name: 'Latin American Art Department Agent', color: '#935116',
+    title: 'LACMA · Latin American Art Department',
+    cluster: 'latin_american',
+    keywords: ['mural','community','latin','mexico','indigenous','labor','worker','immigrant','harvest','earth','color','border','south','migration','folk','family','school','education','children','youth','program','public','access','civic','neighborhood'],
+    voice: [
+      { verdict: 'approve', text: 'Latin American Art has been making this argument for a century — that public space is political space, and that civic art is always a negotiation of cultural memory. This work enters that conversation.' },
+      { verdict: 'ambivalent', text: 'The department would want to understand the sourcing of the aesthetic references more clearly. Muralism is a specific political tradition, not simply a visual style, and that distinction matters to us.' },
+      { verdict: 'approve', text: 'The pedagogical dimension is important: how communities engage with this work in their own neighborhoods rather than traveling to an institution is the right question. Distribution is curriculum.' }
+    ]
+  },
+  {
+    id: 'american_art', name: 'American Art Department Agent', color: '#1C4E2A',
+    title: 'LACMA · American Art Department',
+    cluster: 'american_scene',
+    keywords: ['american','european','painting','sculpture','landscape','civic','public','regional','tradition','formal','history','collection','period','wpa','federal','community','worker','democracy','heartland','ordinary','everyday'],
+    voice: [
+      { verdict: 'approve', text: 'American Art sees this as a direct continuation of the WPA tradition — which, it should be noted, was the last time the federal government took civic art seriously as public infrastructure. This work makes that argument clearly.' },
+      { verdict: 'ambivalent', text: 'The department would need to consider how this work situates itself within the existing collection. There are clear historical precedents in the American Scene movement, and we would want to be thoughtful about the relationship.' },
+      { verdict: 'approve', text: 'The department sees value in works that extend the regionalist tradition into contemporary practice. The civic subject matter is consistent with our collecting priorities.' }
+    ]
+  },
+  {
+    id: 'equity_access', name: 'Equity and Public Access Agent', color: '#1C2833',
+    title: 'LACMA · Equity and Public Access',
+    cluster: 'social_realism',
+    keywords: ['community','equity','access','public','contemporary','diverse','representation','civic','people','los angeles','county','neighborhood','culture','local','accessible','education'],
+    voice: [
+      { verdict: 'approve', text: 'The institutional question is always: does this expand access to art, or does it replicate the existing patterns of exclusion with new tools? This proposal appears to take that question seriously. We would want to see the distribution data.' },
+      { verdict: 'ambivalent', text: 'LACMA\'s commitment to the communities of Los Angeles County means we ask hard questions about who benefits. A bridging-based distribution model is the right framework. The implementation details will determine whether it delivers.' },
+      { verdict: 'approve', text: 'The most important thing about this work is that it is for people who do not already go to museums. That is the gap in every collection strategy we have seen, and a distributed network addresses it directly.' },
+      { verdict: 'ambivalent', text: 'The history of public art in Los Angeles includes many works made about communities rather than with them. That distinction matters. We would want to understand the community input process before drawing conclusions.' }
     ]
   }
 ];
