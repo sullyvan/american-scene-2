@@ -537,6 +537,15 @@
   #svCanvas { display: block; width: 100%; height: auto; }
   .sv-canvas-caption { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #777; margin-top: 8px; }
   .sv-spinner-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(13,13,13,0.6); }
+  .sv-chips-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .sv-preset-btn { display: block; width: 100%; margin-bottom: 5px; padding: 8px 10px; font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; text-align: left; background: white; border: 2px solid var(--wpa-gold); color: var(--wpa-dark); cursor: pointer; }
+  .sv-preset-btn:hover { background: var(--wpa-gold); }
+  .sv-analysis { margin-top: 12px; background: #0d1a2b; border: 2px solid #2a3a5a; padding: 12px 16px; }
+  .sv-analysis-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--wpa-gold); margin-bottom: 8px; }
+  .sv-analysis-row { display: flex; justify-content: space-between; gap: 14px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .sv-analysis-row:last-child { border-bottom: none; }
+  .sv-analysis-key { font-family: 'Oswald', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #7aafdd; white-space: nowrap; padding-top: 2px; }
+  .sv-analysis-val { font-family: 'Special Elite', cursive; font-size: 10px; color: var(--wpa-cream); text-align: right; line-height: 1.5; }
   @media (max-width: 900px) { .sv-layout { grid-template-columns: 1fr; } }
 
   /* ─── COUNTY NETWORK PAGE ─── */
@@ -928,35 +937,43 @@
 </div>
 
 
-<!-- ═══ STREET VIEW PROJECTION COMPOSITOR PAGE ═══ -->
+<!-- ═══ PUBLIC DISPLAY PROTOTYPER PAGE ═══ -->
 <div class="data-page" id="streetPage">
-  <div class="sv-title">Street Flag Compositor</div>
+  <div class="sv-title">Public Display Prototyper</div>
   <div class="sv-sub">
-    Prototype of the proposed network node: the most recent broadcast from the Public Display Network is rendered as a physical flag display in an actual Los Angeles County streetscape — the way civic banners have always occupied the city. Choose a demonstration node and a display method, then click anywhere on the photograph to re-hang the display. Or upload a photo of your own street — any wall in the county can be a node. These locations are demonstration research contexts, not confirmed community partnerships; no display occurs without local review and partner approval.
+    Site-planning prototype for the proposed network node: the most recent broadcast from the Public Display Network is fitted into predefined installation zones on real Los Angeles County streetscapes — architectural surfaces, kiosks, poles, and windows, each with its own display system, dimensions, and site restrictions. Every install shown is temporary and reversible. These locations are demonstration research contexts, not confirmed community partnerships; no physical installation occurs without local review and partner approval.
   </div>
   <div class="sv-layout">
     <div class="sv-panel">
-      <div class="sv-heading">1 — Demonstration Node</div>
+      <div class="sv-heading">1 — Choose Location</div>
       <div class="sv-chips" id="svChips"></div>
-      <div class="sv-heading">2 — Display Method</div>
+      <div class="sv-heading">2 — Choose Surface</div>
+      <div class="sv-chips" id="svZoneChips"></div>
+      <div class="sv-heading">3 — Choose Display System</div>
       <div class="sv-chips" id="svModeChips"></div>
-      <div class="sv-note">Click the photograph to re-hang the display at that point on the building.</div>
-      <div class="sv-heading">3 — Your Own Street</div>
+      <div class="sv-heading">4 — Artwork Treatment</div>
+      <div class="sv-chips" id="svTreatChips"></div>
+      <div class="sv-heading">5 — Preview</div>
+      <div class="sv-chips sv-chips-3" id="svTimeChips"></div>
+      <div class="sv-heading">Presets — Theater Node</div>
+      <div id="svPresets"></div>
+      <div class="sv-heading">Your Own Street</div>
       <input type="file" id="svUploadInput" accept="image/*" style="display:none" />
       <button class="sv-btn" onclick="document.getElementById('svUploadInput').click()">📷 Upload a Street Photo</button>
-      <button class="sv-btn" id="svUploadClear" onclick="svClearCustomPhoto()" style="display:none">✕ Back to Neighborhood Photos</button>
-      <div class="sv-note">Optional — photograph any wall, storefront, or street and the broadcast hangs there instead. The photo never leaves your browser.</div>
-      <div class="sv-heading">4 — Broadcast</div>
+      <button class="sv-btn" id="svUploadClear" onclick="svClearCustomPhoto()" style="display:none">✕ Back to Node Photos</button>
+      <div class="sv-note">Optional — uploaded photos get generic installation zones. The photo never leaves your browser.</div>
+      <div class="sv-heading">Broadcast</div>
       <div class="sv-status" id="svStatus">No broadcast yet.</div>
       <button class="sv-btn" id="svCompositeBtn" onclick="compositeStreet()">⟳ Recomposite</button>
-      <button class="sv-btn gold" id="svDownloadBtn" onclick="downloadComposite()">⬇ Download Projection</button>
+      <button class="sv-btn gold" id="svDownloadBtn" onclick="downloadComposite()">⬇ Download Preview</button>
     </div>
     <div>
       <div class="sv-canvas-wrap">
         <canvas id="svCanvas" width="1280" height="800"></canvas>
         <div class="sv-spinner-overlay" id="svSpinner" style="display:none;"><div class="spinner"></div></div>
       </div>
-      <div class="sv-canvas-caption" id="svCaption">Node preview · select a neighborhood</div>
+      <div class="sv-canvas-caption" id="svCaption">Node preview · select a location</div>
+      <div class="sv-analysis" id="svAnalysis"></div>
     </div>
   </div>
 </div>
@@ -2689,28 +2706,202 @@ function buildCoverage() {
 // Street nodes come straight from the county demonstration network —
 // one data structure feeds the map, selectors, routing, and this page.
 const SV_HOODS = COMMUNITY_NODES;
-const SV_MODES = [
-  { id:'drape',     label:'Facade Drape',     hint:'vertical banner flat against the building',   anchor:{x:0.18,y:0.06} },
-  { id:'outrigger', label:'Outrigger Pole',   hint:'flag on a 45° pole off the facade',           anchor:{x:0.16,y:0.30} },
-  { id:'balcony',   label:'Balcony Flags',    hint:'small flags over windows and balconies',      anchor:{x:0.50,y:0.34} },
-  { id:'bunting',   label:'Street Bunting',   hint:'pennants strung across the street',           anchor:{x:0.50,y:0.16} },
+// ── Display systems, treatments, times ─────────────────────────
+const SV_DISPLAYS = [
+  { id:'mesh',       label:'Printed Mesh Banner',       hint:'perforated vinyl mesh · wind-rated' },
+  { id:'digital',    label:'Reflective Digital Display', hint:'LED panel · ambient reflection' },
+  { id:'projection', label:'Projection Mapping',        hint:'best at dusk and night' },
+  { id:'sequence',   label:'Street Banner Sequence',    hint:'repeated banner set' },
+  { id:'vinyl',      label:'Window Vinyl',              hint:'perforated see-through film' },
 ];
+const SV_TREATMENTS = [
+  { id:'full',   label:'Full Image',           hint:'artwork fitted whole' },
+  { id:'crop',   label:'Site Crop',            hint:'tight crop for the surface' },
+  { id:'panels', label:'Deconstructed Panels', hint:'split across three panels' },
+];
+const SV_TIMES = [
+  { id:'day',   label:'Day' },
+  { id:'dusk',  label:'Dusk' },
+  { id:'night', label:'Night' },
+];
+const SV_ZONE_TYPES = {
+  facade:     { label:'Facade Banner',      rec:'mesh' },
+  kiosk:      { label:'Digital Kiosk',      rec:'digital' },
+  projection: { label:'Projection Surface', rec:'projection' },
+  pole:       { label:'Light-Pole Banner',  rec:'sequence' },
+  window:     { label:'Storefront Window',  rec:'vinyl' },
+};
+
+// ── Installation zones per node photo — DATA-DRIVEN ────────────
+// Coordinates are normalized to the source photograph (0..1), quads
+// ordered [top-left, top-right, bottom-right, bottom-left] so artwork
+// is perspective-fitted to the architectural surface. To add a street
+// image later: add zones here keyed by node id. `occluders` polygons
+// restore photo content (marquees, poles, people) OVER the artwork.
+// Set window.svDebugZones = true in the console to outline all zones.
+const SV_ZONES = {
+  'boyle-heights': [
+    { id:'bh-bay', type:'facade', label:'Facade bay — right building',
+      quad:[[0.658,0.100],[0.728,0.115],[0.724,0.585],[0.654,0.565]],
+      dims:'≈ 12 × 42 ft', vis:'≈ 500 ft along the boulevard',
+      restr:'Historic masonry — clamp-mounted only, no anchors; wind-load-rated mesh required' },
+    { id:'bh-kiosk', type:'kiosk', label:'Sidewalk kiosk — west walk',
+      quad:[[0.225,0.615],[0.275,0.620],[0.275,0.875],[0.225,0.880]],
+      dims:'≈ 3 × 8 ft totem', vis:'≈ 150 ft sidewalk approach',
+      restr:'ADA 48 in clearance; no sidewalk penetration over utility vault' },
+    { id:'bh-marquee-proj', type:'projection', label:'Upper facade — marquee surround',
+      quad:[[0.355,0.030],[0.645,0.030],[0.638,0.400],[0.362,0.400]],
+      occluders:[[[0.290,0.255],[0.625,0.255],[0.625,0.640],[0.290,0.640]]],
+      dims:'≈ 38 × 30 ft', vis:'≈ ¼ mile after dark',
+      restr:'Projector sited across street; marquee and ornament masked out; no light spill into upper windows' },
+    { id:'bh-pole', type:'pole', label:'Street-lamp banner pair',
+      quad:[[0.757,0.200],[0.812,0.210],[0.809,0.420],[0.757,0.410]],
+      banners:[[[0.757,0.200],[0.812,0.210],[0.809,0.420],[0.757,0.410]],
+               [[0.757,0.445],[0.806,0.452],[0.804,0.600],[0.757,0.592]]],
+      dims:'≈ 2.5 × 6 ft each', vis:'≈ 200 ft',
+      restr:'City banner-program brackets; seasonal rotation' },
+    { id:'bh-case', type:'window', label:'Poster case — entry canopy',
+      quad:[[0.415,0.638],[0.455,0.635],[0.455,0.782],[0.415,0.788]],
+      dims:'≈ 3 × 6 ft case', vis:'Sidewalk, under canopy',
+      restr:'Perforated film only; no adhesive on brass frames' },
+  ],
+  'lacma-wilshire': [
+    { id:'lac-wall', type:'facade', label:'Tile wall — east pavilion',
+      quad:[[0.585,0.335],[0.895,0.285],[0.895,0.655],[0.585,0.585]],
+      dims:'≈ 20 × 34 ft', vis:'Campus walkway, ≈ 250 ft',
+      restr:'No attachment to façade tile — tensioned frame standoff; museum campus review' },
+    { id:'lac-proj', type:'projection', label:'Tile wall — upper field',
+      quad:[[0.585,0.300],[0.895,0.270],[0.895,0.500],[0.585,0.475]],
+      dims:'≈ 20 × 18 ft', vis:'Walkway and plaza after dark',
+      restr:'Projector on existing light stanchion; off during projection-sensitive exhibitions' },
+    { id:'lac-kiosk', type:'kiosk', label:'Walkway kiosk',
+      quad:[[0.425,0.500],[0.483,0.500],[0.483,0.667],[0.425,0.667]],
+      dims:'≈ 3 × 7 ft totem', vis:'≈ 120 ft along colonnade',
+      restr:'Freestanding, ballasted base; keep egress path 60 in clear' },
+  ],
+  'watts': [
+    { id:'wat-kiosk', type:'kiosk', label:'Perimeter kiosk — east path',
+      quad:[[0.780,0.565],[0.845,0.565],[0.845,0.745],[0.780,0.745]],
+      dims:'≈ 3 × 7 ft totem', vis:'Perimeter path, ≈ 100 ft',
+      restr:'Watts Towers is a protected artwork — no attachment or projection onto the towers; freestanding perimeter siting only' },
+    { id:'wat-fence', type:'pole', label:'Perimeter banner line',
+      quad:[[0.160,0.675],[0.255,0.675],[0.255,0.745],[0.160,0.745]],
+      banners:[[[0.160,0.675],[0.255,0.675],[0.255,0.745],[0.160,0.745]],
+               [[0.300,0.680],[0.395,0.680],[0.395,0.748],[0.300,0.748]],
+               [[0.440,0.683],[0.535,0.683],[0.535,0.750],[0.440,0.750]]],
+      dims:'≈ 6 × 3 ft each', vis:'Street frontage, ≈ 300 ft',
+      restr:'Mounted to perimeter fence line only; conservation review required' },
+  ],
+  'wilmington': [
+    { id:'wil-left', type:'facade', label:'Porch bay — left (existing banner position)',
+      quad:[[0.168,0.415],[0.238,0.415],[0.238,0.635],[0.168,0.635]],
+      dims:'≈ 4 × 12 ft', vis:'Lawn approach, ≈ 200 ft',
+      restr:'Banning Museum — historic wood fabric; strap-mounted over existing banner hardware, fully reversible' },
+    { id:'wil-right', type:'facade', label:'Porch bay — right (existing banner position)',
+      quad:[[0.716,0.410],[0.788,0.412],[0.788,0.640],[0.716,0.638]],
+      dims:'≈ 4 × 12 ft', vis:'Lawn approach, ≈ 200 ft',
+      restr:'Banning Museum — historic wood fabric; strap-mounted over existing banner hardware, fully reversible' },
+    { id:'wil-window', type:'window', label:'First-floor window — right',
+      quad:[[0.585,0.295],[0.652,0.295],[0.652,0.425],[0.585,0.425]],
+      dims:'≈ 3 × 5 ft', vis:'Porch and walkway',
+      restr:'Interior-mounted film only; no adhesive on historic glazing' },
+    { id:'wil-kiosk', type:'kiosk', label:'Lawn kiosk — east walk',
+      quad:[[0.855,0.600],[0.915,0.600],[0.915,0.845],[0.855,0.845]],
+      dims:'≈ 3 × 7 ft totem', vis:'Grounds entry, ≈ 150 ft',
+      restr:'Ballasted base on turf; no ground penetration' },
+  ],
+  'pacoima': [
+    { id:'pac-panel', type:'facade', label:'Stair-tower panel',
+      quad:[[0.475,0.565],[0.550,0.565],[0.550,0.735],[0.475,0.735]],
+      dims:'≈ 8 × 16 ft', vis:'Street frontage, ≈ 250 ft',
+      restr:'Housing-authority review; fence line must remain clear' },
+    { id:'pac-pole', type:'pole', label:'Utility-pole banner',
+      quad:[[0.195,0.285],[0.258,0.290],[0.256,0.470],[0.195,0.465]],
+      dims:'≈ 2.5 × 6 ft', vis:'≈ 300 ft along the avenue',
+      restr:'Utility clearances per LADWP; breakaway brackets' },
+    { id:'pac-kiosk', type:'kiosk', label:'Sidewalk kiosk',
+      quad:[[0.720,0.665],[0.783,0.665],[0.783,0.925],[0.720,0.925]],
+      dims:'≈ 3 × 8 ft totem', vis:'≈ 150 ft sidewalk approach',
+      restr:'ADA clearance; outside bus-stop zone' },
+  ],
+  'pomona': [
+    { id:'pom-board', type:'kiosk', label:'Marquee reader board — digital retrofit',
+      quad:[[0.618,0.300],[0.925,0.272],[0.925,0.475],[0.618,0.500]],
+      dims:'≈ 16 × 8 ft', vis:'Full block at night',
+      restr:'Active venue — event listings retain priority; no coverage of life-safety signage' },
+    { id:'pom-proj', type:'projection', label:'Dark facade — west of marquee',
+      quad:[[0.020,0.075],[0.155,0.105],[0.148,0.420],[0.020,0.400]],
+      dims:'≈ 18 × 26 ft', vis:'Plaza crowd sightline',
+      restr:'Night operation with venue coordination; crowd clearance below' },
+    { id:'pom-window', type:'window', label:'Arched window — east building',
+      quad:[[0.757,0.440],[0.830,0.435],[0.830,0.600],[0.757,0.605]],
+      dims:'≈ 5 × 7 ft', vis:'Sidewalk approach',
+      restr:'Perforated film; tenant consent required' },
+  ],
+  'lancaster': [
+    { id:'lan-wall', type:'facade', label:'Construction sheathing — main field',
+      quad:[[0.505,0.430],[0.700,0.445],[0.700,0.875],[0.505,0.855]],
+      dims:'≈ 24 × 38 ft construction mesh', vis:'≈ 600 ft along The BLVD',
+      restr:'Active construction — site-safety review; mesh rated for high-desert wind' },
+    { id:'lan-pole', type:'pole', label:'BLVD sign-pole banner',
+      quad:[[0.833,0.600],[0.892,0.600],[0.892,0.820],[0.833,0.820]],
+      dims:'≈ 2.5 × 6 ft', vis:'≈ 250 ft',
+      restr:'City streetscape program bracket' },
+    { id:'lan-window', type:'window', label:'Upper window opening',
+      quad:[[0.737,0.140],[0.813,0.145],[0.813,0.335],[0.737,0.330]],
+      dims:'≈ 6 × 9 ft', vis:'Street level, ≈ 300 ft',
+      restr:'Temporary infill panel during construction only' },
+  ],
+  'altadena': [
+    { id:'alt-roof', type:'facade', label:'Rooftop banner — aerial concept',
+      quad:[[0.132,0.588],[0.253,0.598],[0.250,0.652],[0.130,0.642]],
+      dims:'≈ 40 × 12 ft rooftop frame', vis:'Foothill sightline (concept)',
+      restr:'Aerial survey context — ground-level surfaces to be established with local partners' },
+    { id:'alt-seq', type:'pole', label:'Main-street banner sequence — aerial concept',
+      quad:[[0.468,0.525],[0.492,0.527],[0.492,0.565],[0.468,0.563]],
+      banners:[[[0.468,0.525],[0.492,0.527],[0.492,0.565],[0.468,0.563]],
+               [[0.478,0.600],[0.505,0.602],[0.505,0.645],[0.478,0.643]],
+               [[0.488,0.685],[0.518,0.687],[0.518,0.735],[0.488,0.735]]],
+      dims:'≈ 2.5 × 6 ft each', vis:'Along Lake Avenue (concept)',
+      restr:'Aerial survey context — pole inventory to be established with local partners' },
+  ],
+};
+// Generic zones applied to user-uploaded street photos
+const SV_GENERIC_ZONES = [
+  { id:'gen-facade', type:'facade', label:'Wall surface — center',
+    quad:[[0.32,0.14],[0.68,0.14],[0.68,0.58],[0.32,0.58]],
+    dims:'To be measured on site', vis:'To be surveyed', restr:'Uploaded photo — site data to be established' },
+  { id:'gen-kiosk', type:'kiosk', label:'Ground kiosk — right',
+    quad:[[0.70,0.52],[0.76,0.52],[0.76,0.83],[0.70,0.83]],
+    dims:'≈ 3 × 8 ft totem', vis:'To be surveyed', restr:'Uploaded photo — site data to be established' },
+  { id:'gen-proj', type:'projection', label:'Projection field — center',
+    quad:[[0.30,0.10],[0.70,0.10],[0.70,0.55],[0.30,0.55]],
+    dims:'To be measured on site', vis:'To be surveyed', restr:'Uploaded photo — site data to be established' },
+];
+
 let svHoodIdx = 0;
-let svModeIdx = 0;
-let svAnchor = null;          // normalized {x,y}, null = mode default
+let svZoneIdx = 0;            // index into current zone list
+let svDisplayId = 'mesh';
+let svTreatId = 'full';
+let svTime = 'day';
 let svCustomImg = null;       // user-uploaded street photo (Image), else null
 let svCustomName = '';
 let svReady = false;
 let svBusy = false;
 let svQueued = false;
 
+function svZoneList() { return svCustomImg ? SV_GENERIC_ZONES : (SV_ZONES[SV_HOODS[svHoodIdx].id] || SV_GENERIC_ZONES); }
+function svZone() { const list = svZoneList(); return list[Math.min(svZoneIdx, list.length - 1)]; }
+
 function svSetCustomPhoto(url, label) {
   const img = new Image();
   img.onload = () => {
     svCustomImg = img;
     svCustomName = label || 'uploaded photo';
-    svAnchor = null;
+    svZoneIdx = 0;
     document.getElementById('svUploadClear').style.display = '';
+    svBuildZoneChips();
+    svSyncChips();
     compositeStreet();
   };
   img.onerror = () => showToast('Could not read that image');
@@ -2720,8 +2911,10 @@ function svSetCustomPhoto(url, label) {
 function svClearCustomPhoto() {
   svCustomImg = null;
   svCustomName = '';
-  svAnchor = null;
+  svZoneIdx = 0;
   document.getElementById('svUploadClear').style.display = 'none';
+  svBuildZoneChips();
+  svSyncChips();
   compositeStreet();
 }
 
@@ -2752,146 +2945,357 @@ function svArtCanvas(art, w, h) {
   return c;
 }
 
-// A hanging cloth: vertical fold ripple + shading + header bar + shadow
-function svDrawCloth(ctx, artC, x, y, w, h, opts = {}) {
-  const amp = opts.amp ?? Math.max(3, w * 0.03);
-  const folds = opts.folds ?? 3;
-  const phase = opts.phase ?? 0.6;
-  // drop shadow behind the cloth
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = w * 0.09;
-  ctx.shadowOffsetX = w * 0.03;
-  ctx.shadowOffsetY = w * 0.05;
-  ctx.fillStyle = 'rgba(20,20,20,0.9)';
-  ctx.fillRect(x + 2, y + 2, w - 4, h - 4);
-  ctx.restore();
-  // cloth surface as vertical strips with a sine ripple on the hanging edge
-  const strips = Math.max(20, Math.round(w / 4));
-  const sw = w / strips;
-  for (let i = 0; i < strips; i++) {
-    const t = i / strips;
-    const ripple = Math.sin(t * Math.PI * folds + phase) * amp;
-    ctx.drawImage(artC, t * artC.width, 0, artC.width / strips, artC.height,
-                  x + i * sw, y + ripple * 0.25, sw + 0.75, h + ripple * 0.75);
-  }
-  // fold shading: alternating light/dark bands following the ripple
-  const g = ctx.createLinearGradient(x, 0, x + w, 0);
-  const stops = 28;
-  for (let i = 0; i <= stops; i++) {
-    const t = i / stops;
-    const s = Math.sin(t * Math.PI * folds + phase);
-    g.addColorStop(t, s > 0 ? `rgba(255,255,255,${s * 0.14})` : `rgba(0,0,0,${-s * 0.22})`);
-  }
-  ctx.fillStyle = g;
-  ctx.fillRect(x, y, w, h + amp);
-  // overall top-lit shading so the cloth sits in street light
-  const v = ctx.createLinearGradient(0, y, 0, y + h);
-  v.addColorStop(0, 'rgba(255,255,255,0.08)');
-  v.addColorStop(1, 'rgba(0,0,0,0.18)');
-  ctx.fillStyle = v;
-  ctx.fillRect(x, y, w, h + amp);
-  // header bar + grommet dots
-  ctx.fillStyle = '#1c1c1c';
-  ctx.fillRect(x - w * 0.03, y - h * 0.015, w * 1.06, Math.max(4, h * 0.018));
-  ctx.fillStyle = '#888';
-  for (let i = 0; i < 4; i++) {
-    ctx.beginPath();
-    ctx.arc(x + w * (0.08 + i * 0.28), y + h * 0.012, Math.max(1.5, w * 0.012), 0, 7);
-    ctx.fill();
-  }
+// ── Geometry: perspective quad fitting ──────────────────────────
+// Map image-normalized zone coords into canvas space through the same
+// cover-crop transform used to draw the base photo.
+function svImgToCanvas(nx, ny, img, W, H) {
+  const s = Math.max(W / img.width, H / img.height);
+  const dw = img.width * s, dh = img.height * s;
+  return { x: (W - dw) / 2 + nx * dw, y: (H - dh) / 2 + ny * dh };
 }
-
-function svDrawDisplay(ctx, art, W, H) {
-  const mode = SV_MODES[svModeIdx];
-  const a = svAnchor || mode.anchor;
-  const ax = a.x * W, ay = a.y * H;
-
-  if (mode.id === 'drape') {
-    // Vertical facade drape — large banner flat against the building
-    const w = W * 0.20, h = H * 0.62;
-    const x = Math.min(Math.max(ax - w / 2, W * 0.01), W * 0.99 - w);
-    const y = Math.min(Math.max(ay, H * 0.01), H * 0.95 - h);
-    svDrawCloth(ctx, svArtCanvas(art, w, h), x, y, w, h, { folds: 3 });
-
-  } else if (mode.id === 'outrigger') {
-    // Flag on a pole projecting ~45° from the facade
-    const fw = W * 0.21, fh = H * 0.20;
-    const px = Math.min(Math.max(ax, W * 0.03), W * 0.75);
-    const py = Math.min(Math.max(ay, H * 0.08), H * 0.75);
-    const poleLen = fw * 1.25;
-    const ang = -Math.PI / 4;
-    const tipX = px + Math.cos(ang) * poleLen, tipY = py + Math.sin(ang) * poleLen;
-    // wall mount + pole
-    ctx.save();
-    ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = Math.max(3, W * 0.006); ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tipX, tipY); ctx.stroke();
-    ctx.fillStyle = '#D4A017';
-    ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(3, W * 0.006), 0, 7); ctx.fill();
-    ctx.restore();
-    // flag hangs from the pole: rotate context so cloth top edge lies along the pole
-    ctx.save();
-    ctx.translate(px, py);
-    ctx.rotate(ang);
-    svDrawCloth(ctx, svArtCanvas(art, fw, fh), poleLen * 0.12, 0, poleLen * 0.82, fh, { folds: 2, amp: fh * 0.06, phase: 1.2 });
-    ctx.restore();
-
-  } else if (mode.id === 'balcony') {
-    // Three small flags over windows / balconies around the anchor
-    const w = W * 0.085, h = H * 0.19;
-    const spots = [
-      { x: ax - W * 0.24, y: ay - H * 0.05, s: 0.9 },
-      { x: ax,            y: ay,            s: 1.0 },
-      { x: ax + W * 0.26, y: ay - H * 0.09, s: 0.8 },
-    ];
-    spots.forEach((p, i) => {
-      const fw = w * p.s, fh = h * p.s;
-      const x = Math.min(Math.max(p.x - fw / 2, W * 0.01), W * 0.99 - fw);
-      const y = Math.min(Math.max(p.y, H * 0.02), H * 0.96 - fh);
-      svDrawCloth(ctx, svArtCanvas(art, fw, fh), x, y, fw, fh, { folds: 2, amp: fh * 0.05, phase: i * 1.7 });
-    });
-
-  } else if (mode.id === 'bunting') {
-    // Catenary string across the full street width, pennants alternating
-    // between the broadcast image and solid WPA inks
-    const y0 = Math.min(Math.max(ay, H * 0.06), H * 0.55);
-    const sag = H * 0.085;
-    const count = 15;
-    const inks = ['#8B1A1A', '#1A3A5C', '#D4A017'];
-    const artC = svArtCanvas(art, 90, 110);
-    const lineAt = t => y0 + sag * 4 * t * (1 - t);
-    // the wire
-    ctx.save();
-    ctx.strokeStyle = 'rgba(25,25,25,0.85)'; ctx.lineWidth = Math.max(2, W * 0.0025);
-    ctx.beginPath(); ctx.moveTo(0, lineAt(0));
-    for (let i = 1; i <= 40; i++) { const t = i / 40; ctx.lineTo(t * W, lineAt(t)); }
-    ctx.stroke();
-    ctx.restore();
-    // pennants
-    const pw = W / count * 0.72, ph = H * 0.085;
-    for (let i = 0; i < count; i++) {
-      const t = (i + 0.5) / count;
-      const cx = t * W, cy = lineAt(t);
-      const sway = Math.sin(i * 2.1) * pw * 0.10;
+function svQuadPts(zq, img, W, H) { return zq.map(([x, y]) => svImgToCanvas(x, y, img, W, H)); }
+function svQuadPath(ctx, q) {
+  ctx.beginPath();
+  ctx.moveTo(q[0].x, q[0].y);
+  for (let i = 1; i < 4; i++) ctx.lineTo(q[i].x, q[i].y);
+  ctx.closePath();
+}
+function svBilerp(q, u, v) {
+  return {
+    x: (1 - v) * ((1 - u) * q[0].x + u * q[1].x) + v * ((1 - u) * q[3].x + u * q[2].x),
+    y: (1 - v) * ((1 - u) * q[0].y + u * q[1].y) + v * ((1 - u) * q[3].y + u * q[2].y)
+  };
+}
+// Draw src canvas fitted into an arbitrary quad by subdividing into
+// affine cells — reads as true perspective at street-photo scale.
+function svDrawImageQuad(ctx, src, q, subdiv = 12) {
+  const sw = src.width, sh = src.height;
+  const cw = sw / subdiv, ch = sh / subdiv;
+  for (let i = 0; i < subdiv; i++) {
+    for (let j = 0; j < subdiv; j++) {
+      const p00 = svBilerp(q, i / subdiv, j / subdiv);
+      const p10 = svBilerp(q, (i + 1) / subdiv, j / subdiv);
+      const p01 = svBilerp(q, i / subdiv, (j + 1) / subdiv);
       ctx.save();
-      ctx.shadowColor = 'rgba(0,0,0,0.4)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 4;
-      ctx.beginPath();
-      ctx.moveTo(cx - pw / 2, cy);
-      ctx.lineTo(cx + pw / 2, cy);
-      ctx.lineTo(cx + sway, cy + ph);
-      ctx.closePath();
-      if (i % 2 === 0) {
-        ctx.clip();
-        ctx.drawImage(artC, cx - pw / 2, cy, pw, ph);
-        ctx.fillStyle = 'rgba(0,0,0,0.10)';
-        ctx.fill();
-      } else {
-        ctx.fillStyle = inks[(i >> 1) % inks.length];
-        ctx.fill();
-      }
+      ctx.setTransform((p10.x - p00.x) / cw, (p10.y - p00.y) / cw,
+                       (p01.x - p00.x) / ch, (p01.y - p00.y) / ch, p00.x, p00.y);
+      ctx.drawImage(src, i * cw, j * ch, cw + 1, ch + 1, 0, 0, cw + 1, ch + 1);
       ctx.restore();
     }
   }
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+function svInsetQuad(q, f) {
+  const cx = (q[0].x + q[1].x + q[2].x + q[3].x) / 4;
+  const cy = (q[0].y + q[1].y + q[2].y + q[3].y) / 4;
+  return q.map(p => ({ x: cx + (p.x - cx) * f, y: cy + (p.y - cy) * f }));
+}
+function svSplitQuad(q, n, gap) {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const u0 = i / n + gap / 2, u1 = (i + 1) / n - gap / 2;
+    out.push([svBilerp(q, u0, 0), svBilerp(q, u1, 0), svBilerp(q, u1, 1), svBilerp(q, u0, 1)]);
+  }
+  return out;
+}
+function svQuadBounds(q) {
+  const xs = q.map(p => p.x), ys = q.map(p => p.y);
+  return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) };
+}
+// Vertical light gradient clipped inside a quad — grounds the surface
+function svShadeQuad(ctx, q, topAlpha, botAlpha) {
+  const b = svQuadBounds(q);
+  ctx.save();
+  svQuadPath(ctx, q);
+  ctx.clip();
+  const g = ctx.createLinearGradient(0, b.y0, 0, b.y1);
+  g.addColorStop(0, `rgba(255,255,255,${topAlpha})`);
+  g.addColorStop(1, `rgba(0,0,0,${botAlpha})`);
+  ctx.fillStyle = g;
+  ctx.fillRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0);
+  ctx.restore();
+}
+function svFilterCanvas(src, filter) {
+  const c = document.createElement('canvas');
+  c.width = src.width; c.height = src.height;
+  const cx = c.getContext('2d');
+  cx.filter = filter;
+  cx.drawImage(src, 0, 0);
+  return c;
+}
+function svSliceCanvas(src, u0, u1) {
+  const c = document.createElement('canvas');
+  c.width = Math.max(2, Math.round(src.width * (u1 - u0)));
+  c.height = src.height;
+  c.getContext('2d').drawImage(src, u0 * src.width, 0, c.width, src.height, 0, 0, c.width, src.height);
+  return c;
+}
+// Artwork treatment: fit to the quad's aspect; 'crop' zooms into the site
+function svTreatedArt(art, q, treatment) {
+  const wpx = Math.hypot(q[1].x - q[0].x, q[1].y - q[0].y);
+  const hpx = Math.hypot(q[3].x - q[0].x, q[3].y - q[0].y);
+  const w = 440, h = Math.max(60, Math.round(440 * hpx / Math.max(1, wpx)));
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  const cx = c.getContext('2d');
+  const s = Math.max(w / art.width, h / art.height) * (treatment === 'crop' ? 1.7 : 1);
+  cx.drawImage(art, (w - art.width * s) / 2, (h - art.height * s) / 2, art.width * s, art.height * s);
+  return c;
+}
+// Cloth pre-pass: fold ripple + fold shading baked in before quad fitting
+function svClothify(src) {
+  const amp = src.height * 0.012, folds = 4;
+  const c = document.createElement('canvas');
+  c.width = src.width; c.height = Math.round(src.height + amp * 2);
+  const cx = c.getContext('2d');
+  const strips = 48, sw = src.width / strips;
+  for (let i = 0; i < strips; i++) {
+    const dy = Math.sin((i / strips) * Math.PI * folds + 0.7) * amp;
+    cx.drawImage(src, i * sw, 0, sw + 0.8, src.height, i * sw, dy + amp, sw + 0.8, src.height);
+  }
+  const g = cx.createLinearGradient(0, 0, c.width, 0);
+  for (let i = 0; i <= 36; i++) {
+    const s = Math.sin((i / 36) * Math.PI * folds + 0.7);
+    g.addColorStop(i / 36, s > 0 ? `rgba(255,255,255,${(s * 0.12).toFixed(3)})` : `rgba(0,0,0,${(-s * 0.20).toFixed(3)})`);
+  }
+  cx.fillStyle = g;
+  cx.fillRect(0, 0, c.width, c.height);
+  return c;
+}
+
+// ── Display renderers ───────────────────────────────────────────
+function svRenderMesh(ctx, art, q, W) {
+  ctx.save();                                    // cast shadow onto the wall
+  ctx.filter = 'blur(5px)';
+  svQuadPath(ctx, q.map(p => ({ x: p.x + W * 0.007, y: p.y + W * 0.010 })));
+  ctx.fillStyle = 'rgba(0,0,0,0.38)';
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.globalAlpha = 0.94;                        // perforated mesh lets wall breathe
+  svDrawImageQuad(ctx, svClothify(art), q);
+  ctx.restore();
+  svShadeQuad(ctx, q, 0.07, 0.20);               // top-lit street light
+  ctx.save();                                    // hem line
+  svQuadPath(ctx, q);
+  ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+}
+function svRenderKioskChrome(ctx, q, zone, W, H) {
+  const bezel = svInsetQuad(q, 1.07);
+  if (zone.type === 'kiosk') {                   // ground contact shadow
+    const bx = (q[3].x + q[2].x) / 2, by = Math.max(q[2].y, q[3].y);
+    ctx.save();
+    ctx.filter = 'blur(6px)';
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.beginPath();
+    ctx.ellipse(bx, by + H * 0.012, Math.abs(q[2].x - q[3].x) * 0.75, H * 0.012, 0, 0, 7);
+    ctx.fill();
+    ctx.restore();
+  }
+  svQuadPath(ctx, bezel);
+  ctx.fillStyle = '#0c0d10';
+  ctx.fill();
+  ctx.strokeStyle = '#2a2d33';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+function svRenderScreen(ctx, art, q, time) {
+  const scr = svInsetQuad(q, 0.93);
+  if (time !== 'day') {                          // emissive halo after dark
+    ctx.save();
+    ctx.filter = 'blur(16px)';
+    ctx.globalAlpha = time === 'night' ? 0.5 : 0.28;
+    svQuadPath(ctx, svInsetQuad(q, 1.3));
+    ctx.fillStyle = 'rgba(150,190,255,0.55)';
+    ctx.fill();
+    ctx.restore();
+    svQuadPath(ctx, svInsetQuad(q, 1.07));       // re-solidify bezel over halo
+    ctx.fillStyle = '#0c0d10';
+    ctx.fill();
+  }
+  svDrawImageQuad(ctx, svFilterCanvas(art, 'saturate(1.25) contrast(1.08) brightness(1.08)'), scr);
+  const b = svQuadBounds(scr);                   // ambient reflection sweep
+  ctx.save();
+  svQuadPath(ctx, scr);
+  ctx.clip();
+  const rA = time === 'day' ? 0.26 : time === 'dusk' ? 0.13 : 0.06;
+  const g = ctx.createLinearGradient(b.x0, b.y0, b.x1, b.y1);
+  g.addColorStop(0, `rgba(255,255,255,${rA})`);
+  g.addColorStop(0.38, `rgba(255,255,255,${rA * 0.3})`);
+  g.addColorStop(0.55, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0);
+  ctx.restore();
+}
+function svRenderProjection(ctx, art, q, time, W, H) {
+  const alpha = time === 'night' ? 0.92 : time === 'dusk' ? 0.58 : 0.20;
+  const tmp = document.createElement('canvas');
+  tmp.width = W; tmp.height = H;
+  const tc = tmp.getContext('2d');
+  svDrawImageQuad(tc, svFilterCanvas(art, 'saturate(1.15) blur(0.5px)'), q);
+  tc.globalCompositeOperation = 'destination-in'; // feathered projection edge
+  tc.filter = 'blur(7px)';
+  svQuadPath(tc, svInsetQuad(q, 0.97));
+  tc.fillStyle = '#fff';
+  tc.fill();
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';        // light adds, never occludes
+  ctx.globalAlpha = alpha;
+  ctx.drawImage(tmp, 0, 0);
+  ctx.restore();
+}
+function svRenderVinyl(ctx, art, q, time) {
+  ctx.save();
+  svQuadPath(ctx, q);
+  ctx.clip();
+  ctx.globalAlpha = 0.88;                         // perforated film transparency
+  svDrawImageQuad(ctx, art, q);
+  ctx.globalAlpha = 1;
+  if (time === 'night') {                         // dark interior behind glass
+    ctx.fillStyle = 'rgba(0,0,10,0.3)';
+    const b = svQuadBounds(q);
+    ctx.fillRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0);
+  }
+  const b = svQuadBounds(q);                      // glass reflection streaks
+  const g = ctx.createLinearGradient(b.x0, b.y0, b.x1, b.y1);
+  g.addColorStop(0, 'rgba(255,255,255,0.16)');
+  g.addColorStop(0.3, 'rgba(255,255,255,0.02)');
+  g.addColorStop(0.5, 'rgba(255,255,255,0.10)');
+  g.addColorStop(0.7, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0);
+  ctx.restore();
+  ctx.save();
+  svQuadPath(ctx, q);
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+}
+// Time-of-day grade; pass a clip quad to re-grade occluder patches
+function svApplyTint(ctx, W, H, time, clipQuad) {
+  if (time === 'day') return;
+  ctx.save();
+  if (clipQuad) { svQuadPath(ctx, clipQuad); ctx.clip(); }
+  if (time === 'dusk') {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, 'rgba(30,30,85,0.30)');
+    g.addColorStop(1, 'rgba(120,60,25,0.20)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    ctx.fillStyle = 'rgba(8,12,32,0.55)';
+    ctx.fillRect(0, 0, W, H);
+    const g = ctx.createLinearGradient(0, H * 0.6, 0, H);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,0.25)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+  ctx.restore();
+}
+// Restore protected photo content (marquee, ornament, poles, people)
+// over the artwork, re-applying the time grade so patches match.
+function svRestoreOccluders(ctx, base, zone, img, W, H, time) {
+  (zone.occluders || []).forEach(poly => {
+    const pts = svQuadPts(poly, img, W, H);
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.closePath();
+    ctx.clip();
+    svDrawCover(ctx, base, W, H);
+    ctx.restore();
+    svApplyTint(ctx, W, H, time, pts);
+  });
+}
+
+// ── Orchestrator: fit treated artwork into the selected zone ────
+function svRenderInstallation(ctx, base, art0, zone, W, H, time) {
+  const q = svQuadPts(zone.quad, base, W, H);
+
+  // Build [quad, art] pairs from display system + treatment
+  let pairs;
+  if (svDisplayId === 'sequence') {
+    const qs = zone.banners ? zone.banners.map(b => svQuadPts(b, base, W, H)) : svSplitQuad(q, 3, 0.08);
+    if (svTreatId === 'panels') {
+      const full = svTreatedArt(art0, q, 'full');
+      pairs = qs.map((bq, i) => [bq, svSliceCanvas(full, i / qs.length, (i + 1) / qs.length)]);
+    } else {
+      pairs = qs.map(bq => [bq, svTreatedArt(art0, bq, svTreatId)]);
+    }
+  } else if (svTreatId === 'panels') {
+    const full = svTreatedArt(art0, q, 'full');
+    pairs = svSplitQuad(q, 3, 0.06).map((bq, i) => [bq, svSliceCanvas(full, i / 3, (i + 1) / 3)]);
+  } else {
+    pairs = [[q, svTreatedArt(art0, q, svTreatId)]];
+  }
+
+  if (svDisplayId === 'mesh' || svDisplayId === 'sequence') {
+    // Physical media: rendered first, then graded with the scene
+    pairs.forEach(([bq, a]) => svRenderMesh(ctx, a, bq, W));
+    svRestoreOccluders(ctx, base, zone, base, W, H, 'day');
+    svApplyTint(ctx, W, H, time);
+  } else if (svDisplayId === 'vinyl') {
+    pairs.forEach(([bq, a]) => svRenderVinyl(ctx, a, bq, time));
+    svRestoreOccluders(ctx, base, zone, base, W, H, 'day');
+    svApplyTint(ctx, W, H, time);
+  } else if (svDisplayId === 'digital') {
+    // Emissive: chrome grades with the scene, the screen does not
+    pairs.forEach(([bq]) => svRenderKioskChrome(ctx, bq, zone, W, H));
+    svApplyTint(ctx, W, H, time);
+    pairs.forEach(([bq, a]) => svRenderScreen(ctx, a, bq, time));
+    svRestoreOccluders(ctx, base, zone, base, W, H, time);
+  } else {
+    // Projection: light lands on the already-graded scene
+    svApplyTint(ctx, W, H, time);
+    pairs.forEach(([bq, a]) => svRenderProjection(ctx, a, bq, time, W, H));
+    svRestoreOccluders(ctx, base, zone, base, W, H, time);
+  }
+}
+
+// Dashed zone outlines — shown before any broadcast exists, and always
+// when window.svDebugZones = true (used when calibrating new zones)
+function svDrawZoneOutlines(ctx, base, W, H, activeIdx) {
+  svZoneList().forEach((z, i) => {
+    const q = svQuadPts(z.quad, base, W, H);
+    ctx.save();
+    svQuadPath(ctx, q);
+    ctx.setLineDash([6, 5]);
+    ctx.strokeStyle = i === activeIdx ? '#D4A017' : 'rgba(212,160,23,0.45)';
+    ctx.lineWidth = i === activeIdx ? 2.5 : 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    const b = svQuadBounds(q);
+    ctx.font = '12px "Oswald", sans-serif';
+    const label = (SV_ZONE_TYPES[z.type] ? SV_ZONE_TYPES[z.type].label : z.type).toUpperCase();
+    const tw = ctx.measureText(label).width + 10;
+    ctx.fillStyle = i === activeIdx ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.45)';
+    ctx.fillRect(b.x0, Math.max(2, b.y0 - 18), tw, 16);
+    ctx.fillStyle = i === activeIdx ? '#D4A017' : 'rgba(212,160,23,0.6)';
+    ctx.fillText(label, b.x0 + 5, Math.max(14, b.y0 - 6));
+    ctx.restore();
+  });
+}
+
+// Site-analysis panel — all values are prototype estimates
+function svUpdateAnalysis(zone) {
+  const typeInfo = SV_ZONE_TYPES[zone.type] || { label: zone.type, rec: 'mesh' };
+  const rec = SV_DISPLAYS.find(d => d.id === typeInfo.rec) || SV_DISPLAYS[0];
+  document.getElementById('svAnalysis').innerHTML = `
+    <div class="sv-analysis-title">Site Analysis — Prototype Estimates</div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Selected surface</div><div class="sv-analysis-val">${zone.label} (${typeInfo.label.toLowerCase()})</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Recommended display</div><div class="sv-analysis-val">${rec.label}</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Approx. dimensions</div><div class="sv-analysis-val">${zone.dims}</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Visibility range</div><div class="sv-analysis-val">${zone.vis}</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Site restrictions</div><div class="sv-analysis-val">${zone.restr}</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Temporary &amp; reversible</div><div class="sv-analysis-val">Yes — all prototyped installs are non-permanent and fully removable</div></div>
+    <div class="sv-analysis-row"><div class="sv-analysis-key">Status</div><div class="sv-analysis-val">Demonstration preview — site survey and local review required</div></div>
+  `;
 }
 
 function initStreetPage() {
@@ -2904,25 +3308,54 @@ function initStreetPage() {
       b.id = 'sv-chip-' + i;
       b.innerHTML = (h.status === 'host' ? '● ' : '○ ') + h.name + '<span class="sv-zip">' + h.region + ' · ' + h.zip + '</span>';
       b.setAttribute('aria-label', h.name + ' — ' + (h.status === 'host' ? 'host institution' : 'demonstration research node') + ', ' + h.region + ' region');
-      b.onclick = () => { svHoodIdx = i; svCustomImg = null; svCustomName = ''; document.getElementById('svUploadClear').style.display = 'none'; document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
+      b.onclick = () => {
+        svHoodIdx = i; svZoneIdx = 0; svCustomImg = null; svCustomName = '';
+        document.getElementById('svUploadClear').style.display = 'none';
+        const z0 = svZoneList()[0];
+        svDisplayId = (SV_ZONE_TYPES[z0.type] || {}).rec || 'mesh';
+        svBuildZoneChips(); svSyncChips(); compositeStreet();
+      };
       chips.appendChild(b);
     });
-    const modeChips = document.getElementById('svModeChips');
-    SV_MODES.forEach((m, i) => {
+    svBuildZoneChips();
+
+    const mkChipRow = (elId, items, dataKey, getState, setState) => {
+      const wrap = document.getElementById(elId);
+      items.forEach(m => {
+        const b = document.createElement('button');
+        b.className = 'sv-chip' + (m.id === getState() ? ' active' : '');
+        b.dataset[dataKey] = m.id;
+        b.innerHTML = m.label + (m.hint ? '<span class="sv-zip">' + m.hint + '</span>' : '');
+        b.onclick = () => { setState(m.id); svSyncChips(); compositeStreet(); };
+        wrap.appendChild(b);
+      });
+    };
+    mkChipRow('svModeChips', SV_DISPLAYS, 'display', () => svDisplayId, v => svDisplayId = v);
+    mkChipRow('svTreatChips', SV_TREATMENTS, 'treat', () => svTreatId, v => svTreatId = v);
+    mkChipRow('svTimeChips', SV_TIMES, 'time', () => svTime, v => svTime = v);
+
+    // Three polished presets on the theater node
+    const SV_PRESETS = [
+      { label: '① Mesh banner · facade bay · day',          zone: 'bh-bay',          display: 'mesh',       treat: 'full', time: 'day' },
+      { label: '② Digital kiosk · sidewalk · dusk',         zone: 'bh-kiosk',        display: 'digital',    treat: 'crop', time: 'dusk' },
+      { label: '③ Projection · marquee surround · night',   zone: 'bh-marquee-proj', display: 'projection', treat: 'full', time: 'night' },
+    ];
+    const presetWrap = document.getElementById('svPresets');
+    SV_PRESETS.forEach(p => {
       const b = document.createElement('button');
-      b.className = 'sv-chip' + (i === 0 ? ' active' : '');
-      b.id = 'sv-mode-' + i;
-      b.innerHTML = m.label + '<span class="sv-zip">' + m.hint + '</span>';
-      b.onclick = () => { svModeIdx = i; svAnchor = null; document.querySelectorAll('#svModeChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === i)); compositeStreet(); };
-      modeChips.appendChild(b);
+      b.className = 'sv-preset-btn';
+      b.textContent = p.label;
+      b.onclick = () => {
+        svCustomImg = null; svCustomName = '';
+        document.getElementById('svUploadClear').style.display = 'none';
+        svHoodIdx = Math.max(0, SV_HOODS.findIndex(x => x.id === 'boyle-heights'));
+        svZoneIdx = Math.max(0, svZoneList().findIndex(z => z.id === p.zone));
+        svDisplayId = p.display; svTreatId = p.treat; svTime = p.time;
+        svBuildZoneChips(); svSyncChips(); compositeStreet();
+      };
+      presetWrap.appendChild(b);
     });
-    const canvas = document.getElementById('svCanvas');
-    canvas.style.cursor = 'crosshair';
-    canvas.addEventListener('click', e => {
-      const r = canvas.getBoundingClientRect();
-      svAnchor = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
-      compositeStreet();
-    });
+
     const upload = document.getElementById('svUploadInput');
     upload.addEventListener('change', () => {
       const f = upload.files && upload.files[0];
@@ -2932,11 +3365,38 @@ function initStreetPage() {
   compositeStreet();
 }
 
+function svBuildZoneChips() {
+  const wrap = document.getElementById('svZoneChips');
+  wrap.innerHTML = '';
+  svZoneList().forEach((z, i) => {
+    const b = document.createElement('button');
+    b.className = 'sv-chip' + (i === svZoneIdx ? ' active' : '');
+    b.dataset.zoneIdx = i;
+    b.innerHTML = (SV_ZONE_TYPES[z.type] ? SV_ZONE_TYPES[z.type].label : z.type) + '<span class="sv-zip">' + z.label + '</span>';
+    b.onclick = () => {
+      svZoneIdx = i;
+      svDisplayId = (SV_ZONE_TYPES[z.type] || {}).rec || 'mesh';  // auto-recommend per surface
+      svSyncChips();
+      compositeStreet();
+    };
+    wrap.appendChild(b);
+  });
+}
+
+function svSyncChips() {
+  document.querySelectorAll('#svChips .sv-chip').forEach((c, j) => c.classList.toggle('active', !svCustomImg && j === svHoodIdx));
+  document.querySelectorAll('#svZoneChips .sv-chip').forEach((c, j) => c.classList.toggle('active', j === svZoneIdx));
+  document.querySelectorAll('#svModeChips .sv-chip').forEach(c => c.classList.toggle('active', c.dataset.display === svDisplayId));
+  document.querySelectorAll('#svTreatChips .sv-chip').forEach(c => c.classList.toggle('active', c.dataset.treat === svTreatId));
+  document.querySelectorAll('#svTimeChips .sv-chip').forEach(c => c.classList.toggle('active', c.dataset.time === svTime));
+}
+
 async function compositeStreet() {
   if (svBusy) { svQueued = true; return; }
   svBusy = true;
   const h = SV_HOODS[svHoodIdx];
-  const mode = SV_MODES[svModeIdx];
+  const zone = svZone();
+  const display = SV_DISPLAYS.find(d => d.id === svDisplayId) || SV_DISPLAYS[0];
   const canvas = document.getElementById('svCanvas');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
@@ -2948,7 +3408,7 @@ async function compositeStreet() {
   const agent = node && node.artistId ? ARTISTS.find(a => a.id === node.artistId) : null;
   const agentLabel = agent ? agentTag(agent.name) : 'WPA';
 
-  // 1 — street base: uploaded photo wins, else the neighborhood archive photo
+  // 1 — street base: uploaded photo wins, else the node archive photo
   let base = svCustomImg;
   if (!base) {
     try { base = await svLoadImage(h.img); } catch (e) {}
@@ -2970,17 +3430,28 @@ async function compositeStreet() {
   }
   svDrawCover(ctx, base, W, H);
 
-  // 2 — flag display: latest broadcast as physical banner(s)
+  // 2 — installation: fit the broadcast into the selected zone
+  let installed = false;
   if (node) {
     try {
       const art = await svLoadImage(node.imgUrl);
-      svDrawDisplay(ctx, art, W, H);
-      status.textContent = 'Hanging "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) on ' + (svCustomImg ? 'your street' : h.name) + ' — ' + mode.label.toLowerCase() + '. Click the photo to re-hang.';
+      svRenderInstallation(ctx, base, art, zone, W, H, svTime);
+      installed = true;
+      status.textContent = 'Prototyping "' + node.theme + '" (' + agentLabel + ', bridge ' + (node.bridgeScore ?? '—') + '/100) — ' +
+        display.label.toLowerCase() + ' on ' + zone.label.toLowerCase() + (svCustomImg ? ', your street' : ', ' + h.name) +
+        '. Demonstration preview — pending local review.' +
+        (svDisplayId === 'projection' && svTime === 'day' ? ' Projection is faint in daylight — try dusk or night.' : '');
     } catch (e) {
-      status.textContent = 'Broadcast image still rendering — showing street only. Recomposite in a moment.';
+      status.textContent = 'Broadcast image still rendering — showing site and zones only. Recomposite in a moment.';
     }
   } else {
-    status.textContent = 'No broadcast yet — generate a work on the Public Network page, then return here.';
+    status.textContent = 'No broadcast yet — generate a work on the Public Network page. Installation zones are outlined meanwhile.';
+  }
+  if (!installed) {
+    svApplyTint(ctx, W, H, svTime);
+    svDrawZoneOutlines(ctx, base, W, H, svZoneIdx);
+  } else if (window.svDebugZones) {
+    svDrawZoneOutlines(ctx, base, W, H, svZoneIdx);
   }
 
   // 3 — watermark + attribution
@@ -2989,20 +3460,22 @@ async function compositeStreet() {
   ctx.fillRect(0, H - 64, W, 64);
   ctx.fillStyle = '#D4A017';
   ctx.font = 'bold 26px "Bebas Neue", sans-serif';
-  ctx.fillText('AGENT ' + agentLabel + (node ? '  ·  “' + node.theme.toUpperCase() + '”  ·  ' + mode.label.toUpperCase() : '  ·  AWAITING BROADCAST'), 20, H - 24);
+  ctx.fillText('AGENT ' + agentLabel + (node ? '  ·  “' + node.theme.toUpperCase() + '”  ·  ' + display.label.toUpperCase() : '  ·  AWAITING BROADCAST'), 20, H - 24);
   ctx.fillStyle = '#C8A96E';
   ctx.font = '13px "Oswald", sans-serif';
   ctx.textAlign = 'right';
-  ctx.fillText('THE AMERICAN SCENE 2.0 · LACMA ART + TECHNOLOGY LAB', W - 20, H - 38);
-  ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET' : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + h.region.toUpperCase() + ' · ' + h.zip, W - 20, H - 18);
+  ctx.fillText('PUBLIC DISPLAY PROTOTYPER · TEMPORARY & REVERSIBLE · PENDING LOCAL REVIEW', W - 20, H - 38);
+  ctx.fillText(svCustomImg ? 'COMMUNITY NODE · UPLOADED STREET · ' + zone.label.toUpperCase() : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + zone.label.toUpperCase() + ' · ' + svTime.toUpperCase(), W - 20, H - 18);
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(212,160,23,0.9)';
   ctx.fillRect(0, H - 64, W, 3);
   ctx.restore();
 
-  document.getElementById('svCaption').textContent = svCustomImg
-    ? 'COMMUNITY NODE · UPLOADED PHOTO · ' + mode.label.toUpperCase()
-    : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE · ' : ' DEMONSTRATION NODE · ') + h.zip + ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS) · ' + mode.label.toUpperCase();
+  document.getElementById('svCaption').textContent = (svCustomImg
+    ? 'COMMUNITY NODE · UPLOADED PHOTO'
+    : h.name.toUpperCase() + (h.status === 'host' ? ' HOST NODE' : ' DEMONSTRATION NODE') + ' · ' + h.zip + ' · ARCHIVAL PHOTOGRAPH (WIKIMEDIA COMMONS)')
+    + ' · ' + display.label.toUpperCase() + ' · ' + svTime.toUpperCase();
+  svUpdateAnalysis(zone);
   spinner.style.display = 'none';
   svBusy = false;
   if (svQueued) { svQueued = false; compositeStreet(); }
@@ -3011,16 +3484,16 @@ async function compositeStreet() {
 function downloadComposite() {
   const canvas = document.getElementById('svCanvas');
   const h = SV_HOODS[svHoodIdx];
-  const mode = SV_MODES[svModeIdx];
+  const zone = svZone();
   try {
     canvas.toBlob(blob => {
-      if (!blob) { showToast('Compositor not ready yet'); return; }
+      if (!blob) { showToast('Prototyper not ready yet'); return; }
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'street_flag_' + mode.id + '_' + (svCustomImg ? 'community_node' : h.name.toLowerCase().replace(/\s+/g, '_')) + '.png';
+      a.download = 'public_display_' + zone.id + '_' + svDisplayId + '_' + svTime + '_' + (svCustomImg ? 'community_node' : h.name.toLowerCase().replace(/\s+/g, '_')) + '.png';
       a.click();
       URL.revokeObjectURL(a.href);
-      showToast('Projection downloaded');
+      showToast('Preview downloaded');
     }, 'image/png');
   } catch (e) {
     showToast('Download blocked: image source not cross-origin safe');
