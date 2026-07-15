@@ -1,0 +1,27 @@
+AMERICAN SCENE 2.0 — ARCHIVE MANIFEST
+Version label: v2-freeze-2026-07-15
+Frozen: 2026-07-15 (pre-rebuild snapshot; rebuild happens in a separate new folder)
+
+american-scene-current-live.html
+  Source: /Users/mikehibyeok/Desktop/Claude repo/american_scene_2.html
+  Verified byte-identical to the deployed public prototype at
+  https://sullyvan.github.io/american-scene-2/american_scene_2.html
+  (also deployed at https://the-american-scene-20.netlify.app)
+  SHA-256: 157be0098b2f95c8cabaed1159e312fcacdd59c251303459c2efe0c2747d4474
+  4,201 lines. Last repo commit before freeze: dfe9d72
+
+american-scene-meta-map.html
+  Source: /Users/mikehibyeok/Downloads/OPEN-Fixed-—-Single-Exit-Button-Only.html
+  Experimental meta file: WPA dossier + kiosk prototype + easel/mural
+  divisions + community shelf + WPA-vs-Agent workflow. Research map and
+  component library — NOT a codebase. Contains fictional mock records
+  (IRB numbers, provenance, consensus scores); none are real.
+  SHA-256: c0e409d9384e13863dce29111b6005e92de946e597e71c713623332f6b3912f2
+  2,127 lines. File dated Jul 14 2026.
+
+screenshots/
+  Viewport captures (1512px wide) of each major screen of both versions,
+  taken 2026-07-15. Prefix "live-" = deployed prototype, "meta-" = meta file.
+
+Frozen prior to the v3 rebuild:
+"THE AMERICAN SCENE 2.0 — A WORKING MODEL OF A PUBLIC CULTURAL ECONOMY"

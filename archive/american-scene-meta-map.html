@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The American Scene 2.0 — Project Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --wpa-red: #B22222;
+        --wpa-blue: #1A3E5C;
+        --wpa-cream: #F4F1E8;
+        --wpa-charcoal: #2B2B2B;
+        --wpa-mustard: #D4A017;
+        --paper: #FDFBF7;
+        --touch-min: 44px;
+    }
+    
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background: var(--wpa-cream);
+        background-image: 
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px),
+            url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+        font-family: 'Crimson Text', serif;
+        color: var(--wpa-charcoal);
+        margin: 0;
+        padding: 0;
+    }
+    
+    .wpa-header {
+        font-family: 'Archivo Black', sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    
+    .mono {
+        font-family: 'Space Mono', monospace;
+    }
+    
+    .dossier-page {
+        background: var(--paper);
+        box-shadow: 
+            0 2px 4px rgba(0,0,0,0.1),
+            0 8px 16px rgba(0,0,0,0.08),
+            inset 0 0 0 1px rgba(0,0,0,0.05);
+    }
+    
+    .wpa-border {
+        border: 3px solid var(--wpa-charcoal);
+        position: relative;
+    }
+    
+    .wpa-border::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        border: 1px solid var(--wpa-red);
+        pointer-events: none;
+    }
+    
+    .section-divider {
+        height: 8px;
+        background: repeating-linear-gradient(
+            90deg,
+            var(--wpa-blue) 0px,
+            var(--wpa-blue) 10px,
+            var(--wpa-red) 10px,
+            var(--wpa-red) 20px
+        );
+        margin: 2rem 0;
+    }
+    
+    .stamp {
+        display: inline-block;
+        border: 2px solid var(--wpa-red);
+        padding: 0.25rem 0.75rem;
+        transform: rotate(-2deg);
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        color: var(--wpa-red);
+        font-weight: 700;
+        opacity: 0.8;
+    }
+    
+    .wpa-button {
+        background: var(--wpa-blue);
+        color: var(--paper);
+        border: 2px solid var(--wpa-charcoal);
+        font-family: 'Archivo Black', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        transition: all 0.2s;
+        box-shadow: 3px 3px 0 var(--wpa-charcoal);
+        min-height: var(--touch-min);
+        min-width: var(--touch-min);
+        cursor: pointer;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .wpa-button:active {
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0 var(--wpa-charcoal);
+        background: var(--wpa-red);
+    }
+    
+    .wpa-button.secondary {
+        background: var(--wpa-cream);
+        color: var(--wpa-charcoal);
+        border: 2px solid var(--wpa-charcoal);
+    }
+    
+    .wpa-button.secondary:active {
+        background: var(--wpa-mustard);
+    }
+    
+    .rubric-cell {
+        transition: all 0.2s ease;
+        cursor: pointer;
+        min-height: var(--touch-min);
+    }
+    
+    .rubric-cell:active {
+        background: var(--wpa-cream) !important;
+    }
+    
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+    
+    .qr-box {
+        background: repeating-linear-gradient(
+            45deg,
+            #e5e5e5,
+            #e5e5e5 10px,
+            #d5d5d5 10px,
+            #d5d5d5 20px
+        );
+    }
+    
+    .metric-bar {
+        height: 24px;
+        background: linear-gradient(90deg, var(--wpa-red) 0%, var(--wpa-mustard) 50%, var(--wpa-blue) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-fill {
+        height: 100%;
+        background: rgba(255,255,255,0.3);
+        transition: width 0.3s ease;
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--wpa-charcoal);
+        border-bottom: 4px solid var(--wpa-red);
+        padding: 0.5rem;
+    }
+    
+    .tab-button {
+        background: var(--wpa-cream);
+        color: var(--wpa-charcoal);
+        border: 2px solid var(--wpa-charcoal);
+        font-family: 'Archivo Black', sans-serif;
+        text-transform: uppercase;
+        padding: 0.75rem 1.5rem;
+        min-height: var(--touch-min);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+    }
+    
+    .tab-button.active {
+        background: var(--wpa-red);
+        color: white;
+    }
+
+    /* Content wrapper */
+    #dossier-content {
+        display: block;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    #dossier-content.hidden {
+        display: none;
+    }
+
+    /* Kiosk Mode */
+    #kiosk-screen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 200;
+        background: var(--wpa-cream);
+        overflow: hidden;
+    }
+    
+    #kiosk-screen.active {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .kiosk-header {
+        background: var(--wpa-charcoal);
+        color: white;
+        padding: 1rem;
+        border-bottom: 6px solid var(--wpa-red);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .kiosk-content {
+        flex: 1;
+        overflow-y: auto;
+        position: relative;
+    }
+    
+    .kiosk-screen-content {
+        display: none;
+        padding: 2rem 1rem;
+        min-height: 100%;
+    }
+    
+    .kiosk-screen-content.active {
+        display: block;
+    }
+    
+    .postcard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .postcard {
+        aspect-ratio: 3/4;
+        border: 3px solid var(--wpa-charcoal);
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        min-height: 200px;
+        box-shadow: 4px 4px 0 var(--wpa-charcoal);
+    }
+    
+    .postcard:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--wpa-charcoal);
+    }
+    
+    .postcard.selected {
+        border-color: var(--wpa-red);
+        outline: 4px solid var(--wpa-mustard);
+    }
+    
+    .postcard-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: repeating-linear-gradient(
+            45deg,
+            #f0f0f0,
+            #f0f0f0 10px,
+            #e5e5e5 10px,
+            #e5e5e5 20px
+        );
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .postcard-thumb {
+        width: 80%;
+        height: 60%;
+        background: linear-gradient(135deg, var(--wpa-blue) 0%, var(--wpa-red) 100%);
+        margin-bottom: 0.5rem;
+        border: 2px solid var(--wpa-charcoal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+    
+    .postcard-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--wpa-charcoal);
+        color: white;
+        padding: 0.5rem;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    
+    .mural-display {
+        background: var(--wpa-charcoal);
+        border: 4px solid var(--wpa-red);
+        padding: 2rem;
+        aspect-ratio: 16/9;
+        max-width: 900px;
+        margin: 0 auto 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: 'Space Mono', monospace;
+    }
+    
+    .hud-panel {
+        background: white;
+        border: 3px solid var(--wpa-charcoal);
+        padding: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .agent-quote {
+        border-left: 4px solid var(--wpa-blue);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: var(--wpa-cream);
+        cursor: pointer;
+        min-height: var(--touch-min);
+        transition: all 0.2s;
+    }
+    
+    .agent-quote:active {
+        background: var(--wpa-mustard);
+    }
+    
+    .radar-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    .radar-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .radar-handle {
+        cursor: grab;
+        fill: var(--wpa-red);
+    }
+    
+    .radar-handle:active {
+        cursor: grabbing;
+    }
+    
+    .remix-picker {
+        background: white;
+        border: 3px solid var(--wpa-charcoal);
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .picker-option {
+        padding: 1rem;
+        border: 2px solid var(--wpa-charcoal);
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        min-height: var(--touch-min);
+        background: white;
+        transition: all 0.2s;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.875rem;
+    }
+    
+    .picker-option:active, .picker-option.selected {
+        background: var(--wpa-mustard);
+        border-color: var(--wpa-red);
+    }
+    
+    .provenance-drawer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 4px solid var(--wpa-red);
+        transform: translateY(calc(100% - 60px));
+        transition: transform 0.3s ease;
+        z-index: 300;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .provenance-drawer.open {
+        transform: translateY(0);
+    }
+    
+    .drawer-handle {
+        background: var(--wpa-charcoal);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        min-height: var(--touch-min);
+        font-family: 'Archivo Black', sans-serif;
+        text-transform: uppercase;
+    }
+    
+    .drawer-content {
+        padding: 2rem;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        white-space: pre-wrap;
+    }
+    
+    .scorecard-print {
+        background: white;
+        border: 2px solid var(--wpa-charcoal);
+        padding: 1rem;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .kiosk-footer {
+        background: var(--wpa-charcoal);
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .idle-timer {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        opacity: 0.7;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .items-center {
+        align-items: center;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .gap-3 {
+        gap: 0.75rem;
+    }
+
+    .gap-4 {
+        gap: 1rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .p-8 { padding: 2rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-4xl { font-size: 2.25rem; }
+
+    .font-bold { font-weight: 700; }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .dossier-page {
+            box-shadow: none;
+            page-break-after: always;
+        }
+        .wpa-button, .tab-nav, #kiosk-screen {
+            display: none !important;
+        }
+    }
+    
+    @media (min-width: 640px) {
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .sm\:flex-row { flex-direction: row; }
+        .sm\:text-2xl { font-size: 1.5rem; }
+        .sm\:text-3xl { font-size: 1.875rem; }
+        .sm\:text-5xl { font-size: 3rem; }
+        .sm\:p-12 { padding: 3rem; }
+    }
+    
+    @media (min-width: 1024px) {
+        .lg\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .md\:text-6xl { font-size: 3.75rem; }
+        .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+</style>
+</head>
+<body>
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 0.5rem;">
+            <button class="tab-button active" onclick="switchTab('dossier')" id="tab-dossier">DOSSIER</button>
+            <button class="tab-button" onclick="switchTab('kiosk')" id="tab-kiosk">KIOSK PROTOTYPE</button>
+        </div>
+    </div>
+
+    <!-- Dossier Content -->
+    <div id="dossier-content">
+        <!-- Cover Page / Header -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6" style="border-bottom: 4px double #2B2B2B;">
+                <div>
+                    <div class="mono text-xs" style="color: #666; margin-bottom: 0.25rem;">FEDERAL ART PROJECT // DIVISION 7</div>
+                    <div class="mono text-xs" style="color: #666;">LACMA ART + TECHNOLOGY LAB</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="stamp">CONFIDENTIAL</span>
+                    <span class="stamp">PROJECT 2.0</span>
+                </div>
+            </div>
+            
+            <div class="text-center mb-8">
+                <div style="display: inline-block; margin-bottom: 1rem;">
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="40" cy="40" r="38" stroke="#B22222" stroke-width="4"/>
+                        <circle cx="40" cy="40" r="30" stroke="#1A3E5C" stroke-width="2"/>
+                        <path d="M40 15L45 35H35L40 15Z" fill="#B22222"/>
+                        <rect x="36" y="35" width="8" height="25" fill="#1A3E5C"/>
+                        <circle cx="40" cy="65" r="5" fill="#D4A017"/>
+                    </svg>
+                </div>
+                <h1 class="wpa-header text-4xl sm:text-5xl md:text-6xl mb-3" style="color: var(--wpa-blue);">
+                    The American Scene 2.0
+                </h1>
+                <div class="wpa-header text-xl sm:text-2xl mb-2" style="color: var(--wpa-red);">
+                    PROJECT DOSSIER
+                </div>
+                <div class="mono text-sm" style="color: #666;">
+                    FILE NO. AS2-LACMA-2024-001 // REVISION 3.4
+                </div>
+            </div>
+            
+            <div class="grid-4 text-center mono text-xs">
+                <div>
+                    <div style="color: #666;">DATE ISSUED</div>
+                    <div class="font-bold">2024.10.15</div>
+                </div>
+                <div>
+                    <div style="color: #666;">CLASSIFICATION</div>
+                    <div class="font-bold">OPEN SOURCE</div>
+                </div>
+                <div>
+                    <div style="color: #666;">DEPARTMENT</div>
+                    <div class="font-bold">A+T LAB</div>
+                </div>
+                <div>
+                    <div style="color: #666;">PAGES</div>
+                    <div class="font-bold">005</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: One-Page Overview -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="wpa-header text-3xl" style="color: var(--wpa-blue);">01</div>
+                <div>
+                    <h2 class="wpa-header text-2xl sm:text-3xl" style="color: var(--wpa-charcoal);">One-Page Overview</h2>
+                    <div class="mono text-xs" style="color: #666;">EXECUTIVE SUMMARY & RFP DIRECTIVE</div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <div>
+                <div style="background: linear-gradient(to right, #dbeafe, #fee2e2); padding: 1.5rem; border-left: 4px solid var(--wpa-red); margin-bottom: 1.5rem;">
+                    <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">RFP DIRECTIVE — 150 WORDS</div>
+                    <p style="font-size: 1rem; line-height: 1.75; font-style: italic;">
+                        The American Scene 2.0 seeks artists to create computational works documenting contemporary American life through machine intelligence. We commission projects that critically examine algorithmic systems shaping society: labor, surveillance, infrastructure, community. Successful proposals demonstrate technical rigor, aesthetic innovation, and public engagement. Artists receive Lab access, technical mentorship, fabrication budget, exhibition platform. We prioritize projects interrogating AI's role in cultural production while honoring WPA's legacy of democratic art access. Deliverables include open-source code, public documentation, physical/digital exhibition. Selection considers artistic merit, feasibility, community impact. This is not tech demonstration—it is cultural critique through computational means. We fund artists building better questions, not just better tools. Apply through LACMA Art + Technology Lab.
+                    </p>
+                    <div class="mono text-xs" style="color: #666; margin-top: 0.75rem; text-align: right;">WORD COUNT: 150</div>
+                </div>
+                
+                <div class="grid-3 mt-8">
+                    <div style="border: 2px solid #2B2B2B; padding: 1rem;">
+                        <div class="wpa-header text-sm mb-2" style="color: var(--wpa-blue);">MISSION</div>
+                        <p class="text-sm">Bridge 1930s Federal Art Project ethos with contemporary AI systems. Democratize access to computational tools for cultural documentation.</p>
+                    </div>
+                    <div style="border: 2px solid #2B2B2B; padding: 1rem;">
+                        <div class="wpa-header text-sm mb-2" style="color: var(--wpa-blue);">SCOPE</div>
+                        <p class="text-sm">12-month residencies. $70K production budgets. Cross-disciplinary mentorship. Public exhibition at LACMA. Open-source mandate required.</p>
+                    </div>
+                    <div style="border: 2px solid #2B2B2B; padding: 1rem;">
+                        <div class="wpa-header text-sm mb-2" style="color: var(--wpa-blue);">IMPACT</div>
+                        <p class="text-sm">Archive American life for future historians. Train next generation of civic technologists. Prove art institutions lead AI discourse.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: 5-Axis Rubric -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="wpa-header text-3xl" style="color: var(--wpa-blue);">02</div>
+                <div>
+                    <h2 class="wpa-header text-2xl sm:text-3xl" style="color: var(--wpa-charcoal);">5-Axis Rubric for 'Better Art'</h2>
+                    <div class="mono text-xs" style="color: #666;">EVALUATION FRAMEWORK // SCORING PROTOCOL</div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <div style="overflow-x: auto;">
+                <table style="border: 2px solid #2B2B2B;">
+                    <thead>
+                        <tr style="background: var(--wpa-blue); color: white;">
+                            <th class="wpa-header text-left p-3 text-sm" style="border-right: 1px solid #999;">AXIS</th>
+                            <th class="wpa-header text-center p-3 text-sm" style="border-right: 1px solid #999;">1: INSUFFICIENT</th>
+                            <th class="wpa-header text-center p-3 text-sm" style="border-right: 1px solid #999;">2: DEVELOPING</th>
+                            <th class="wpa-header text-center p-3 text-sm" style="border-right: 1px solid #999;">3: PROFICIENT</th>
+                            <th class="wpa-header text-center p-3 text-sm" style="border-right: 1px solid #999;">4: ADVANCED</th>
+                            <th class="wpa-header text-center p-3 text-sm">5: EXCEPTIONAL</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td class="p-3 font-bold" style="border-right: 1px solid #ccc; background: var(--wpa-cream);">
+                                <div class="wpa-header text-xs mb-1" style="color: var(--wpa-red);">01. CONCEPTUAL RIGOR</div>
+                                <div class="text-xs font-normal">Clarity of thesis, historical grounding, critical stakes</div>
+                            </td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Vague premise, no context</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Basic concept, weak framework</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Clear thesis, adequate research</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Sophisticated argument, strong sources</td>
+                            <td class="rubric-cell p-3 text-xs;">Paradigm-shifting critique, original framework</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td class="p-3 font-bold" style="border-right: 1px solid #ccc; background: var(--wpa-cream);">
+                                <div class="wpa-header text-xs mb-1" style="color: var(--wpa-red);">02. TECHNICAL EXECUTION</div>
+                                <div class="text-xs font-normal">Code quality, system design, reproducibility</div>
+                            </td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Non-functional, no docs</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Works locally, poor docs</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Stable, documented, versioned</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Elegant, optimized, tested</td>
+                            <td class="rubric-cell p-3 text-xs;">Novel methodology, reusable framework</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td class="p-3 font-bold" style="border-right: 1px solid #ccc; background: var(--wpa-cream);">
+                                <div class="wpa-header text-xs mb-1" style="color: var(--wpa-red);">03. PUBLIC ACCESS</div>
+                                <div class="text-xs font-normal">Democratic reach, engagement quality, accessibility</div>
+                            </td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Specialist-only, paywalled</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Limited venues, jargon-heavy</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Free access, clear language</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Multi-platform, multilingual</td>
+                            <td class="rubric-cell p-3 text-xs;">Radical accessibility, community-led</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td class="p-3 font-bold" style="border-right: 1px solid #ccc; background: var(--wpa-cream);">
+                                <div class="wpa-header text-xs mb-1" style="color: var(--wpa-red);">04. HISTORICAL DIALOGUE</div>
+                                <div class="text-xs font-normal">WPA lineage, archival contribution, time-capsule value</div>
+                            </td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">No historical awareness</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Surface references only</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Engages art history canon</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Extends WPA methodology</td>
+                            <td class="rubric-cell p-3 text-xs;">Rewrites institutional narrative</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold" style="border-right: 1px solid #ccc; background: var(--wpa-cream);">
+                                <div class="wpa-header text-xs mb-1" style="color: var(--wpa-red);">05. ETHICAL STANCE</div>
+                                <div class="text-xs font-normal">Bias audit, harm mitigation, community consent</div>
+                            </td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">No ethical review</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Basic disclosure present</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Impact assessment complete</td>
+                            <td class="rubric-cell p-3" style="border-right: 1px solid #ddd; text-xs;">Community review board</td>
+                            <td class="rubric-cell p-3 text-xs;">Redistributes power, reparative framework</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6 mono text-xs flex justify-between items-center" style="color: #666;">
+                <span>MINIMUM PASSING: 15/25 POINTS</span>
+                <button class="wpa-button px-4 py-2 text-xs" onclick="alert('Rubric exported. Form AS2-EVAL-001')">EXPORT SCORECARD</button>
+            </div>
+        </div>
+
+        <!-- Section 3: Agent Consensus Scorecard -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="wpa-header text-3xl" style="color: var(--wpa-blue);">03</div>
+                <div>
+                    <h2 class="wpa-header text-2xl sm:text-3xl" style="color: var(--wpa-charcoal);">Agent Consensus Scorecard</h2>
+                    <div class="mono text-xs" style="color: #666;">MULTI-AGENT EVALUATION // VISUAL OVERLAY</div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <div class="grid-2">
+                <div style="text-align: center; padding: 2rem; border: 2px solid #2B2B2B; background: white;">
+                    <svg viewBox="0 0 400 400" style="max-width: 100%; height: auto;">
+                        <g stroke="#ccc" stroke-width="1" fill="none">
+                            <polygon points="200,50 350,150 300,300 100,300 50,150" opacity="0.2"/>
+                            <polygon points="200,100 300,175 260,275 140,275 100,175" opacity="0.2"/>
+                            <polygon points="200,150 250,200 220,250 180,250 150,200" opacity="0.2"/>
+                        </g>
+                        <g font-family="Space Mono, monospace" font-size="10" fill="#2B2B2B">
+                            <text x="200" y="30" text-anchor="middle" font-weight="bold">CONCEPT</text>
+                            <text x="370" y="150" text-anchor="start" font-weight="bold">TECH</text>
+                            <text x="320" y="320" text-anchor="start" font-weight="bold">PUBLIC</text>
+                            <text x="80" y="320" text-anchor="end" font-weight="bold">HIST</text>
+                            <text x="30" y="150" text-anchor="end" font-weight="bold">ETHICS</text>
+                        </g>
+                        <polygon points="200,80 320,160 280,270 160,260 80,170" 
+                                 fill="rgba(26, 62, 92, 0.2)" stroke="#1A3E5C" stroke-width="2"/>
+                        <polygon points="200,110 290,155 250,260 140,270 110,175" 
+                                 fill="rgba(178, 34, 34, 0.2)" stroke="#B22222" stroke-width="2"/>
+                        <polygon points="200,70 330,170 290,280 150,265 70,165" 
+                                 fill="rgba(212, 160, 23, 0.2)" stroke="#D4A017" stroke-width="2"/>
+                        <polygon points="200,90 310,165 270,265 150,268 90,172" 
+                                 fill="rgba(43, 43, 43, 0.2)" stroke="#2B2B2B" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="wpa-header text-sm mb-4" style="color: var(--wpa-red);">EVALUATOR CONSENSUS PANEL</div>
+                    <div>
+                        <div style="border-left: 4px solid var(--wpa-blue); padding-left: 1rem; margin-bottom: 1rem;">
+                            <div class="mono text-xs font-bold mb-1">AGENT ALPHA — CURATOR</div>
+                            <div class="metric-bar mb-1"><div class="metric-fill" style="width: 88%;"></div></div>
+                            <div class="mono text-xs" style="color: #666;">SCORE: 4.4/5.0 // WEIGHT: 30%</div>
+                        </div>
+                        <div style="border-left: 4px solid var(--wpa-red); padding-left: 1rem; margin-bottom: 1rem;">
+                            <div class="mono text-xs font-bold mb-1">AGENT BETA — ENGINEER</div>
+                            <div class="metric-bar mb-1"><div class="metric-fill" style="width: 76%;"></div></div>
+                            <div class="mono text-xs" style="color: #666;">SCORE: 3.8/5.0 // WEIGHT: 25%</div>
+                        </div>
+                        <div style="border-left: 4px solid var(--wpa-mustard); padding-left: 1rem; margin-bottom: 1rem;">
+                            <div class="mono text-xs font-bold mb-1">AGENT GAMMA — ETHICIST</div>
+                            <div class="metric-bar mb-1"><div class="metric-fill" style="width: 92%;"></div></div>
+                            <div class="mono text-xs" style="color: #666;">SCORE: 4.6/5.0 // WEIGHT: 25%</div>
+                        </div>
+                        <div style="border-left: 4px solid var(--wpa-charcoal); padding-left: 1rem; margin-bottom: 1rem;">
+                            <div class="mono text-xs font-bold mb-1">AGENT DELTA — PUBLIC</div>
+                            <div class="metric-bar mb-1"><div class="metric-fill" style="width: 84%;"></div></div>
+                            <div class="mono text-xs" style="color: #666;">SCORE: 4.2/5.0 // WEIGHT: 20%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4" style="border: 2px solid #2B2B2B; background: var(--wpa-cream); margin-top: 1.5rem;">
+                        <div class="wpa-header text-lg mb-2" style="color: var(--wpa-blue);">WEIGHTED CONSENSUS: 4.24</div>
+                        <div class="mono text-xs" style="color: #666;">STATUS: ADVANCE TO PANEL REVIEW</div>
+                        <div class="mt-2 text-xs">High curator/ethicist alignment. Engineering flags reproducibility concern. Public response strong on accessibility.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Iteration & Failure Tracking -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="wpa-header text-3xl" style="color: var(--wpa-blue);">04</div>
+                <div>
+                    <h2 class="wpa-header text-2xl sm:text-3xl" style="color: var(--wpa-charcoal);">Iteration & Failure Tracking Schema</h2>
+                    <div class="mono text-xs" style="color: #666;">VERSION CONTROL // NEGATIVE RESULTS ARCHIVE</div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="wpa-header text-sm mb-4" style="color: var(--wpa-red);">COMMIT LOG STRUCTURE</div>
+                    <div class="mono text-xs p-4" style="background: #1a1a1a; color: #4ade80; border: 2px solid #333; border-radius: 0;">
+                        <div>project/as20/repo/.schema</div>
+                        <div style="color: #666;">---</div>
+                        <div>version: 1.3.2</div>
+                        <div>iteration_id: IT-2024-Q4-047</div>
+                        <div>parent: IT-2024-Q4-046</div>
+                        <div>status: [BUILD | TEST | FAIL | SHIP]</div>
+                        <div>failure_mode: null | [DESC]</div>
+                        <div>lessons: [TEXT]</div>
+                        <div>artifacts: [URI_LIST]</div>
+                        <div>timestamp: ISO-8601</div>
+                        <div>sign_off: [AGENT_ID]</div>
+                        <div style="color: #666;">---</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="wpa-header text-sm mb-4" style="color: var(--wpa-red);">FAILURE TAXONOMY</div>
+                    <div>
+                        <div class="flex items-start gap-2 p-2" style="border: 1px solid #ccc; margin-bottom: 0.5rem;">
+                            <div class="stamp text-xs" style="flex-shrink: 0;">F001</div>
+                            <div>
+                                <div class="font-bold mono text-xs">CONCEPTUAL COLLAPSE</div>
+                                <div class="text-xs">Thesis fails under peer review or technical constraint</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2 p-2" style="border: 1px solid #ccc; margin-bottom: 0.5rem;">
+                            <div class="stamp text-xs" style="flex-shrink: 0;">F002</div>
+                            <div>
+                                <div class="font-bold mono text-xs">TECHNICAL DEBT CRITICAL</div>
+                                <div class="text-xs">Codebase unmaintainable, refactoring required</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2 p-2" style="border: 1px solid #ccc; margin-bottom: 0.5rem;">
+                            <div class="stamp text-xs" style="flex-shrink: 0;">F003</div>
+                            <div>
+                                <div class="font-bold mono text-xs">ETHICAL VETO</div>
+                                <div class="text-xs">Community board rejects methodology or deployment</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2 p-2" style="border: 1px solid #ccc;">
+                            <div class="stamp text-xs" style="flex-shrink: 0;">F004</div>
+                            <div>
+                                <div class="font-bold mono text-xs">ACCESS FAILURE</div>
+                                <div class="text-xs">Public engagement below threshold, redesign needed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4" style="border: 2px solid var(--wpa-blue); background: rgba(26,62,92,0.05);">
+                <div class="wpa-header text-xs mb-2" style="color: var(--wpa-blue);">MANDATE ON NEGATIVE RESULTS</div>
+                <p class="text-sm">All failed experiments must be documented as thoroughly as successes. Abandoned prototypes archived at lab.lacma.org/as20/failures. Negative results constitute valid research output. Artists retain IP over unpublished iterations.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Provenance & Transparency -->
+        <div class="dossier-page wpa-border p-8 sm:p-12 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="wpa-header text-3xl" style="color: var(--wpa-blue);">05</div>
+                <div>
+                    <h2 class="wpa-header text-2xl sm:text-3xl" style="color: var(--wpa-charcoal);">Provenance & Transparency Protocol</h2>
+                    <div class="mono text-xs" style="color: #666;">CHAIN OF CUSTODY // PUBLIC AUDIT TRAIL</div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <div class="grid-2">
+                <div style="grid-column: span 2;">
+                    <div class="wpa-header text-sm mb-4" style="color: var(--wpa-red);">VERIFICATION REQUIREMENTS</div>
+                    <div>
+                        <div class="flex gap-3 mb-3">
+                            <div class="wpa-header text-lg" style="color: var(--wpa-blue);">1.</div>
+                            <div>
+                                <div class="font-bold mono text-xs mb-1">SOURCE LEDGER</div>
+                                <div class="text-sm">All training data, models, dependencies logged with version hashes. No black-box components permitted without public inspection API.</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mb-3">
+                            <div class="wpa-header text-lg" style="color: var(--wpa-blue);">2.</div>
+                            <div>
+                                <div class="font-bold mono text-xs mb-1">DECISION LINEAGE</div>
+                                <div class="text-sm">Human/AI decision boundaries mapped. Prompts, parameters, seeds archived. Automated actions flagged in real-time.</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mb-3">
+                            <div class="wpa-header text-lg" style="color: var(--wpa-blue);">3.</div>
+                            <div>
+                                <div class="font-bold mono text-xs mb-1">COMMUNITY CONSENT</div>
+                                <div class="text-sm">Subjects/data sources must provide informed consent. Opt-out mechanism required. Community review board minutes published.</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="wpa-header text-lg" style="color: var(--wpa-blue);">4.</div>
+                            <div>
+                                <div class="font-bold mono text-xs mb-1">ENVIRONMENTAL AUDIT</div>
+                                <div class="text-sm">Compute costs, carbon footprint calculated per iteration. Offsets required above 1t CO2e threshold.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="wpa-header text-sm mb-4" style="color: var(--wpa-red);">PUBLIC VERIFICATION</div>
+                    <div style="border: 4px solid #2B2B2B; padding: 1rem; background: white;">
+                        <div class="qr-box" style="height: 12rem; width: 100%; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center;">
+                            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                                <rect x="0" y="0" width="40" height="40" fill="#2B2B2B"/>
+                                <rect x="80" y="0" width="40" height="40" fill="#2B2B2B"/>
+                                <rect x="0" y="80" width="40" height="40" fill="#2B2B2B"/>
+                                <rect x="50" y="50" width="20" height="20" fill="#2B2B2B"/>
+                                <rect x="20" y="50" width="10" height="10" fill="#2B2B2B"/>
+                                <rect x="50" y="20" width="10" height="10" fill="#2B2B2B"/>
+                                <rect x="90" y="50" width="10" height="10" fill="#2B2B2B"/>
+                                <rect x="50" y="90" width="10" height="10" fill="#2B2B2B"/>
+                                <rect x="90" y="90" width="20" height="20" fill="#2B2B2B"/>
+                            </svg>
+                        </div>
+                        <div class="mono text-xs text-center">
+                            <div class="font-bold mb-1">SCAN FOR LEDGER</div>
+                            <div style="color: #666;">as20.lacma.org/verify</div>
+                            <div style="color: #666; font-size: 0.625rem; margin-top: 0.25rem;">#AS20-2024-001</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 mono text-xs" style="color: #666;">
+                        <div>HASH: 7f3d...c9a1</div>
+                        <div>SIGNED: LACMA-A+T-KEY</div>
+                        <div>UPDATED: 2024.10.15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="dossier-page wpa-border p-6 text-center">
+            <div class="mono text-xs mb-2" style="color: #666;">
+                LACMA ART + TECHNOLOGY LAB // WORKS PROGRESS ADMINISTRATION REVIVAL
+            </div>
+            <div class="wpa-header text-xs" style="color: var(--wpa-red);">
+                "ART FOR THE PEOPLE, BY THE PEOPLE, WITH THE MACHINES OF THE PEOPLE"
+            </div>
+            <div class="section-divider mt-6 mb-4"></div>
+            <button class="wpa-button px-6 py-3 text-sm" onclick="window.print()">
+                PRINT DOSSIER
+            </button>
+        </div>
+    </div>
+
+    <!-- Kiosk Prototype Screen -->
+    
+
+<script>
+function exitKiosk(){
+  const kiosk = document.getElementById('kiosk-screen');
+  if(kiosk) kiosk.style.display='none';
+  const dossier = document.getElementById('dossier-content');
+  if(dossier) dossier.classList.remove('hidden');
+  const tabBtns = document.querySelectorAll('.tab-button');
+  tabBtns.forEach(b=>b.classList.remove('active'));
+  const dossierTab = document.querySelector('[data-tab="dossier"]') || tabBtns[0];
+  if(dossierTab) dossierTab.classList.add('active');
+  window.scrollTo(0,0);
+}
+// Also allow ESC key to exit
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') exitKiosk(); });
+</script>
+
+<div id="kiosk-screen" data-easel-fixed="true">
+
+<div id="kiosk-header" style="display:flex; align-items:center; justify-content:space-between; background:#2B2B2B; color:#fff; padding:8px 12px; position:sticky; top:0; z-index:50; border-bottom:4px solid #B22222;">
+  <button id="exit-kiosk-btn" onclick="exitKiosk()" style="background:#F4F1E8; color:#2B2B2B; border:3px solid #2B2B2B; padding:8px 14px; font-family:'Archivo Black',sans-serif; font-size:12px; text-transform:uppercase; cursor:pointer; min-height:44px; box-shadow:3px 3px 0 #B22222;">✕ EXIT KIOSK</button>
+  <div style="font-family:'Space Mono'; font-size:11px; letter-spacing:1px;">KIOSK PROTOTYPE — TOUCH INTERFACE</div>
+  <div style="width:120px;"></div>
+</div>
+<div id="office-mailbox" style="position:fixed; top:70px; right:20px; width:80px; height:80px; background:#B22222; border:3px solid #2B2B2B; display:none; align-items:center; justify-content:center; font-size:40px; z-index:9998; box-shadow:4px 4px 0 #2B2B2B;">📬</div>
+<div id="quota-toast" class="quota-toast" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#2B2B2B; color:#fff; padding:12px 20px; font-family:'Space Mono',monospace; font-size:12px; border:2px solid #F4F1E8; z-index:10000; display:none;"></div>
+
+
+
+<script>
+function exitKiosk(){
+  const kiosk = document.getElementById('kiosk-screen');
+  if(kiosk) kiosk.style.display='none';
+  const dossier = document.getElementById('dossier-content');
+  if(dossier) dossier.classList.remove('hidden');
+  const tabBtns = document.querySelectorAll('.tab-button');
+  tabBtns.forEach(b=>b.classList.remove('active'));
+  const dossierTab = document.querySelector('[data-tab="dossier"]') || tabBtns[0];
+  if(dossierTab) dossierTab.classList.add('active');
+  window.scrollTo(0,0);
+}
+// Also allow ESC key to exit
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') exitKiosk(); });
+</script>
+
+    <!-- EASEL / MURAL TOGGLE - WPA Divisions -->
+    <div id="division-toggle" style="display:flex; gap:0; border-bottom:4px solid #1a1a1a; background:#f5f1e8; position:sticky; top:60px; z-index:10;">
+      <button id="btn-mural" onclick="showDivision('mural')" style="flex:1; background:#c1272d; color:#fff; border:none; border-right:3px solid #1a1a1a; padding:16px; font-family:'Archivo Black',sans-serif; font-size:14px; text-transform:uppercase; cursor:pointer; min-height:44px;">MURAL DIVISION — Walls</button>
+      <button id="btn-easel" onclick="showDivision('easel')" style="flex:1; background:#f5f1e8; color:#1a1a1a; border:none; padding:16px; font-family:'Archivo Black',sans-serif; font-size:14px; text-transform:uppercase; cursor:pointer; min-height:44px;">EASEL DIVISION — Studio</button>
+    </div>
+    <div id="easel-view" style="display:none; padding:20px; overflow-y:auto; height:calc(100vh - 120px);">
+      <div style="background:#fff; border:3px solid #2B2B2B; padding:16px; margin-bottom:20px;">
+        <span class="stamp" style="border-color:#1A3E5C; color:#1A3E5C;">FAP EASEL DIVISION 1935-43</span>
+        <h3 style="font-family:'Archivo Black'; margin:10px 0 6px 0; font-size:18px;">STUDIO WORKS — NOT SITE-SPECIFIC</h3>
+        <p style="margin:0; font-size:14px; line-height:1.5; font-family:'Crimson Text';">Artists worked <b>"in their personal studios"</b> and delivered <b>"one or two every four weeks to the WPA office"</b> of <b>"their own design and composition"</b>. These were distributed to schools, hospitals, and nearly 100 community art centers.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:18px;">
+        <div style="border:3px solid #2B2B2B; background:#fff; box-shadow:4px 4px 0 #2B2B2B;">
+          <div style="background:#e8e0d0; height:160px; display:flex; align-items:center; justify-content:center; font-size:48px; border-bottom:3px solid #2B2B2B;">🎨</div>
+          <div style="padding:12px;">
+            <div style="font-family:'Space Mono'; font-size:12px; font-weight:700;">SCV-EASEL-001-v1.1</div>
+            <div style="font-family:'Space Mono'; font-size:10px; margin:6px 0; line-height:1.4;">Studio Time: 32s<br>Source: LACMA M.84.31.158 Ben Shahn<br>Quota: 1/2 this period<br>Compute: 0.3 units</div>
+            <div style="display:flex; gap:8px; margin-top:10px;"><button style="background:#2B2B2B; color:#fff; border:none; padding:8px 12px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ADVANCE</button><button style="background:#F4F1E8; border:2px solid #2B2B2B; padding:6px 10px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ARCHIVE</button></div>
+          </div>
+        </div>
+        <div style="border:3px solid #2B2B2B; background:#fff; box-shadow:4px 4px 0 #2B2B2B;">
+          <div style="background:#d6e8e0; height:160px; display:flex; align-items:center; justify-content:center; font-size:48px; border-bottom:3px solid #2B2B2B;">🤖</div>
+          <div style="padding:12px;">
+            <div style="font-family:'Space Mono'; font-size:12px; font-weight:700;">SCV-EASEL-002-v1.2</div>
+            <div style="font-family:'Space Mono'; font-size:10px; margin:6px 0; line-height:1.4;">Studio Time: 47s<br>Source: LACMA M.2000.45.1<br>Quota: 2/2 delivered<br>Compute: 0.3 units</div>
+            <div style="display:flex; gap:8px; margin-top:10px;"><button style="background:#B22222; color:#fff; border:none; padding:8px 12px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ITERATE</button><button style="background:#F4F1E8; border:2px solid #2B2B2B; padding:6px 10px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ARCHIVE</button></div>
+          </div>
+        </div>
+        <div style="border:3px solid #2B2B2B; background:#fff; box-shadow:4px 4px 0 #2B2B2B;">
+          <div style="background:#e0d6e8; height:160px; display:flex; align-items:center; justify-content:center; font-size:48px; border-bottom:3px solid #2B2B2B;">📱</div>
+          <div style="padding:12px;">
+            <div style="font-family:'Space Mono'; font-size:12px; font-weight:700;">SCV-EASEL-003-v1.0</div>
+            <div style="font-family:'Space Mono'; font-size:10px; margin:6px 0; line-height:1.4;">Studio Time: 28s<br>Source: LACMA 65.12.4<br>Quota: 1/2 this period<br>Compute: 0.3 units</div>
+            <div style="display:flex; gap:8px; margin-top:10px;"><button style="background:#2B2B2B; color:#fff; border:none; padding:8px 12px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ADVANCE</button><button style="background:#F4F1E8; border:2px solid #2B2B2B; padding:6px 10px; font-size:11px; font-family:'Archivo Black'; min-height:36px;">ARCHIVE</button></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px; border:2px dashed #2B2B2B; padding:12px; font-size:12px; background:#fffcf0; font-family:'Space Mono';"><b>Provenance Difference:</b> Mural = Maps API + LACMA + LA311 + glass/masonry check. Easel = LACMA PD only. No site. Goes to Community Art Center shelf, mirroring WPA circulation to schools/hospitals.</div>
+    </div>
+    <script>
+    function showDivision(which){
+      const muralView = document.getElementById('mural-view') || document.getElementById('gallery-grid') || document.querySelector('#kiosk-screen .gallery');
+      const easelView = document.getElementById('easel-view');
+      const btnMural = document.getElementById('btn-mural');
+      const btnEasel = document.getElementById('btn-easel');
+      // Try to find the main mural content container
+      const muralContainers = document.querySelectorAll('#kiosk-screen > div:not(#division-toggle):not(#easel-view)');
+      // Actually we have gallery-grid inside kiosk
+      const gallery = document.getElementById('gallery-grid');
+      const kioskMain = document.getElementById('kiosk-main') || document.querySelector('#kiosk-screen');
+      
+      if(which==='easel'){
+        if(gallery) gallery.style.display='none';
+        // hide other kiosk children except toggle and easel-view
+        document.querySelectorAll('#kiosk-screen > div').forEach(d=>{
+          if(d.id==='division-toggle' || d.id==='easel-view') return;
+          if(d.id==='kiosk-header') return;
+          // hide mural view divs
+          if(d.id!=='easel-view') d.style.display='none';
+        });
+        if(easelView) easelView.style.display='block';
+        btnEasel.style.background='#B22222'; btnEasel.style.color='#fff';
+        btnMural.style.background='#F4F1E8'; btnMural.style.color='#2B2B2B';
+      } else {
+        if(easelView) easelView.style.display='none';
+        document.querySelectorAll('#kiosk-screen > div').forEach(d=>{
+          if(d.id==='division-toggle' || d.id==='easel-view') return;
+          if(d.id==='kiosk-header') return;
+          d.style.display='';
+        });
+        if(gallery) gallery.style.display='grid';
+        btnMural.style.background='#B22222'; btnMural.style.color='#fff';
+        btnEasel.style.background='#F4F1E8'; btnEasel.style.color='#2B2B2B';
+      }
+    }
+    </script>
+    
+        <div class="kiosk-header">
+            <div>
+                <div class="wpa-header text-xl">LACMA ART + TECHNOLOGY LAB</div>
+                <div class="mono text-xs">THE AMERICAN SCENE 2.0 // GALLERY KIOSK v1.3.2</div>
+            </div>
+            
+        </div>
+        
+        <div class="kiosk-content">
+            <!-- Screen 1: Gallery Wall -->
+            <div class="kiosk-screen-content active" id="screen-gallery">
+                <div class="text-center mb-8">
+                    <h2 class="wpa-header text-3xl mb-2" style="color: var(--wpa-blue);">GALLERY WALL</h2>
+                    <div class="mono text-sm">TAP A POSTCARD TO BEGIN // 3x2 GRID</div>
+                </div>
+                
+                <div class="postcard-grid">
+                    <div class="postcard" onclick="selectPostcard('dtla-infrastructure', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">🏙️</div>
+                            DTLA-0512<br/>INFRASTRUCTURE<br/>v0.9.1
+                        </div>
+                        <div class="postcard-label">Downtown LA</div>
+                    </div>
+                    <div class="postcard" onclick="selectPostcard('boyle-heights', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">🏘️</div>
+                            BHTS-0311<br/>COMMUNITY<br/>v1.0.4
+                        </div>
+                        <div class="postcard-label">Boyle Heights</div>
+                    </div>
+                    <div class="postcard selected" onclick="selectPostcard('santa-clarita', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">🤖</div>
+                            SCV-0427<br/>GIRLS-ROBOT<br/>v1.3.2
+                        </div>
+                        <div class="postcard-label">Santa Clarita ★</div>
+                    </div>
+                    <div class="postcard" onclick="selectPostcard('long-beach', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">⚓</div>
+                            LBCH-0623<br/>PORT-LABOR<br/>v0.8.7
+                        </div>
+                        <div class="postcard-label">Long Beach</div>
+                    </div>
+                    <div class="postcard" onclick="selectPostcard('pasadena', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">🔬</div>
+                            PSDN-0719<br/>TECH-ARCHIVE<br/>v1.1.0
+                        </div>
+                        <div class="postcard-label">Pasadena</div>
+                    </div>
+                    <div class="postcard" onclick="selectPostcard('venice-beach', this)">
+                        <div class="postcard-placeholder">
+                            <div class="postcard-thumb">📹</div>
+                            VNCB-0833<br/>SURVEILLANCE<br/>v0.7.2
+                        </div>
+                        <div class="postcard-label">Venice Beach</div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button class="wpa-button px-8 py-4 text-lg" onclick="loadArtwork()">LOAD ARTWORK →</button>
+                </div>
+            </div>
+
+            <!-- Screen 2: Artwork + Live HUD -->
+            <div class="kiosk-screen-content" id="screen-artwork">
+                <div class="text-center mb-6">
+                    <h2 class="wpa-header text-3xl mb-2" style="color: var(--wpa-blue);">SCV-0427-GIRLS-ROBOT-v1.3.2</h2>
+                    <div class="mono text-sm">SANTA CLARITA // ROBOT SELFIE MURAL // 2024</div>
+                </div>
+                
+                <div class="mural-display">
+                    <div class="text-center">
+                        <div class="wpa-header text-2xl mb-4">[ ROBOT SELFIE MURAL ]</div>
+                        <div class="mono text-sm mb-2">1920x1080 // GAN + Stable Diffusion XL</div>
+                        <div class="mono text-xs" style="color: #999;">TRAINING DATA: SCV TEEN CENTER ARCHIVES</div>
+                        <div class="mono text-xs" style="color: #999;">ITERATION: 1.3.2 // 47,293 EPOCHS</div>
+                    </div>
+                </div>
+                
+                <div class="hud-panel">
+                    <div class="grid-2 mb-6">
+                        <div>
+                            <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">LIVE CONSENSUS</div>
+                            <div class="metric-bar mb-2"><div class="metric-fill" style="width: 73%;"></div></div>
+                            <div class="mono text-2xl font-bold">73%</div>
+                            <div class="mono text-xs" style="color: #666;">4 AGENTS // WEIGHTED</div>
+                        </div>
+                        <div>
+                            <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">CONFLICT INDEX</div>
+                            <div class="metric-bar mb-2"><div class="metric-fill" style="width: 22%;"></div></div>
+                            <div class="mono text-2xl font-bold" style="color: var(--wpa-blue);">LOW</div>
+                            <div class="mono text-xs" style="color: #666;">VARIANCE: 0.18</div>
+                        </div>
+                    </div>
+                    
+                    <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">AGENT QUOTES — TAP TO EXPAND</div>
+                    <div class="agent-quote" onclick="expandQuote('alpha')">
+                        <div class="mono text-xs font-bold mb-1">AGENT ALPHA — CURATOR [4.6/5]</div>
+                        <div class="text-sm">"Authentic documentation of teen digital culture. Mural tradition meets selfie vernacular."</div>
+                    </div>
+                    <div class="agent-quote" onclick="expandQuote('beta')">
+                        <div class="mono text-xs font-bold mb-1">AGENT BETA — ENGINEER [3.9/5]</div>
+                        <div class="text-sm">"Training pipeline auditable. Recommend higher res source images for v1.4.0."</div>
+                    </div>
+                    <div class="agent-quote" onclick="expandQuote('gamma')">
+                        <div class="mono text-xs font-bold mb-1">AGENT GAMMA — ETHICIST [4.8/5]</div>
+                        <div class="text-sm">"Consent protocols exemplary. Community board approved. No facial recognition used."</div>
+                    </div>
+                    <div class="agent-quote" onclick="expandQuote('delta')">
+                        <div class="mono text-xs font-bold mb-1">AGENT DELTA — PUBLIC [4.1/5]</div>
+                        <div class="text-sm">"Youth engagement strong. Accessibility: needs Spanish translation layer."</div>
+                    </div>
+                    
+                    <div class="flex gap-4 mt-6">
+                        <button class="wpa-button" style="flex: 1;" onclick="showKioskScreen('score')">SCORE IT →</button>
+                        <button class="wpa-button secondary" style="flex: 1;" onclick="showKioskScreen('gallery')">← BACK</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Score It -->
+            <div class="kiosk-screen-content" id="screen-score">
+                <div class="text-center mb-6">
+                    <h2 class="wpa-header text-3xl mb-2" style="color: var(--wpa-blue);">SCORE IT</h2>
+                    <div class="mono text-sm">DRAG HANDLES TO ADJUST // 5-AXIS RUBRIC</div>
+                </div>
+                
+                <div class="hud-panel mb-6">
+                    <div class="radar-container">
+                        <svg class="radar-svg" viewBox="0 0 500 500" id="radar-svg">
+                            <g stroke="#ccc" stroke-width="1" fill="none">
+                                <polygon points="250,50 450,187.5 387.5,387.5 112.5,387.5 50,187.5" opacity="0.2"/>
+                                <polygon points="250,100 400,212.5 350,350 150,350 100,212.5" opacity="0.2"/>
+                                <polygon points="250,150 350,237.5 312.5,312.5 187.5,312.5 150,237.5" opacity="0.2"/>
+                                <polygon points="250,200 300,262.5 275,300 225,300 200,262.5" opacity="0.2"/>
+                                <line x1="250" y1="250" x2="250" y2="50" />
+                                <line x1="250" y1="250" x2="450" y2="187.5" />
+                                <line x1="250" y1="250" x2="387.5" y2="387.5" />
+                                <line x1="250" y1="250" x2="112.5" y2="387.5" />
+                                <line x1="250" y1="250" x2="50" y2="187.5" />
+                            </g>
+                            
+                            <g font-family="Space Mono, monospace" font-size="12" fill="#2B2B2B">
+                                <text x="250" y="35" text-anchor="middle" font-weight="bold">CONCEPTUAL</text>
+                                <text x="470" y="185" text-anchor="start" font-weight="bold">TECHNICAL</text>
+                                <text x="410" y="405" text-anchor="start" font-weight="bold">PUBLIC</text>
+                                <text x="90" y="405" text-anchor="end" font-weight="bold">HISTORICAL</text>
+                                <text x="30" y="185" text-anchor="end" font-weight="bold">ETHICAL</text>
+                            </g>
+                            
+                            <polygon id="radar-data" points="250,90 380,200 360,340 150,340 90,200" 
+                                     fill="rgba(178, 34, 34, 0.3)" stroke="#B22222" stroke-width="3"/>
+                            
+                            <circle cx="250" cy="90" r="12" class="radar-handle" data-axis="0"/>
+                            <circle cx="380" cy="200" r="12" class="radar-handle" data-axis="1"/>
+                            <circle cx="360" cy="340" r="12" class="radar-handle" data-axis="2"/>
+                            <circle cx="150" cy="340" r="12" class="radar-handle" data-axis="3"/>
+                            <circle cx="90" cy="200" r="12" class="radar-handle" data-axis="4"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="grid-2 md:grid-cols-3 lg:grid-2" style="grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-top: 1.5rem; text-align: center;">
+                        <div>
+                            <div class="mono text-xs" style="color: #666;">CONCEPT</div>
+                            <div class="mono text-2xl font-bold" id="score-0">4.2</div>
+                        </div>
+                        <div>
+                            <div class="mono text-xs" style="color: #666;">TECH</div>
+                            <div class="mono text-2xl font-bold" id="score-1">3.8</div>
+                        </div>
+                        <div>
+                            <div class="mono text-xs" style="color: #666;">PUBLIC</div>
+                            <div class="mono text-2xl font-bold" id="score-2">4.0</div>
+                        </div>
+                        <div>
+                            <div class="mono text-xs" style="color: #666;">HISTORY</div>
+                            <div class="mono text-2xl font-bold" id="score-3">4.5</div>
+                        </div>
+                        <div>
+                            <div class="mono text-xs" style="color: #666;">ETHICS</div>
+                            <div class="mono text-2xl font-bold" id="score-4">4.7</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button class="wpa-button" style="flex: 1;" onclick="advanceScore()">ADVANCE</button>
+                    <button class="wpa-button secondary" style="flex: 1;" onclick="iterateScore()">ITERATE</button>
+                </div>
+                
+                <div id="scorecard-output" class="scorecard-print" style="display:none;">
+                    <div class="wpa-header text-sm mb-2">SCORECARD OUTPUT</div>
+                    <div id="scorecard-text"></div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button class="wpa-button secondary px-6 py-3" onclick="showKioskScreen('artwork')">← BACK TO ARTWORK</button>
+                </div>
+            </div>
+
+            <!-- Screen 4: Remix -->
+            <div class="kiosk-screen-content" id="screen-remix">
+                <div class="text-center mb-6">
+                    <h2 class="wpa-header text-3xl mb-2" style="color: var(--wpa-blue);">REMIX</h2>
+                    <div class="mono text-sm">COMPOSE NEW PROPOSAL // SCV-0427 BASELINE</div>
+                </div>
+                
+                <div class="remix-picker">
+                    <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">STEP 1: SELECT LACMA OBJECT</div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'object', 0)">
+                        <div class="font-bold">DIEGO RIVERA — FLOWER DAY (1925)</div>
+                        <div class="text-xs">Collections ID: M.66.22.1</div>
+                    </div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'object', 1)">
+                        <div class="font-bold">DOROTHEA LANGE — MIGRANT MOTHER (1936)</div>
+                        <div class="text-xs">Collections ID: AC1997.168.1</div>
+                    </div>
+                    <div class="picker-option selected" onclick="selectRemixOption(this, 'object', 2)">
+                        <div class="font-bold">ED RUSCHA — STANDARD STATION (1966)</div>
+                        <div class="text-xs">Collections ID: M.83.187</div>
+                    </div>
+                </div>
+                
+                <div class="remix-picker">
+                    <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">STEP 2: SELECT LA COUNTY WALL</div>
+                    <div class="picker-option selected" onclick="selectRemixOption(this, 'wall', 0)">
+                        <div class="font-bold">SANTA CLARITA TEEN CENTER — EXTERIOR WALL</div>
+                        <div class="text-xs">LOCATION: 20880 Centre Pointe Pkwy</div>
+                    </div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'wall', 1)">
+                        <div class="font-bold">LACMA EAST CAMPUS — CONSTRUCTION FENCE</div>
+                        <div class="text-xs">LOCATION: 5905 Wilshire Blvd</div>
+                    </div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'wall', 2)">
+                        <div class="font-bold">METRO RED LINE — HOLLYWOOD/VINE STATION</div>
+                        <div class="text-xs">LOCATION: 6250 Hollywood Blvd</div>
+                    </div>
+                </div>
+                
+                <div class="remix-picker">
+                    <div class="wpa-header text-sm mb-3" style="color: var(--wpa-red);">STEP 3: SELECT LA311 THEME</div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'theme', 0)">
+                        <div class="font-bold">HOMELESSNESS RESPONSE</div>
+                        <div class="text-xs">311 DATA: 47K requests/month</div>
+                    </div>
+                    <div class="picker-option selected" onclick="selectRemixOption(this, 'theme', 1)">
+                        <div class="font-bold">STREETLIGHT OUTAGES</div>
+                        <div class="text-xs">311 DATA: 12K requests/month</div>
+                    </div>
+                    <div class="picker-option" onclick="selectRemixOption(this, 'theme', 2)">
+                        <div class="font-bold">GRAFFITI REMOVAL</div>
+                        <div class="text-xs">311 DATA: 23K requests/month</div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button class="wpa-button px-8 py-4 text-lg" onclick="generateRemix()">GENERATE PROPOSAL</button>
+                </div>
+                
+                <div id="remix-output" class="scorecard-print" style="display:none;">
+                    <div class="wpa-header text-sm mb-2">PROPOSAL GENERATED</div>
+                    <div id="remix-text"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="kiosk-footer">
+            <button class="wpa-button px-4 py-2 text-sm" onclick="toggleProvenance()">↑ PROVENANCE</button>
+            <div class="idle-timer" id="idle-timer">AUTO-RESET: 2:00</div>
+        </div>
+        
+        <!-- Provenance Drawer -->
+        <div class="provenance-drawer" id="provenance-drawer">
+            <div class="drawer-handle" onclick="toggleProvenance()">
+                ↓ PULL TO CLOSE // PROVENANCE.TXT
+            </div>
+            <div class="drawer-content" id="provenance-content">
+SCV-0427-GIRLS-ROBOT-v1.3.2 // PROVENANCE REPORT
+==================================================
+
+DATASET LINEAGE:
+----------------
+SOURCE: Santa Clarita Teen Center Photography Archive (2019-2023)
+SUBJECTS: 47 youth participants, ages 14-18
+CONSENT: IRB-LA-2023-0427 // Parent + Minor assent obtained
+PII STRIPPED: Faces blurred via OpenCV Haar Cascade
+BIAS AUDIT: Demographics balanced 52% F / 48% M / 38% Latinx / 31% White / 19% Asian
+
+MODEL STACK:
+------------
+BASE: Stable Diffusion XL 1.0
+FINETUNE: LoRA adapter (rank=64) trained on SCV dataset
+EPOCHS: 47,293 // BATCH: 8 // LR: 1e-4
+COMPUTE: 186 GPU-hrs on NVIDIA A100
+CARBON: 0.23 tCO2e (offset via Carbonfund.org)
+
+HUMAN-AI COLLABORATION:
+-----------------------
+PROMPT AUTHOR: Maya Chen (Age 16, SCV Teen Center)
+CURATORIAL FRAME: LACMA A+T Lab Staff
+ENGINEERING: Agent Beta (human oversight required)
+ETHICS REVIEW: Agent Gamma + SCV Community Board (5 members)
+
+DEPLOYMENT:
+-----------
+WALL: Santa Clarita Teen Center exterior, 20ft x 40ft
+FABRICATION: UV-resistant ink, expected lifespan 15 years
+MAINTENANCE: Annual inspection required by LACMA Conservation
+PUBLIC ACCESS: 24/7 viewing, QR leads to this provenance
+
+CHAIN OF CUSTODY:
+-----------------
+2024.08.12 // Dataset collected by SCV staff
+2024.08.28 // IRB approval granted
+2024.09.15 // Model training initiated
+2024.10.02 // v1.3.2 finalized, Agent consensus reached
+2024.10.15 // Mural installation complete
+2024.10.15 // Kiosk prototype deployed
+
+VERIFICATION:
+-------------
+LEDGER HASH: 7f3d9a1c8e2b4f5a9c3d6e8f1a2b3c4d
+SIGNATURE: LACMA-A+T-PROD-KEY-2024
+OFFLINE VERIFY: This file stored locally on kiosk
+AUDIT TRAIL: lab.lacma.org/as20/scv-0427
+
+==================================================
+FOR QUESTIONS: arttech@lacma.org
+DOWNLOAD FULL LEDGER: as20.lacma.org/verify#SCV-0427
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kiosk state - preloaded with SCV-0427 data
+        var kioskState = {
+            currentScreen: 'gallery',
+            selectedPostcard: 'santa-clarita',
+            radarScores: [4.2, 3.8, 4.0, 4.5, 4.7],
+            remixSelection: { object: 2, wall: 0, theme: 1 },
+            idleTime: 120,
+            idleInterval: null
+        };
+
+        // Tab switching
+        function switchTab(tab) {
+            var dossier = document.getElementById('dossier-content');
+            var kiosk = document.getElementById('kiosk-screen');
+            var tabDossier = document.getElementById('tab-dossier');
+            var tabKiosk = document.getElementById('tab-kiosk');
+            
+            if (tab === 'kiosk') {
+                dossier.classList.add('hidden');
+                kiosk.classList.add('active');
+                tabDossier.classList.remove('active');
+                tabKiosk.classList.add('active');
+                // Ensure gallery screen is shown
+                showKioskScreen('gallery');
+                startIdleTimer();
+            } else {
+                dossier.classList.remove('hidden');
+                kiosk.classList.remove('active');
+                tabDossier.classList.add('active');
+                tabKiosk.classList.remove('active');
+                stopIdleTimer();
+            }
+        }
+
+        // Kiosk navigation
+        function showKioskScreen(screen) {
+            var screens = document.querySelectorAll('.kiosk-screen-content');
+            for (var i = 0; i < screens.length; i++) {
+                screens[i].classList.remove('active');
+            }
+            var targetScreen = document.getElementById('screen-' + screen);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            kioskState.currentScreen = screen;
+            resetIdleTimer();
+        }
+
+        function selectPostcard(id, el) {
+            var cards = document.querySelectorAll('.postcard');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].classList.remove('selected');
+            }
+            if (el) {
+                el.classList.add('selected');
+            }
+            kioskState.selectedPostcard = id;
+            resetIdleTimer();
+        }
+
+        function loadArtwork() {
+            if (kioskState.selectedPostcard === 'santa-clarita') {
+                showKioskScreen('artwork');
+            } else {
+                alert('PROTOTYPE LIMIT: Only Santa Clarita postcard is loaded in this kiosk build. Other sites coming 2025.');
+            }
+            resetIdleTimer();
+        }
+
+        function expandQuote(agent) {
+            var quotes = {
+                alpha: "Full curatorial statement: This work successfully bridges Regionalist mural tradition with contemporary teen visual culture. The 'robot selfie' motif critiques automation narratives while celebrating youth agency. Historical precedent: Rivera's Detroit Industry murals. Public access exceeds WPA standards.",
+                beta: "Full technical audit: Training data verified. Model reproducible via hash 7f3d...c9a1. Recommend increasing source resolution from 512px to 1024px for v1.4.0. GPU costs within budget. Code available at lab.lacma.org/as20/repo.",
+                gamma: "Full ethics report: Community board met 3 times. Consent forms signed by all participants + guardians. No biometric data stored. Facial blur confirmed effective via penetration test. Meets IRB-LA-2023-0427 requirements.",
+                delta: "Full public feedback: 847 gallery visitors surveyed. 73% understood concept without wall text. Top request: Spanish translation. Recommend dual-language QR. Teen Center reports 40% increase in program enrollment post-installation."
+            };
+            alert(quotes[agent] || 'Agent statement not found');
+            resetIdleTimer();
+        }
+
+        // Radar drag logic
+        var draggingHandle = null;
+        var radarCenter = { x: 250, y: 250 };
+        var radarMaxRadius = 200;
+        var angleStep = (Math.PI * 2) / 5;
+
+        function initRadar() {
+            var handles = document.querySelectorAll('.radar-handle');
+            
+            function handleStart(idx, e) {
+                draggingHandle = idx;
+                e.preventDefault();
+                resetIdleTimer();
+            }
+
+            function handleMove(clientX, clientY) {
+                if (draggingHandle === null) return;
+                
+                var svg = document.getElementById('radar-svg');
+                if (!svg) return;
+                
+                var rect = svg.getBoundingClientRect();
+                var svgX = clientX - rect.left;
+                var svgY = clientY - rect.top;
+                
+                var angle = draggingHandle * angleStep - Math.PI / 2;
+                var dx = svgX - radarCenter.x;
+                var dy = svgY - radarCenter.y;
+                var axisX = Math.cos(angle);
+                var axisY = Math.sin(angle);
+                var projection = dx * axisX + dy * axisY;
+                var clamped = Math.max(20, Math.min(projection, radarMaxRadius));
+                var newScore = (clamped / radarMaxRadius) * 5;
+                kioskState.radarScores[draggingHandle] = parseFloat(newScore.toFixed(1));
+                updateRadarDisplay();
+            }
+
+            for (var i = 0; i < handles.length; i++) {
+                (function(idx) {
+                    handles[idx].addEventListener('mousedown', function(e) {
+                        handleStart(idx, e);
+                    });
+                    handles[idx].addEventListener('touchstart', function(e) {
+                        if (e.touches.length > 0) {
+                            handleStart(idx, e);
+                        }
+                    });
+                })(i);
+            }
+
+            document.addEventListener('mousemove', function(e) {
+                handleMove(e.clientX, e.clientY);
+            });
+
+            document.addEventListener('mouseup', function() {
+                draggingHandle = null;
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                if (draggingHandle !== null && e.touches.length > 0) {
+                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            document.addEventListener('touchend', function() {
+                draggingHandle = null;
+            });
+        }
+
+        function updateRadarDisplay() {
+            var handles = document.querySelectorAll('.radar-handle');
+            var points = [];
+            
+            for (var i = 0; i < kioskState.radarScores.length; i++) {
+                var angle = i * angleStep - Math.PI / 2;
+                var radius = (kioskState.radarScores[i] / 5) * radarMaxRadius;
+                var x = radarCenter.x + Math.cos(angle) * radius;
+                var y = radarCenter.y + Math.sin(angle) * radius;
+                
+                if (handles[i]) {
+                    handles[i].setAttribute('cx', x);
+                    handles[i].setAttribute('cy', y);
+                }
+                
+                var scoreEl = document.getElementById('score-' + i);
+                if (scoreEl) {
+                    scoreEl.textContent = kioskState.radarScores[i].toFixed(1);
+                }
+                
+                points.push(x + ',' + y);
+            }
+            
+            var dataPoly = document.getElementById('radar-data');
+            if (dataPoly) {
+                dataPoly.setAttribute('points', points.join(' '));
+            }
+        }
+
+        function advanceScore() {
+            var sum = 0;
+            for (var i = 0; i < kioskState.radarScores.length; i++) {
+                sum += kioskState.radarScores[i];
+            }
+            var avg = sum / kioskState.radarScores.length;
+            var output = document.getElementById('scorecard-output');
+            var text = document.getElementById('scorecard-text');
+            
+            if (text) {
+                text.innerHTML = 'SCV-0427-GIRLS-ROBOT-v1.3.2 // SCORE ADVANCE\n' +
+                    'DATE: ' + new Date().toISOString() + '\n' +
+                    'STATUS: ADVANCE TO FABRICATION\n\n' +
+                    'SCORES:\n' +
+                    '01. CONCEPTUAL RIGOR: ' + kioskState.radarScores[0] + '/5.0\n' +
+                    '02. TECHNICAL EXECUTION: ' + kioskState.radarScores[1] + '/5.0\n' +
+                    '03. PUBLIC ACCESS: ' + kioskState.radarScores[2] + '/5.0\n' +
+                    '04. HISTORICAL DIALOGUE: ' + kioskState.radarScores[3] + '/5.0\n' +
+                    '05. ETHICAL STANCE: ' + kioskState.radarScores[4] + '/5.0\n\n' +
+                    'WEIGHTED AVERAGE: ' + avg.toFixed(2) + '/5.0\n' +
+                    'CONSENSUS: ' + (avg >= 3.0 ? 'PASS' : 'ITERATE REQUIRED') + '\n\n' +
+                    'NEXT: Forward to Production Review Board\n' +
+                    'PRINTED: ' + new Date().toLocaleString();
+            }
+            if (output) {
+                output.style.display = 'block';
+            }
+            resetIdleTimer();
+        }
+
+        function iterateScore() {
+            var sum = 0;
+            for (var i = 0; i < kioskState.radarScores.length; i++) {
+                sum += kioskState.radarScores[i];
+            }
+            var avg = sum / kioskState.radarScores.length;
+            var output = document.getElementById('scorecard-output');
+            var text = document.getElementById('scorecard-text');
+            
+            var lowScores = 0;
+            for (var i = 0; i < kioskState.radarScores.length; i++) {
+                if (kioskState.radarScores[i] < 4.0) lowScores++;
+            }
+            
+            if (text) {
+                text.innerHTML = 'SCV-0427-GIRLS-ROBOT-v1.3.2 // ITERATE REQUEST\n' +
+                    'DATE: ' + new Date().toISOString() + '\n' +
+                    'STATUS: RETURN TO ARTIST FOR REVISION\n\n' +
+                    'SCORES:\n' +
+                    '01. CONCEPTUAL RIGOR: ' + kioskState.radarScores[0] + '/5.0\n' +
+                    '02. TECHNICAL EXECUTION: ' + kioskState.radarScores[1] + '/5.0\n' +
+                    '03. PUBLIC ACCESS: ' + kioskState.radarScores[2] + '/5.0\n' +
+                    '04. HISTORICAL DIALOGUE: ' + kioskState.radarScores[3] + '/5.0\n' +
+                    '05. ETHICAL STANCE: ' + kioskState.radarScores[4] + '/5.0\n\n' +
+                    'WEIGHTED AVERAGE: ' + avg.toFixed(2) + '/5.0\n' +
+                    'CONSENSUS: ITERATE REQUIRED\n\n' +
+                    'FEEDBACK: ' + (lowScores > 0 ? 'Address scores below 4.0 threshold' : 'Strong work, minor refinements suggested') + '\n' +
+                    'PRINTED: ' + new Date().toLocaleString();
+            }
+            if (output) {
+                output.style.display = 'block';
+            }
+            resetIdleTimer();
+        }
+
+        // Remix logic
+        function selectRemixOption(el, type, idx) {
+            var siblings = el.parentElement.querySelectorAll('.picker-option');
+            for (var i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('selected');
+            }
+            el.classList.add('selected');
+            kioskState.remixSelection[type] = idx;
+            resetIdleTimer();
+        }
+
+        function generateRemix() {
+            var objects = [
+                "DIEGO RIVERA — FLOWER DAY",
+                "DOROTHEA LANGE — MIGRANT MOTHER",
+                "ED RUSCHA — STANDARD STATION"
+            ];
+            var walls = [
+                "SANTA CLARITA TEEN CENTER",
+                "LACMA EAST CAMPUS FENCE",
+                "METRO RED LINE — HOLLYWOOD/VINE"
+            ];
+            var themes = [
+                "HOMELESSNESS RESPONSE",
+                "STREETLIGHT OUTAGES",
+                "GRAFFITI REMOVAL"
+            ];
+            
+            var output = document.getElementById('remix-output');
+            var text = document.getElementById('remix-text');
+            
+            if (text) {
+                text.innerHTML = 'PROPOSAL DRAFT // SCV-0427-v2.0.0-beta\n' +
+                    '================================================================\n\n' +
+                    'BASELINE: SCV-0427-GIRLS-ROBOT-v1.3.2\n' +
+                    'REMIX COMPONENTS:\n\n' +
+                    'LACMA OBJECT: ' + objects[kioskState.remixSelection.object] + '\n' +
+                    'WALL SITE: ' + walls[kioskState.remixSelection.wall] + '\n' +
+                    'LA311 THEME: ' + themes[kioskState.remixSelection.theme] + '\n\n' +
+                    'CONCEPT:\n' +
+                    'Synthesize ' + objects[kioskState.remixSelection.object] + ' compositional\n' +
+                    'strategies with contemporary ' + themes[kioskState.remixSelection.theme] + '\n' +
+                    'data from LA311 API. Deploy on ' + walls[kioskState.remixSelection.wall] + '\n' +
+                    'using SCV-0427 GAN pipeline.\n\n' +
+                    'METHODOLOGY:\n' +
+                    '1. Extract civic data layer from LA311 real-time feed\n' +
+                    '2. Train LoRA adapter on ' + objects[kioskState.remixSelection.object] + ' style\n' +
+                    '3. Community workshop at SCV Teen Center for youth prompts\n' +
+                    '4. Fabrication: Weather-resistant mural with QR provenance\n\n' +
+                    'ESTIMATED BUDGET: $67,000\n' +
+                    'TIMELINE: 12 months\n' +
+                    'HASH: pending-review-' + Date.now() + '\n\n' +
+                    'STATUS: DRAFT // AWAITING ARTIST SUBMISSION';
+            }
+            if (output) {
+                output.style.display = 'block';
+            }
+            resetIdleTimer();
+        }
+
+        // Provenance drawer
+        function toggleProvenance() {
+            var drawer = document.getElementById('provenance-drawer');
+            if (drawer) {
+                drawer.classList.toggle('open');
+            }
+            resetIdleTimer();
+        }
+
+        // Idle timer
+        function startIdleTimer() {
+            stopIdleTimer();
+            kioskState.idleTime = 120;
+            updateIdleDisplay();
+            kioskState.idleInterval = setInterval(function() {
+                kioskState.idleTime--;
+                updateIdleDisplay();
+                if (kioskState.idleTime <= 0) {
+                    resetKiosk();
+                }
+            }, 1000);
+        }
+
+        function stopIdleTimer() {
+            if (kioskState.idleInterval) {
+                clearInterval(kioskState.idleInterval);
+                kioskState.idleInterval = null;
+            }
+        }
+
+        function resetIdleTimer() {
+            kioskState.idleTime = 120;
+            updateIdleDisplay();
+        }
+
+        function updateIdleDisplay() {
+            var mins = Math.floor(kioskState.idleTime / 60);
+            var secs = kioskState.idleTime % 60;
+            var el = document.getElementById('idle-timer');
+            if (el) {
+                el.textContent = 'AUTO-RESET: ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+        }
+
+        function resetKiosk() {
+            showKioskScreen('gallery');
+            var cards = document.querySelectorAll('.postcard');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].classList.remove('selected');
+            }
+            if (cards[2]) {
+                cards[2].classList.add('selected');
+            }
+            kioskState.selectedPostcard = 'santa-clarita';
+            var scorecardOutput = document.getElementById('scorecard-output');
+            var remixOutput = document.getElementById('remix-output');
+            var drawer = document.getElementById('provenance-drawer');
+            if (scorecardOutput) scorecardOutput.style.display = 'none';
+            if (remixOutput) remixOutput.style.display = 'none';
+            if (drawer) drawer.classList.remove('open');
+            kioskState.radarScores = [4.2, 3.8, 4.0, 4.5, 4.7];
+            updateRadarDisplay();
+            resetIdleTimer();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initRadar();
+            updateRadarDisplay();
+            
+            // Reset idle on any interaction in kiosk
+            var kioskEl = document.getElementById('kiosk-screen');
+            if (kioskEl) {
+                kioskEl.addEventListener('click', resetIdleTimer);
+                kioskEl.addEventListener('touchstart', resetIdleTimer);
+            }
+            
+            // Add interaction to rubric cells
+            var rubricCells = document.querySelectorAll('.rubric-cell');
+            for (var i = 0; i < rubricCells.length; i++) {
+                rubricCells[i].addEventListener('click', function() {
+                    this.style.boxShadow = 'inset 0 0 0 2px var(--wpa-red)';
+                    var self = this;
+                    setTimeout(function() {
+                        self.style.boxShadow = '';
+                    }, 300);
+                });
+            }
+        });
+    </script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+
+<!-- NEW SECTION: WPA VS AGENT WORKFLOW -->
+<section id="workflow-tab" style="display:none; padding:24px; max-width:1100px; margin:0 auto; font-family: 'Courier New', monospace;">
+<style>
+.wpa-grid { display:grid; grid-template-columns:1fr 60px 1fr; gap:0; border:4px solid #1a1a1a; background:#f5f1e8; }
+.wpa-col { padding:20px; }
+.wpa-center { display:flex; flex-direction:column; align-items:center; justify-content:space-around; background:#1a1a1a; color:#fff; font-weight:900; }
+.wpa-step { border:3px solid #1a1a1a; padding:12px; margin:12px 0; background:#fff; position:relative; }
+.wpa-step small { display:block; font-size:11px; letter-spacing:1px; text-transform:uppercase; background:#c1272d; color:#fff; padding:2px 6px; width:fit-content; margin-bottom:6px; }
+.wpa-arrow { font-size:28px; line-height:1; margin:4px 0; }
+@media (max-width:700px){ .wpa-grid{grid-template-columns:1fr; } .wpa-center{flex-direction:row; padding:10px;} .wpa-center div{transform:rotate(90deg);} }
+</style>
+<h2 style="font-family: 'Anton', Impact, sans-serif; font-size:32px; text-transform:uppercase; border-bottom:6px solid #c1272d; padding-bottom:8px;">WPA WORKFLOW vs AGENT WORKFLOW</h2>
+<p style="max-width:700px; line-height:1.5;">How Federal Art Administrators requested work: a relief check + portfolio, then assignment to a wall, then rough cartoon review. Your agents mirror this.</p>
+
+<div class="wpa-grid">
+  <div class="wpa-col">
+    <h3 style="background:#1a1a1a; color:#fff; padding:8px; margin:0 -20px 16px -20px; text-align:center;">WPA 1935-1943 [FAP]</h3>
+    <div class="wpa-step"><small>Step 1 • Qualification</small><b>Apply for Home Relief + Submit Samples</b><br><span style="font-size:13px;">Proof of poverty + active artist status. ~$24/week if approved. [TheArtStory]</span></div>
+    <div style="text-align:center;" class="wpa-arrow">▼</div>
+    <div class="wpa-step"><small>Step 2 • Matching</small><b>State Admin + FAP Director Match Artist to Project</b><br><span style="font-size:13px;">“matching of artists with projects” [CORE.ac.uk]. Mural division = wall assigned.</span></div>
+    <div style="text-align:center;" class="wpa-arrow">▼</div>
+    <div class="wpa-step"><small>Step 3 • Roughs for Review</small><b>Pencil Sketch / Color Study / Full-Scale Cartoon</b><br><span style="font-size:13px;">Reviewed by Burgoyne Diller, Cahill + building committee. Alston’s Harlem Hospital held for protest review.</span></div>
+    <div style="text-align:center;" class="wpa-arrow">▼</div>
+    <div class="wpa-step"><small>Step 4 • Production</small><b>Team Execution — Lead + Assistants Supplied by WPA</b><br><span style="font-size:13px;">Murals on canvas in studio or in situ. Easel division: 1-2 paintings every 4 weeks to office.</span></div>
+  </div>
+  <div class="wpa-center">
+    <div>→</div><div>→</div><div>→</div><div>→</div>
+  </div>
+  <div class="wpa-col" style="background:#fffcf0;">
+    <h3 style="background:#c1272d; color:#fff; padding:8px; margin:0 -20px 16px -20px; text-align:center;">AMERICAN SCENE 2.0 [2026]</h3>
+    <div class="wpa-step" style="border-color:#c1272d;"><small style="background:#1a1a1a;">Step 1 • Qualification</small><b>LACMA Public Domain Check + Sponsor Credit Check</b><br><span style="font-size:13px;">Whitelist: only PD objects + Maps API via sponsor. No private data. provenance.txt logs it.</span></div>
+    <div style="text-align:center; color:#c1272d;" class="wpa-arrow">▼</div>
+    <div class="wpa-step" style="border-color:#c1272d;"><small style="background:#1a1a1a;">Step 2 • Matching</small><b>Prompt Compiler Matches LACMA Object + Street View Wall + Civic Theme</b><br><span style="font-size:13px;">Algorithm: LA311 data + facade material + LACMA metadata as mad-libs.</span></div>
+    <div style="text-align:center; color:#c1272d;" class="wpa-arrow">▼</div>
+    <div class="wpa-step" style="border-color:#c1272d;"><small style="background:#1a1a1a;">Step 3 • Roughs for Review</small><b>Artist Agent Prompt v1.3.2 + Seed + Hash → Draft Image</b><br><span style="font-size:13px;">SHA-256 hash + Street View coords embedded in EXIF. Public “cartoon” = prompt.json</span></div>
+    <div style="text-align:center; color:#c1272d;" class="wpa-arrow">▼</div>
+    <div class="wpa-step" style="border-color:#c1272d;"><small style="background:#1a1a1a;">Step 4 • Production</small><b>Curator + Admin Agents Score 5-Axis → Iterate / Advance / Archive</b><br><span style="font-size:13px;">Conflict Index + radar chart. Failures go to Archive of Productive Failure — like WPA reports.</span></div>
+  </div>
+</div>
+<p style="margin-top:20px; font-size:12px; border-top:2px solid #1a1a1a; padding-top:10px;"><b>RFP LANGUAGE:</b> “Like the FAP easel division’s four-week delivery and mural division’s cartoon review, our agents produce work for multi-agent review using only public assets. Roughs are retained in the Index of Algorithmic Design.”</p>
+</section>
+<script>
+// Add third tab button logic
+(function(){
+  const nav = document.querySelector('nav, .tabs, header');
+  // Find existing tab buttons
+  const dossierBtn = Array.from(document.querySelectorAll('button')).find(b=>/DOSSIER/i.test(b.textContent));
+  if(dossierBtn){
+    const workflowBtn = dossierBtn.cloneNode(true);
+    workflowBtn.textContent = 'WPA vs AGENT';
+    workflowBtn.id='workflow-tab-btn';
+    dossierBtn.parentNode.appendChild(workflowBtn);
+    const kioskSec = document.getElementById('kiosk-prototype') || document.querySelector('[id*="kiosk"]');
+    const dossierSec = document.getElementById('dossier') || document.querySelector('main');
+    const workflowSec = document.getElementById('workflow-tab');
+    workflowBtn.addEventListener('click',()=>{
+      document.querySelectorAll('section').forEach(s=>s.style.display='none');
+      workflowSec.style.display='block';
+      document.querySelectorAll('button').forEach(b=>b.style.background='#1a1a1a');
+      workflowBtn.style.background='#c1272d';
+    });
+    if(dossierBtn){
+      dossierBtn.addEventListener('click',()=>{
+        document.querySelectorAll('section').forEach(s=>s.style.display='none');
+        if(dossierSec) dossierSec.style.display='block';
+        workflowSec.style.display='none';
+        document.querySelectorAll('button').forEach(b=>b.style.background='#1a1a1a');
+        dossierBtn.style.background='#fff';
+        dossierBtn.style.color='#1a1a1a';
+      });
+    }
+  }
+})();
+</script>
+
+
+
+<!-- COMMUNITY ART CENTER SHELF VIEW -->
+<div id="community-shelf" style="display:none; padding:20px; background:#FDFBF7; border-top:6px solid #1A3E5C; margin-top:20px;">
+  <h2 style="font-family:'Archivo Black'; text-transform:uppercase; font-size:22px; margin:0 0 12px 0;">Community Art Center Shelf — Easel Archive</h2>
+  <p style="font-family:'Crimson Text'; font-size:14px; line-height:1.5; max-width:700px;">Inspired by WPA's nearly 100 community art centers. Easel works that scored ADVANCE are circulated here to schools, hospitals, libraries — not pinned to a specific building. Each includes printable label for physical distribution.</p>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin:16px 0;">
+    <button onclick="window.print()" style="background:#1A3E5C; color:#fff; border:2px solid #2B2B2B; padding:12px 18px; font-family:'Archivo Black'; min-height:44px; cursor:pointer;">PRINT ALL EASEL LABELS (4x6)</button>
+    <button onclick="document.getElementById('community-shelf').style.display='none'" style="background:#F4F1E8; border:2px solid #2B2B2B; padding:12px 18px; font-family:'Archivo Black'; min-height:44px; cursor:pointer;">CLOSE SHELF</button>
+  </div>
+  <div id="printable-cards" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr)); gap:20px;">
+    <div class="print-card" style="border:3px solid #2B2B2B; background:#fff; padding:0; break-inside:avoid;">
+      <div style="border-bottom:3px solid #2B2B2B; padding:10px; background:#F4F1E8; display:flex; justify-content:space-between;"><span style="font-family:'Space Mono'; font-size:10px; font-weight:700;">U.S. FEDERAL ART PROJECT</span><span style="font-family:'Space Mono'; font-size:10px;">EASEL DIVISION</span></div>
+      <div style="padding:14px;">
+        <div style="font-family:'Archivo Black'; font-size:16px;">SCV-EASEL-001-v1.1</div>
+        <div style="font-family:'Crimson Text'; font-size:12px; font-style:italic; margin:4px 0;">"Study for American Scene (Selfie with Industrial Form)"</div>
+        <div style="font-family:'Space Mono'; font-size:10px; line-height:1.5; margin-top:10px; border-top:1px solid #ddd; padding-top:8px;">
+          Artist-Agent-03 | Studio Time 32s | 2026-04-22<br>
+          Source: LACMA M.84.31.158 (Ben Shahn) Public Domain<br>
+          Quota: 1/2 this period — Delivered to WPA Office<br>
+          Compute: 0.3 units | Site: None — Studio work<br>
+          Hash: a3f7c9...e2d1 | Provenance: provenance.txt
+        </div>
+        <div style="margin-top:10px; height:60px; background:repeating-linear-gradient(45deg,#eee,#eee 8px,#ddd 8px,#ddd 16px); display:flex; align-items:center; justify-content:center; font-family:'Space Mono'; font-size:10px;">[ QR: LACMA + Prompt Hash ]</div>
+      </div>
+    </div>
+    <div class="print-card" style="border:3px solid #2B2B2B; background:#fff; padding:0; break-inside:avoid;">
+      <div style="border-bottom:3px solid #2B2B2B; padding:10px; background:#F4F1E8; display:flex; justify-content:space-between;"><span style="font-family:'Space Mono'; font-size:10px; font-weight:700;">U.S. FEDERAL ART PROJECT</span><span style="font-family:'Space Mono'; font-size:10px;">EASEL DIVISION</span></div>
+      <div style="padding:14px;">
+        <div style="font-family:'Archivo Black'; font-size:16px;">SCV-EASEL-002-v1.2</div>
+        <div style="font-family:'Crimson Text'; font-size:12px; font-style:italic; margin:4px 0;">"Robot Selfie, After Rivera"</div>
+        <div style="font-family:'Space Mono'; font-size:10px; line-height:1.5; margin-top:10px; border-top:1px solid #ddd; padding-top:8px;">
+          Artist-Agent-01 | Studio Time 47s | 2026-04-22<br>
+          Source: LACMA M.2000.45.1 Public Domain<br>
+          Quota: 2/2 delivered — Office Approved<br>
+          Compute: 0.3 units | Conflict Index: LOW<br>
+          Hash: b8e1d2...f4a9 | Provenance: provenance.txt
+        </div>
+        <div style="margin-top:10px; height:60px; background:repeating-linear-gradient(45deg,#eee,#eee 8px,#ddd 8px,#ddd 16px); display:flex; align-items:center; justify-content:center; font-family:'Space Mono'; font-size:10px;">[ QR: LACMA + Prompt Hash ]</div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+@media print {
+  body * { visibility:hidden; }
+  #printable-cards, #printable-cards * { visibility:visible; }
+  #printable-cards { position:absolute; left:0; top:0; width:100%; display:block; }
+  .print-card { width:4in; height:6in; margin:0.25in; float:left; page-break-inside:avoid; }
+}
+</style>
+<script>
+// Show community shelf when Easel ADVANCE clicked
+document.addEventListener('click', function(e){
+  if(e.target.textContent && e.target.textContent.trim()==='ADVANCE'){
+    const shelf = document.getElementById('community-shelf');
+    if(shelf && e.target.closest('#easel-view')){
+      shelf.style.display='block';
+      shelf.scrollIntoView({behavior:'smooth'});
+    }
+  }
+});
+</script>
+
+
+<style>
+@keyframes slideToOffice {
+  0% { transform: translate(0,0) scale(1) rotate(0deg); opacity:1; }
+  30% { transform: translate(40px,-30px) scale(0.9) rotate(5deg); }
+  70% { transform: translate(300px, -100px) scale(0.3) rotate(20deg); opacity:0.8; }
+  100% { transform: translate(500px, -200px) scale(0.1) rotate(35deg); opacity:0; }
+}
+.flying-card {
+  position:fixed;
+  width:260px;
+  z-index:9999;
+  border:3px solid #2B2B2B;
+  background:#fff;
+  box-shadow:6px 6px 0 #2B2B2B;
+  animation: slideToOffice 1.2s cubic-bezier(0.6,0,0.8,0.4) forwards;
+  pointer-events:none;
+}
+#office-mailbox {
+  position:fixed;
+  top:20px;
+  right:20px;
+  width:80px;
+  height:80px;
+  background:#B22222;
+  border:3px solid #2B2B2B;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  z-index:9998;
+  box-shadow:4px 4px 0 #2B2B2B;
+}
+#office-mailbox.show {
+  display:flex;
+  animation: mailboxBounce 0.5s ease;
+}
+@keyframes mailboxBounce {
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.2);}
+}
+.quota-toast {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#2B2B2B;
+  color:#fff;
+  padding:12px 20px;
+  font-family:'Space Mono', monospace;
+  font-size:12px;
+  border:2px solid #F4F1E8;
+  z-index:10000;
+  display:none;
+}
+</style>
+
+<script>
+function deliverToOffice(cardElement){
+  const rect = cardElement.getBoundingClientRect();
+  const flying = cardElement.cloneNode(true);
+  flying.classList.add('flying-card');
+  flying.style.left = rect.left + 'px';
+  flying.style.top = rect.top + 'px';
+  document.body.appendChild(flying);
+  
+  const mailbox = document.getElementById('office-mailbox');
+  mailbox.classList.add('show');
+  
+  setTimeout(()=>{
+    flying.remove();
+    mailbox.classList.remove('show');
+    const toast = document.getElementById('quota-toast');
+    toast.textContent = '✓ DELIVERED TO WPA OFFICE — Quota: 2/2 — Next delivery due in 4 weeks';
+    toast.style.display='block';
+    setTimeout(()=>{ toast.style.display='none'; }, 3000);
+    const shelf = document.getElementById('community-shelf');
+    if(shelf){ shelf.style.display='block'; shelf.scrollIntoView({behavior:'smooth'}); }
+  }, 1200);
+}
+
+// Override ADVANCE buttons in easel view
+document.addEventListener('click', function(e){
+  const btn = e.target;
+  if(btn.textContent && btn.textContent.trim()==='ADVANCE' && btn.closest('#easel-view')){
+    e.preventDefault();
+    const card = btn.closest('div[style*="border:3px solid"]');
+    if(card) deliverToOffice(card);
+  }
+});
+</script>
+
+
+<script>
+(function(){
+  const originalShowKiosk = window.showKiosk || function(){};
+  // Patch all buttons that open kiosk
+  document.addEventListener('DOMContentLoaded', function(){
+    const kioskTabBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent.trim().toUpperCase().includes('KIOSK PROTOTYPE'));
+    const dossierTabBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent.trim().toUpperCase()==='DOSSIER');
+    const wpaTabBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent.trim().toUpperCase().includes('WPA VS AGENT'));
+    const kioskScreen = document.getElementById('kiosk-screen');
+    const tabNav = document.querySelector('.tab-nav') || document.querySelector('nav');
+    const dossierContent = document.getElementById('dossier-content');
+    
+    if(kioskTabBtn){
+      kioskTabBtn.addEventListener('click', function(){
+        if(kioskScreen) kioskScreen.style.display='block';
+        if(tabNav) tabNav.style.display='none';
+        window.scrollTo(0,0);
+      });
+    }
+    window.exitKiosk = function(){
+      if(kioskScreen) kioskScreen.style.display='none';
+      if(tabNav) tabNav.style.display='flex';
+      if(dossierContent) dossierContent.classList.remove('hidden');
+      window.scrollTo(0,0);
+    };
+  });
+})();
+</script>
+
+</body>
+</html>
